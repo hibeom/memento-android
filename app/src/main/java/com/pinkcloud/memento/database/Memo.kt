@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "memos_table")
+@Entity(tableName = "memo_table")
 data class Memo(
     @PrimaryKey
     @ColumnInfo(name = "memo_id")
@@ -28,5 +28,16 @@ data class Memo(
     @ColumnInfo(name = "is_alarm_enabled")
     var isAlarmEnabled: Boolean = false,
 
+    /**
+     * The time when a memo is edited is given to alarmId.
+     * alarmId will be used for canceling alarm from alarmManager.
+     * */
+    @ColumnInfo(name = "alarm_id")
+    var alarmId: Long = System.currentTimeMillis(),
 
+    @ColumnInfo(name = "is_completed")
+    var isCompleted: Boolean = false,
+
+    @ColumnInfo(name = "completed_time")
+    var completedTime: Long?
 )
