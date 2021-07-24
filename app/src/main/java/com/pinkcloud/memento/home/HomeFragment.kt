@@ -33,8 +33,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_home_fragment_to_second_fragment)
+        binding.buttonAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_home_fragment_to_add_fragment)
         }
     }
 

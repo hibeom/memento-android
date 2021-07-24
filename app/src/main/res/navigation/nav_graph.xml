@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_home_fragment_to_second_fragment"
+            android:id="@+id/action_home_fragment_to_add_fragment"
             app:destination="@id/add_fragment" />
     </fragment>
     <fragment
@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_add">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_add_fragment_to_home_fragment"
             app:destination="@id/home_fragment" />
     </fragment>
 </navigation>

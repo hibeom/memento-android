@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PhotoButton">
+        <item name="android:src">@drawable/ic_camera</item>
+        <item name="android:tint">@color/white</item>
+        <item name="android:background">@color/black</item>
+    </style>
+</resources>
