@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.pinkcloud.memento.UtilKt"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/edit_front_caption"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/card_content_margin"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/enter_caption"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/view_tools"/>
+
+        <View
+            android:id="@+id/view_tools"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/gray_200"
+            app:layout_constraintTop_toTopOf="@id/text_priority_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="@dimen/card_content_margin"/>
+
+        <TextView
+            android:id="@+id/text_priority_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            app:layout_constraintBottom_toTopOf="@id/seekbar_priority"
+            app:layout_constraintStart_toStartOf="@id/view_tools" />
+
+        <SeekBar
+            android:id="@+id/seekbar_priority"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/text_alarm_title"
+            app:layout_constraintStart_toStartOf="@id/view_tools"
+            app:layout_constraintEnd_toEndOf="@id/view_tools" />
+
+        <TextView
+            android:id="@+id/text_alarm_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alarm"
+            app:layout_constraintBottom_toTopOf="@id/text_alarm_time"
+            app:layout_constraintStart_toStartOf="@id/view_tools" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/on"
+            app:layout_constraintEnd_toEndOf="@id/view_tools"
+            app:layout_constraintTop_toTopOf="@id/text_alarm_title" />
+
+        <TextView
+            android:id="@+id/text_alarm_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{UtilKt.formatMillisToDatetime(System.currentTimeMillis())}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/view_tools" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

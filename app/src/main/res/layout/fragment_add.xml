@@ -12,22 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".add.AddFragment">
 
-        <FrameLayout
-            android:id="@+id/layout_front_card"
+        <include
+            android:id="@+id/layout_card"
+            layout="@layout/layout_card"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="@dimen/card_horizontal_margin"
-            android:elevation="@dimen/card_elevation"
-            android:background="@color/black">
-
-            <include
-                android:id="@+id/front_card"
-                layout="@layout/front_card"/>
-
-        </FrameLayout>
+            android:layout_marginHorizontal="@dimen/card_horizontal_margin"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

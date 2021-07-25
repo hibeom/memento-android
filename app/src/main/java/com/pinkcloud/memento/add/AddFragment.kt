@@ -1,5 +1,7 @@
 package com.pinkcloud.memento.add
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -33,8 +35,10 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.frontCard.buttonPhoto.setOnClickListener {
-
+        binding.layoutCard.frontCard.buttonPhoto.setOnClickListener {
+            requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
+//                if (it == PackageManager.PERMISSION_GRANTED) startCamera
+            }
         }
     }
 
@@ -42,4 +46,5 @@ class AddFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
