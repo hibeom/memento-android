@@ -3,4 +3,7 @@
     <dimen name="card_horizontal_margin">10dp</dimen>
     <dimen name="card_elevation">10dp</dimen>
     <dimen name="card_content_margin">10dp</dimen>
+    <dimen name="reverse_button_margin">20dp</dimen>
+
+    <!-- text  -->
 </resources>

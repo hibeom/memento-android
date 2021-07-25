@@ -12,13 +12,11 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/edit_front_caption"
+            android:id="@+id/edit_back_caption"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="@string/enter_caption"
+            style="@style/EditCaption"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/view_tools"/>
 
@@ -29,23 +27,28 @@
             android:background="@color/gray_200"
             app:layout_constraintTop_toTopOf="@id/text_priority_title"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_margin="@dimen/card_content_margin"/>
+            android:layout_marginHorizontal="@dimen/card_content_margin"
+            android:layout_marginBottom="@dimen/card_content_margin"/>
 
         <TextView
             android:id="@+id/text_priority_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/priority"
-            app:layout_constraintBottom_toTopOf="@id/seekbar_priority"
+            app:layout_constraintBottom_toTopOf="@id/slider_priority"
             app:layout_constraintStart_toStartOf="@id/view_tools" />
 
-        <SeekBar
-            android:id="@+id/seekbar_priority"
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_priority"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/text_alarm_title"
             app:layout_constraintStart_toStartOf="@id/view_tools"
-            app:layout_constraintEnd_toEndOf="@id/view_tools" />
+            app:layout_constraintEnd_toEndOf="@id/view_tools"
+            app:trackHeight="24dp"
+            app:thumbRadius="12dp"
+            app:trackColorInactive="@color/gray_100"
+            android:value="0.5"/>
 
         <TextView
             android:id="@+id/text_alarm_title"

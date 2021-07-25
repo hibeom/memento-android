@@ -13,4 +13,15 @@
     <string name="priority">Priority</string>
     <string name="alarm">Alarm</string>
     <string name="on">ON</string>
+    <string name="camera_permission_not_allowed">Allow camera permission to use camera.</string>
+    <string name="which_way_to_get_photo">Which way to get photo?</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
+    <string name="cancel">cancel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="camera_fragment_label">Camera</string>
+    <string name="cd_take_photo">Take Photo</string>
+    <string name="cd_button_photo">Fetch Photo</string>
+    <string name="cd_reverse_camera">Reverse Camera</string>
 </resources>

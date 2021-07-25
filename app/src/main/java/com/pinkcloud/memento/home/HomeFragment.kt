@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_home_fragment_to_add_fragment)
+            findNavController().navigate(R.id.action_homeFragment_to_addFragment)
         }
     }
 

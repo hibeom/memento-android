@@ -3,26 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/home_fragment"
+        android:id="@+id/homeFragment"
         android:name="com.pinkcloud.memento.home.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_home_fragment_to_add_fragment"
-            app:destination="@id/add_fragment" />
+            android:id="@+id/action_homeFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
     <fragment
-        android:id="@+id/add_fragment"
+        android:id="@+id/addFragment"
         android:name="com.pinkcloud.memento.add.AddFragment"
         android:label="@string/add_fragment_label"
         tools:layout="@layout/fragment_add">
 
         <action
-            android:id="@+id/action_add_fragment_to_home_fragment"
-            app:destination="@id/home_fragment" />
+            android:id="@+id/action_addFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_addFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.pinkcloud.memento.common.CameraFragment"
+        android:label="@string/camera_fragment_label"
+        tools:layout="@layout/fragment_camera" >
     </fragment>
 </navigation>
