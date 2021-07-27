@@ -2,6 +2,7 @@ package com.pinkcloud.memento.common
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Rational
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.pinkcloud.memento.R
+import com.pinkcloud.memento.Constants
 import com.pinkcloud.memento.databinding.FragmentCameraBinding
 import timber.log.Timber
 import java.io.File
@@ -87,12 +88,12 @@ class CameraFragment : Fragment() {
 
     private fun takePhoto() {
         // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
+        val imageCapture = imageCapture
 
         // Create time-stamped output file to hold the image
         val photoFile = File(
             requireContext().filesDir,
-            "temp.jpg")
+            Constants.TEMP_FILE_NAME)
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -108,9 +109,9 @@ class CameraFragment : Fragment() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                    TODO("navigate with filePath")
-//                    findNavController()
+                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(Constants.KEY_TEMP_IMAGE_PATH, savedUri)
+                    findNavController().popBackStack()
                 }
             })
     }

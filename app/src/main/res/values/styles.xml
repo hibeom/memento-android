@@ -3,7 +3,6 @@
 
     <style name="PhotoButton">
         <item name="android:src">@drawable/ic_camera</item>
-        <item name="android:tint">@color/white</item>
         <item name="android:background">@color/black</item>
     </style>
 
