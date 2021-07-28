@@ -4,9 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,7 +17,7 @@ import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
-import timber.log.Timber
+import com.pinkcloud.memento.home.HomeFragmentDirections
 
 
 /**
@@ -37,6 +35,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     ): View? {
 
         binding = FragmentAddBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
 
     }
@@ -100,6 +99,31 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             1 -> {
                 getContent.launch("image/*")
             }
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.action_add).isVisible = false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_confirm -> {
+                // Insert memo
+
+                findNavController().popBackStack()
+                true
+            }
+            R.id.action_settings -> {
+                Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

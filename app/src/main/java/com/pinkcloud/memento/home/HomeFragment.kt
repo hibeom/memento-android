@@ -1,10 +1,9 @@
 package com.pinkcloud.memento.home
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
@@ -26,20 +25,40 @@ class HomeFragment : Fragment() {
     ): View? {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addFragment)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.action_confirm).isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.action_add -> {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

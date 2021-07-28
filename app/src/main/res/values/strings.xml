@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Memento</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add">Add</string>
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Home</string>
     <string name="add_fragment_label">Add</string>
@@ -14,14 +15,13 @@
     <string name="alarm">Alarm</string>
     <string name="on">ON</string>
     <string name="camera_permission_not_allowed">Allow camera permission to use camera.</string>
-    <string name="which_way_to_get_photo">Which way to get photo?</string>
-    <string name="camera">camera</string>
-    <string name="gallery">gallery</string>
+    <string name="add_photo">Add photo</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
     <string name="cancel">cancel</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="camera_fragment_label">Camera</string>
     <string name="cd_take_photo">Take Photo</string>
     <string name="cd_button_photo">Fetch Photo</string>
     <string name="cd_reverse_camera">Reverse Camera</string>
+    <string name="action_confirm">Confirm</string>
 </resources>

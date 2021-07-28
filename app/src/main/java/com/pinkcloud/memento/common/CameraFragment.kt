@@ -1,5 +1,6 @@
 package com.pinkcloud.memento.common
 
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Rational
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -16,6 +18,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.Constants
+import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentCameraBinding
 import timber.log.Timber
 import java.io.File
@@ -32,6 +35,10 @@ class CameraFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCameraBinding.inflate(inflater, container, false)
+        // I can change all the colors one by one,
+        // But try another way changing theme to dark mode
+//        requireActivity().window.statusBarColor = requireContext().getColor(R.color.black)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         startCamera()
 
         return binding.root
@@ -108,11 +115,20 @@ class CameraFragment : Fragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                     findNavController().previousBackStackEntry?.savedStateHandle?.set(Constants.KEY_TEMP_IMAGE_PATH, savedUri)
                     findNavController().popBackStack()
                 }
             })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_YES -> {}
+            else -> {
+//                requireActivity().window.statusBarColor = requireContext().getColor(R.color.white)
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 }

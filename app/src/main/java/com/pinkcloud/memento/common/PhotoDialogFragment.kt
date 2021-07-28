@@ -2,8 +2,6 @@ package com.pinkcloud.memento.common
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.pinkcloud.memento.R
@@ -17,7 +15,7 @@ class PhotoDialogFragment(private val listener: PhotoDialogListener) : DialogFra
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle(R.string.which_way_to_get_photo)
+            builder.setTitle(R.string.add_photo)
                 .setItems(
                     arrayOf(getString(R.string.camera), getString(R.string.gallery))
                 ) { _, which ->
