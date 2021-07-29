@@ -4,6 +4,9 @@
     <dimen name="card_elevation">10dp</dimen>
     <dimen name="card_content_margin">10dp</dimen>
     <dimen name="reverse_button_margin">20dp</dimen>
+    <dimen name="search_padding">5dp</dimen>
+    <dimen name="search_margin">10dp</dimen>
+    <dimen name="edit_search_padding">28dp</dimen>
 
     <!-- text  -->
 </resources>

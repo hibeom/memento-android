@@ -8,11 +8,13 @@ import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.Constants
+import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
 import com.pinkcloud.memento.databinding.FragmentAddBinding
@@ -36,6 +38,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 
         binding = FragmentAddBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+
         return binding.root
 
     }

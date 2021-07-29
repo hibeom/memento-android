@@ -24,4 +24,5 @@
     <string name="cd_button_photo">Fetch Photo</string>
     <string name="cd_reverse_camera">Reverse Camera</string>
     <string name="action_confirm">Confirm</string>
+    <string name="search_title">Search</string>
 </resources>

@@ -23,7 +23,13 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 android:theme="@style/Toolbar"
-                app:popupTheme="@style/Theme.Memento.PopupOverlay" />
+                app:popupTheme="@style/Theme.Memento.PopupOverlay">
+
+                <include
+                    android:id="@+id/search"
+                    layout="@layout/search"/>
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
