@@ -46,15 +46,26 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         setRequestPermissionLauncher()
         setImagePickerLauncher()
 
-        binding.layoutCard.frontCard.buttonPhoto.setOnClickListener {
+        binding.card.frontCard.buttonPhoto.setOnClickListener {
             val dialog = PhotoDialogFragment(this)
             dialog.show(parentFragmentManager, "PhotoFragment")
+        }
+
+        binding.card.layoutCard.setOnLongClickListener {
+            if (binding.card.frontCard.layoutFrontCard.visibility == View.VISIBLE) {
+                binding.card.frontCard.layoutFrontCard.visibility = View.INVISIBLE
+                binding.card.backCard.layoutBackCard.visibility = View.VISIBLE
+            } else {
+                binding.card.frontCard.layoutFrontCard.visibility = View.VISIBLE
+                binding.card.backCard.layoutBackCard.visibility = View.INVISIBLE
+            }
+            true
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.layoutCard.frontCard.buttonPhoto)
+                    .into(binding.card.frontCard.buttonPhoto)
             })
     }
 
@@ -62,7 +73,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.layoutCard.frontCard.buttonPhoto)
+                    .into(binding.card.frontCard.buttonPhoto)
             }
         }
     }

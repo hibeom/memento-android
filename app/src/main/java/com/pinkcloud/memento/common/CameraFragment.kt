@@ -1,6 +1,8 @@
 package com.pinkcloud.memento.common
 
+import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Rational
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -29,16 +32,32 @@ class CameraFragment : Fragment() {
     private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private lateinit var imageCapture: ImageCapture
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().window.statusBarColor = Color.BLACK
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+            Configuration.UI_MODE_NIGHT_NO -> {
+                requireActivity().window.statusBarColor = Color.WHITE
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                requireActivity().window.statusBarColor = Color.WHITE
+            }
+        }
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCameraBinding.inflate(inflater, container, false)
-        // I can change all the colors one by one,
-        // But try another way changing theme to dark mode
-//        requireActivity().window.statusBarColor = requireContext().getColor(R.color.black)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         startCamera()
 
         return binding.root
@@ -68,9 +87,10 @@ class CameraFragment : Fragment() {
 
                 // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture)
+                    this, cameraSelector, preview, imageCapture
+                )
 
-            } catch(exc: Exception) {
+            } catch (exc: Exception) {
                 Timber.e("Error while binding cameraProvider: ${exc.message}")
             }
 
@@ -80,6 +100,9 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
         binding.buttonTakePhoto.setOnClickListener {
             takePhoto()
         }
@@ -100,7 +123,8 @@ class CameraFragment : Fragment() {
         // Create time-stamped output file to hold the image
         val photoFile = File(
             requireContext().filesDir,
-            Constants.TEMP_FILE_NAME)
+            Constants.TEMP_FILE_NAME
+        )
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
@@ -108,27 +132,22 @@ class CameraFragment : Fragment() {
         // Set up image capture listener, which is triggered after photo has
         // been taken
         imageCapture.takePicture(
-            outputOptions, ContextCompat.getMainExecutor(context), object : ImageCapture.OnImageSavedCallback {
+            outputOptions,
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
                     Timber.e("Photo capture failed: ${exc.message}")
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set(Constants.KEY_TEMP_IMAGE_PATH, savedUri)
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                        Constants.KEY_TEMP_IMAGE_PATH,
+                        savedUri
+                    )
                     findNavController().popBackStack()
                 }
             })
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        when (requireContext().resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-            Configuration.UI_MODE_NIGHT_YES -> {}
-            else -> {
-//                requireActivity().window.statusBarColor = requireContext().getColor(R.color.white)
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-    }
 }

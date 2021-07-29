@@ -13,6 +13,25 @@
         tools:context=".common.CameraFragment"
         android:background="@color/black">
 
+        <ImageButton
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_tool_bar"
+            android:background="@color/transparent"
+            app:tint="@color/white"
+            android:layout_marginStart="14dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_tool_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="?attr/actionBarSize"/>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_0.8"
             android:layout_width="wrap_content"
@@ -25,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_tool_bar"
             app:layout_constraintBottom_toTopOf="@id/guideline_0.8"/>
 
         <ImageButton
