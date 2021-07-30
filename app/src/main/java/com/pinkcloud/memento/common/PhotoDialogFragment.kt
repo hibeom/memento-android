@@ -14,7 +14,7 @@ class PhotoDialogFragment(private val listener: PhotoDialogListener) : DialogFra
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.Dialog)
             builder.setTitle(R.string.add_photo)
                 .setItems(
                     arrayOf(getString(R.string.camera), getString(R.string.gallery))

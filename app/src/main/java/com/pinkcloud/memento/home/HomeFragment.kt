@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_confirm).isVisible = false
+        (activity as MainActivity).setSearchVisibility(View.VISIBLE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
