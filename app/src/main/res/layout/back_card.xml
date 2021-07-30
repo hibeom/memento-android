@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.pinkcloud.memento.UtilKt"/>
+
+        <import type="com.pinkcloud.memento.UtilKt" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,65 +15,69 @@
 
         <EditText
             android:id="@+id/edit_back_caption"
+            style="@style/EditCaption"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
-            style="@style/EditCaption"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/view_tools"/>
+            app:layout_constraintBottom_toTopOf="@id/view_tools"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/view_tools"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/gray_200"
-            app:layout_constraintTop_toTopOf="@id/text_priority_title"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/card_content_margin"
-            android:layout_marginBottom="@dimen/card_content_margin"/>
+            android:layout_marginBottom="@dimen/card_content_margin"
+            android:background="@color/gray_200"
+            android:padding="@dimen/tools_content_padding"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/text_priority_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/priority"
-            app:layout_constraintBottom_toTopOf="@id/slider_priority"
-            app:layout_constraintStart_toStartOf="@id/view_tools" />
+            <TextView
+                android:id="@+id/text_priority_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priority"
+                app:layout_constraintBottom_toTopOf="@id/slider_priority"
+                app:layout_constraintStart_toStartOf="@id/view_tools" />
 
-        <com.google.android.material.slider.Slider
-            android:id="@+id/slider_priority"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/text_alarm_title"
-            app:layout_constraintStart_toStartOf="@id/view_tools"
-            app:layout_constraintEnd_toEndOf="@id/view_tools"
-            app:trackHeight="24dp"
-            app:thumbRadius="12dp"
-            app:trackColorInactive="@color/gray_100"
-            android:value="0.5"/>
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slider_priority"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:value="0.5"
+                app:layout_constraintBottom_toTopOf="@id/text_alarm_title"
+                app:layout_constraintEnd_toEndOf="@id/view_tools"
+                app:layout_constraintStart_toStartOf="@id/view_tools"
+                app:thumbRadius="12dp"
+                app:trackColorInactive="@color/gray_100"
+                app:trackHeight="24dp" />
 
-        <TextView
-            android:id="@+id/text_alarm_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/alarm"
-            app:layout_constraintBottom_toTopOf="@id/text_alarm_time"
-            app:layout_constraintStart_toStartOf="@id/view_tools" />
+            <TextView
+                android:id="@+id/text_alarm_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alarm"
+                app:layout_constraintBottom_toTopOf="@id/text_alarm_time"
+                app:layout_constraintStart_toStartOf="@id/view_tools" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/on"
-            app:layout_constraintEnd_toEndOf="@id/view_tools"
-            app:layout_constraintTop_toTopOf="@id/text_alarm_title" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/on"
+                app:layout_constraintEnd_toEndOf="@id/view_tools"
+                app:layout_constraintTop_toTopOf="@id/text_alarm_title" />
 
-        <TextView
-            android:id="@+id/text_alarm_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{UtilKt.formatMillisToDatetime(System.currentTimeMillis())}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/view_tools" />
+            <TextView
+                android:id="@+id/text_alarm_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="5dp"
+                android:text="@{UtilKt.formatMillisToDatetime(System.currentTimeMillis())}"
+                app:layout_constraintBottom_toBottomOf="@id/view_tools"
+                app:layout_constraintEnd_toEndOf="@id/view_tools" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
