@@ -2,6 +2,7 @@ package com.pinkcloud.memento.add
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -13,14 +14,18 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.Constants
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
+import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
 import com.pinkcloud.memento.home.HomeFragmentDirections
+import timber.log.Timber
+import java.io.File
 
 
 /**
@@ -40,6 +45,13 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         binding = FragmentAddBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
+        val application = requireActivity().application
+        val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
+        val addViewModelFactory = AddViewModelFactory(dataSource, application)
+
+        val addViewModel =
+            ViewModelProvider(this, addViewModelFactory).get(AddViewModel::class.java)
+
         return binding.root
 
     }
@@ -55,7 +67,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             dialog.show(parentFragmentManager, "PhotoFragment")
         }
 
-        binding.card.layoutCard.setOnLongClickListener {
+        binding.buttonFlip.setOnClickListener {
             if (binding.card.layoutFrontCard.visibility == View.VISIBLE) {
                 binding.card.layoutFrontCard.visibility = View.INVISIBLE
                 binding.card.layoutBackCard.visibility = View.VISIBLE
@@ -63,11 +75,11 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
                 binding.card.layoutFrontCard.visibility = View.VISIBLE
                 binding.card.layoutBackCard.visibility = View.INVISIBLE
             }
-            true
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
+                Timber.d(it.toString())
                 GlideApp.with(this).load(it).centerCrop()
                     .into(binding.card.buttonPhoto)
             })
@@ -76,8 +88,23 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     private fun setImagePickerLauncher() {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
+                Timber.d(it.toString())
+                //TODO temp.jpg 로 사진 저장
+                val photoFile = File(
+                    requireContext().filesDir,
+                    Constants.TEMP_FILE_NAME
+                )
+                // photoFile-> /data/user/0/com.pinkcloud.memento/files/temp.jpg
+                // savedUri-> file:///data/user/0/com.pinkcloud.memento/files/temp.jpg
+                val savedUri = Uri.fromFile(photoFile)
+                val cursor = requireContext().contentResolver.query(it, null, null, null)
+                cursor?.moveToNext()
+//                val srcPath = cursor?.getString(cursor.getColumnIndex("_data"))
+//                Timber.d(srcPath)
+//                File(srcPath).copyTo(photoFile, true)
                 GlideApp.with(this).load(it).centerCrop()
                     .into(binding.card.buttonPhoto)
+
             }
         }
     }

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="com.pinkcloud.memento.UtilKt" />
-
+        <variable
+            name="addViewModel"
+            type="com.pinkcloud.memento.add.AddViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

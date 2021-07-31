@@ -25,6 +25,7 @@ abstract class MemoDatabase : RoomDatabase() {
                         MemoDatabase::class.java,
                         "memo_database"
                     ).fallbackToDestructiveMigration().build()
+                    INSTANCE = instance
                 }
                 return instance
             }
