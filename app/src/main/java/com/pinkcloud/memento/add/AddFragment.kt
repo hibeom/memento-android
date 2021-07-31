@@ -50,18 +50,18 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         setRequestPermissionLauncher()
         setImagePickerLauncher()
 
-        binding.card.frontCard.buttonPhoto.setOnClickListener {
+        binding.card.buttonPhoto.setOnClickListener {
             val dialog = PhotoDialogFragment(this)
             dialog.show(parentFragmentManager, "PhotoFragment")
         }
 
         binding.card.layoutCard.setOnLongClickListener {
-            if (binding.card.frontCard.layoutFrontCard.visibility == View.VISIBLE) {
-                binding.card.frontCard.layoutFrontCard.visibility = View.INVISIBLE
-                binding.card.backCard.layoutBackCard.visibility = View.VISIBLE
+            if (binding.card.layoutFrontCard.visibility == View.VISIBLE) {
+                binding.card.layoutFrontCard.visibility = View.INVISIBLE
+                binding.card.layoutBackCard.visibility = View.VISIBLE
             } else {
-                binding.card.frontCard.layoutFrontCard.visibility = View.VISIBLE
-                binding.card.backCard.layoutBackCard.visibility = View.INVISIBLE
+                binding.card.layoutFrontCard.visibility = View.VISIBLE
+                binding.card.layoutBackCard.visibility = View.INVISIBLE
             }
             true
         }
@@ -69,7 +69,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.card.frontCard.buttonPhoto)
+                    .into(binding.card.buttonPhoto)
             })
     }
 
@@ -77,7 +77,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.card.frontCard.buttonPhoto)
+                    .into(binding.card.buttonPhoto)
             }
         }
     }
