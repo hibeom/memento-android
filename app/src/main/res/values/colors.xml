@@ -13,4 +13,7 @@
     <color name="transparent">#0000</color>
     <color name="yellow">#FFFFEB3B</color>
     <color name="yellow_200">#FFFFF59D</color>
+
+    <color name="aqua">#FF00FFFF</color>
+    <color name="aquamarine">#FF7FFFD4</color>
 </resources>

@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.formatMillisToDatetime
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -23,6 +24,8 @@ class MemoView @JvmOverloads constructor(
     val textAlarmState: TextView
     val textAlarmTime: TextView
 
+    var isAlarmEnabled: Boolean
+
     init {
         inflate(context, R.layout.layout_card, this)
         setBackgroundColor(context.getColor(R.color.gray_100))
@@ -35,6 +38,30 @@ class MemoView @JvmOverloads constructor(
         sliderPriority = findViewById<PrioritySlider>(R.id.slider_priority)
         textAlarmState = findViewById<TextView>(R.id.text_alarm_state)
         textAlarmTime = findViewById<TextView>(R.id.text_alarm_time)
+
+        isAlarmEnabled = false
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        textAlarmTime.text = formatMillisToDatetime(System.currentTimeMillis())
+
+        textAlarmState.setOnClickListener {
+            isAlarmEnabled = !isAlarmEnabled
+            setAlarmState(isAlarmEnabled)
+        }
+        setAlarmState(isAlarmEnabled)
+    }
+
+    fun setAlarmState(enable: Boolean) {
+        isAlarmEnabled = enable
+        if (enable) {
+            textAlarmState.text = context.getString(R.string.on)
+            textAlarmState.setTextColor(context.getColor(R.color.aqua))
+        } else {
+            textAlarmState.text = context.getString(R.string.off)
+            textAlarmState.setTextColor(context.getColor(R.color.gray))
+        }
     }
 
 }

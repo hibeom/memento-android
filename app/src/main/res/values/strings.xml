@@ -14,6 +14,7 @@
     <string name="priority">Priority</string>
     <string name="alarm">Alarm</string>
     <string name="on">ON</string>
+    <string name="off">OFF</string>
     <string name="camera_permission_not_allowed">Allow camera permission to use camera.</string>
     <string name="add_photo">Add photo</string>
     <string name="camera">Camera</string>

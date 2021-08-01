@@ -9,9 +9,6 @@ import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -30,10 +27,6 @@ class HomeFragment : Fragment() {
 
         return binding.root
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {
