@@ -14,16 +14,15 @@
         android:layout_height="match_parent"
         tools:context=".add.AddFragment">
 
-        <include
-            android:id="@+id/card"
-            layout="@layout/layout_card"
+        <com.pinkcloud.memento.common.MemoView
+            android:id="@+id/memo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/card_horizontal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintTop_toTopOf="parent"
-            app:addViewModel="@{addViewModel}"/>
+            android:elevation="@dimen/card_elevation"/>
 
         <ImageButton
             android:id="@+id/button_flip"
@@ -34,7 +33,7 @@
             android:src="@drawable/ic_flip"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card"
+            app:layout_constraintTop_toBottomOf="@id/memo"
             app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

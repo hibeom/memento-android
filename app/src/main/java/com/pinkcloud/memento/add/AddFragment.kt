@@ -64,25 +64,25 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         setRequestPermissionLauncher()
         setImagePickerLauncher()
 
-        binding.card.buttonPhoto.setOnClickListener {
+        binding.memo.buttonPhoto.setOnClickListener {
             val dialog = PhotoDialogFragment(this)
             dialog.show(parentFragmentManager, "PhotoFragment")
         }
 
         binding.buttonFlip.setOnClickListener {
-            if (binding.card.layoutFrontCard.visibility == View.VISIBLE) {
-                binding.card.layoutFrontCard.visibility = View.INVISIBLE
-                binding.card.layoutBackCard.visibility = View.VISIBLE
+            if (binding.memo.layoutFrontCard.visibility == View.VISIBLE) {
+                binding.memo.layoutFrontCard.visibility = View.INVISIBLE
+                binding.memo.layoutBackCard.visibility = View.VISIBLE
             } else {
-                binding.card.layoutFrontCard.visibility = View.VISIBLE
-                binding.card.layoutBackCard.visibility = View.INVISIBLE
+                binding.memo.layoutFrontCard.visibility = View.VISIBLE
+                binding.memo.layoutBackCard.visibility = View.INVISIBLE
             }
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.card.buttonPhoto)
+                    .into(binding.memo.buttonPhoto)
             })
     }
 
@@ -91,7 +91,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             it?.let {
                 copyGalleryImage(requireContext(), it)
                 GlideApp.with(this).load(it).centerCrop()
-                    .into(binding.card.buttonPhoto)
+                    .into(binding.memo.buttonPhoto)
             }
         }
     }
