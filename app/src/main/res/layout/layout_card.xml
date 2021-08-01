@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="com.pinkcloud.memento.UtilKt" />
+
         <variable
             name="addViewModel"
             type="com.pinkcloud.memento.add.AddViewModel" />
@@ -20,7 +22,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_front_card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <ImageButton
                 android:id="@+id/button_photo"
@@ -70,26 +73,34 @@
 
                 <TextView
                     android:id="@+id/text_priority_title"
+                    style="@style/TextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/priority"
                     app:layout_constraintBottom_toTopOf="@id/slider_priority"
                     app:layout_constraintStart_toStartOf="@id/view_tools" />
 
-                <com.google.android.material.slider.Slider
+                <com.pinkcloud.memento.common.PrioritySlider
                     android:id="@+id/slider_priority"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:value="0.5"
+                    android:stepSize="1"
+                    android:value="50"
+                    android:valueFrom="0"
+                    android:valueTo="100"
                     app:layout_constraintBottom_toTopOf="@id/text_alarm_title"
                     app:layout_constraintEnd_toEndOf="@id/view_tools"
                     app:layout_constraintStart_toStartOf="@id/view_tools"
                     app:thumbRadius="12dp"
+                    app:tickVisible="false"
                     app:trackColorInactive="@color/gray_100"
+                    app:thumbColor="@color/yellow_200"
+                    app:trackColorActive="@color/yellow"
                     app:trackHeight="24dp" />
 
                 <TextView
                     android:id="@+id/text_alarm_title"
+                    style="@style/TextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/alarm"
@@ -97,6 +108,7 @@
                     app:layout_constraintStart_toStartOf="@id/view_tools" />
 
                 <TextView
+                    style="@style/TextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/on"
@@ -105,6 +117,7 @@
 
                 <TextView
                     android:id="@+id/text_alarm_time"
+                    style="@style/TextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="5dp"
