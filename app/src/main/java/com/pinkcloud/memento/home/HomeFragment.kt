@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

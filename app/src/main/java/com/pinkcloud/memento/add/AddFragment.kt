@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,6 +21,7 @@ import com.pinkcloud.memento.Constants
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
+import com.pinkcloud.memento.copyGalleryImage
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
@@ -79,7 +81,6 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
-                Timber.d(it.toString())
                 GlideApp.with(this).load(it).centerCrop()
                     .into(binding.card.buttonPhoto)
             })
@@ -88,23 +89,9 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     private fun setImagePickerLauncher() {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
-                Timber.d(it.toString())
-                //TODO temp.jpg 로 사진 저장
-                val photoFile = File(
-                    requireContext().filesDir,
-                    Constants.TEMP_FILE_NAME
-                )
-                // photoFile-> /data/user/0/com.pinkcloud.memento/files/temp.jpg
-                // savedUri-> file:///data/user/0/com.pinkcloud.memento/files/temp.jpg
-                val savedUri = Uri.fromFile(photoFile)
-                val cursor = requireContext().contentResolver.query(it, null, null, null)
-                cursor?.moveToNext()
-//                val srcPath = cursor?.getString(cursor.getColumnIndex("_data"))
-//                Timber.d(srcPath)
-//                File(srcPath).copyTo(photoFile, true)
+                copyGalleryImage(requireContext(), it)
                 GlideApp.with(this).load(it).centerCrop()
                     .into(binding.card.buttonPhoto)
-
             }
         }
     }
@@ -147,7 +134,6 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_add).isVisible = false
-        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
