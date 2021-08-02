@@ -2,32 +2,25 @@ package com.pinkcloud.memento.add
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.Constants
-import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
 import com.pinkcloud.memento.copyGalleryImage
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
-import com.pinkcloud.memento.home.HomeFragmentDirections
-import timber.log.Timber
-import java.io.File
 
 
 /**
@@ -36,7 +29,8 @@ import java.io.File
 class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 
     private lateinit var binding: FragmentAddBinding
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var requestMediaPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getContent: ActivityResultLauncher<String>
 
     override fun onCreateView(
@@ -82,6 +76,8 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
                 GlideApp.with(this).load(it).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(binding.memo.buttonPhoto)
             })
     }
@@ -91,13 +87,15 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             it?.let {
                 copyGalleryImage(requireContext(), it)
                 GlideApp.with(this).load(it).centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(binding.memo.buttonPhoto)
             }
         }
     }
 
     private fun setRequestPermissionLauncher() {
-        requestPermissionLauncher =
+        requestCameraPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
@@ -107,6 +105,20 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
                     Toast.makeText(
                         context,
                         getString(R.string.camera_permission_not_allowed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        requestMediaPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    openGallery()
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.media_permission_not_allowed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -122,11 +134,16 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             0 -> {
                 requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
                     if (it == PackageManager.PERMISSION_GRANTED) startCamera()
-                    else requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                    else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                 }
             }
             1 -> {
-                getContent.launch("image/*")
+                TODO("Implement fetching an image from Media Later")
+                requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .let {
+                        if (it == PackageManager.PERMISSION_GRANTED) openGallery()
+                        else requestMediaPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
             }
         }
     }
@@ -154,5 +171,9 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openGallery() {
+        getContent.launch("image/*")
     }
 }

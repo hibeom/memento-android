@@ -24,7 +24,17 @@ class MemoView @JvmOverloads constructor(
     val textAlarmState: TextView
     val textAlarmTime: TextView
 
-    var isAlarmEnabled: Boolean
+    var isAlarmEnabled: Boolean = false
+        set(value) {
+            field = value
+            if (value) {
+                textAlarmState.text = context.getString(R.string.on)
+                textAlarmState.setTextColor(context.getColor(R.color.aqua))
+            } else {
+                textAlarmState.text = context.getString(R.string.off)
+                textAlarmState.setTextColor(context.getColor(R.color.gray))
+            }
+        }
 
     init {
         inflate(context, R.layout.layout_card, this)
@@ -48,20 +58,8 @@ class MemoView @JvmOverloads constructor(
 
         textAlarmState.setOnClickListener {
             isAlarmEnabled = !isAlarmEnabled
-            setAlarmState(isAlarmEnabled)
         }
-        setAlarmState(isAlarmEnabled)
     }
 
-    fun setAlarmState(enable: Boolean) {
-        isAlarmEnabled = enable
-        if (enable) {
-            textAlarmState.text = context.getString(R.string.on)
-            textAlarmState.setTextColor(context.getColor(R.color.aqua))
-        } else {
-            textAlarmState.text = context.getString(R.string.off)
-            textAlarmState.setTextColor(context.getColor(R.color.gray))
-        }
-    }
 
 }

@@ -1,7 +1,10 @@
 package com.pinkcloud.memento
 
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import androidx.core.net.toFile
 import timber.log.Timber
@@ -37,12 +40,11 @@ fun copyGalleryImage(context: Context, srcUri: Uri) {
         context.filesDir,
         Constants.TEMP_FILE_NAME
     )
-//    val savedUri = Uri.fromFile(dstFile)
+    Timber.d(srcUri.path)
     val projection = arrayOf(MediaStore.Images.Media._ID)
-//    Timber.d(srcUri.toFile().absolutePath) // IllegarArgumentException: Uri lacks 'file' scheme
     context.contentResolver.query(srcUri, projection, null, null, null)?.use { cursor ->
-        TODO("Implement save content uri to temp.jpg")
         val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+        Timber.d(idColumn.toString())
         while (cursor.moveToNext()) {
             val contentUri = Uri.withAppendedPath(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,

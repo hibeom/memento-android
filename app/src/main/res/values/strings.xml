@@ -16,6 +16,7 @@
     <string name="on">ON</string>
     <string name="off">OFF</string>
     <string name="camera_permission_not_allowed">Allow camera permission to use camera.</string>
+    <string name="media_permission_not_allowed">Allow media permission to fetch image from gallery.</string>
     <string name="add_photo">Add photo</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>

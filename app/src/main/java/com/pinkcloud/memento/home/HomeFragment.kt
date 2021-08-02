@@ -26,13 +26,16 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
 
+    override fun onStop() {
+        super.onStop()
+        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
