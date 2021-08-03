@@ -14,6 +14,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:textCursorDrawable">@null</item>
+<!--        <item name="actionOverflowButtonStyle">@style/OverFlowButton</item>-->
     </style>
 
     <style name="Theme.Memento.NoActionBar">

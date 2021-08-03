@@ -1,4 +1,4 @@
-package com.pinkcloud.memento.home
+package com.pinkcloud.memento.trash
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,14 +7,20 @@ import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
 import kotlinx.coroutines.launch
 
-class HomeViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
+class TrashViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
 
-    val memos = database.getOngoingMemos()
+    val memos = database.getCompletedMemos()
 
-    fun completeMemo(memo: Memo) {
+    fun restoreMemo(memo: Memo) {
         viewModelScope.launch {
             memo.isCompleted = true
             database.update(memo)
+        }
+    }
+
+    fun deleteMemo(memo: Memo) {
+        viewModelScope.launch {
+            database.delete(memo)
         }
     }
 }

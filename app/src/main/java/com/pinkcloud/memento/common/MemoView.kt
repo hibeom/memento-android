@@ -39,16 +39,19 @@ class MemoView @JvmOverloads constructor(
                 .into(buttonPhoto)
         }
     var frontCaption: String? = null
+        get() = editFrontCaption.text.toString()
         set(value) {
             field = value
             editFrontCaption.setText(field)
         }
     var backCaption: String? = null
+        get() = editBackCaption.text.toString()
         set(value) {
             field = value
             editBackCaption.setText(field)
         }
     var priority: Int = 50
+        get() = sliderPriority.value.toInt()
         set(value) {
             field = value
             sliderPriority.value = field.toFloat()
@@ -114,8 +117,8 @@ class MemoView @JvmOverloads constructor(
         if (!childClickable) {
             buttonPhoto.isClickable = false
             editFrontCaption.isEnabled = false
-            editFrontCaption.movementMethod = null
-            editFrontCaption.keyListener = null
+            editFrontCaption.movementMethod = null // To prevent intercepting key event
+            editFrontCaption.keyListener = null // To prevent intercepting key event
             editBackCaption.isEnabled = false
             editBackCaption.movementMethod = null
             editBackCaption.keyListener = null

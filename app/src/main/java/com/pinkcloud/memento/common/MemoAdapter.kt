@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.databinding.ListItemMemoBinding
 import com.pinkcloud.memento.utils.DoubleClickListener
+import timber.log.Timber
 
 class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback()) {
 
@@ -21,7 +22,7 @@ class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): Lis
     }
 
     interface DoubleTapItemListener {
-        fun onDoubleTapItem(memoId: Long)
+        fun onDoubleTapItem(memo: Memo)
     }
 
     class ViewHolder private constructor(val binding: ListItemMemoBinding) : RecyclerView.ViewHolder(binding.root){
@@ -34,7 +35,7 @@ class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): Lis
             binding.memoView.alarmTime = item.alarmTime
             binding.memoView.setOnClickListener(object: DoubleClickListener() {
                 override fun onDoubleClick(v: View?) {
-                    doubleTapItemListener.onDoubleTapItem(item.memoId)
+                    doubleTapItemListener.onDoubleTapItem(item)
                 }
             })
             binding.executePendingBindings()
