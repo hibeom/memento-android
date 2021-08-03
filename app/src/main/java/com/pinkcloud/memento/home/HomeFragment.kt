@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.common.MemoAdapter
+import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -24,6 +28,19 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+
+        val application = requireActivity().application
+        val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
+        val homeViewModelFactory = HomeViewModelFactory(dataSource, application)
+
+        val viewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
+
+        val adapter = MemoAdapter()
+        binding.listMemo.adapter = adapter
+
+        viewModel.memos.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
 
         return binding.root
     }

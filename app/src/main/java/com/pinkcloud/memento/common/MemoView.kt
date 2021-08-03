@@ -33,7 +33,7 @@ class MemoView @JvmOverloads constructor(
     var imagePath: String? = null
         set(value) {
             field = value
-            GlideApp.with(this).load(Uri.parse(field)).centerCrop()
+            GlideApp.with(this).load(field).centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(buttonPhoto)

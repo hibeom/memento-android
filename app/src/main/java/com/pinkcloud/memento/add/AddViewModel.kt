@@ -1,14 +1,18 @@
 package com.pinkcloud.memento.add
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.copyTempImage
 import com.pinkcloud.memento.utils.scheduleAlarm
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.io.File
 
 class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     AndroidViewModel(application) {
@@ -16,7 +20,6 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     var isInsertCompleted = MutableLiveData<Boolean>(false)
 
     fun insertMemo(
-        imagePath: String,
         frontCaption: String?,
         backCaption: String?,
         priority: Int,
@@ -29,7 +32,19 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
             if (isAlarmEnabled) {
                 alarmId = scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime)
             }
-            val memo = Memo(memoId, imagePath, frontCaption, backCaption, priority, alarmTime, isAlarmEnabled, alarmId, false, null)
+            val imagePath = copyTempImage(getApplication(), "image$memoId.jpg")
+            val memo = Memo(
+                memoId,
+                imagePath,
+                frontCaption,
+                backCaption,
+                priority,
+                alarmTime,
+                isAlarmEnabled,
+                alarmId,
+                false,
+                null
+            )
             database.insert(memo)
             isInsertCompleted.value = true
         }

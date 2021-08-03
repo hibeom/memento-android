@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="addViewModel"
             type="com.pinkcloud.memento.add.AddViewModel" />
@@ -16,13 +17,12 @@
 
         <com.pinkcloud.memento.common.MemoView
             android:id="@+id/memoView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/card_horizontal_margin"
+            style="@style/MemoView"
+            android:elevation="@dimen/card_elevation"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="3:4"
-            app:layout_constraintTop_toTopOf="parent"
-            android:elevation="@dimen/card_elevation"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_flip"

@@ -66,7 +66,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
-                binding.memoView.imagePath = it.toString()
+                binding.memoView.imagePath = it.path
             })
 
         viewModel.isInsertCompleted.observe(viewLifecycleOwner, Observer {isInsertCompleted ->
@@ -161,7 +161,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
                     true
                 } else {
                     binding.memoView.apply {
-                        viewModel.insertMemo(imagePath!!, frontCaption, backCaption, priority, alarmTime, isAlarmEnabled)
+                        viewModel.insertMemo(frontCaption, backCaption, priority, alarmTime, isAlarmEnabled)
                     }
                     true
                 }
