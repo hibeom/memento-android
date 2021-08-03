@@ -15,7 +15,7 @@
         tools:context=".add.AddFragment">
 
         <com.pinkcloud.memento.common.MemoView
-            android:id="@+id/memo"
+            android:id="@+id/memoView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="@dimen/card_horizontal_margin"
@@ -33,7 +33,7 @@
             android:src="@drawable/ic_flip"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/memo"
+            app:layout_constraintTop_toBottomOf="@id/memoView"
             app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

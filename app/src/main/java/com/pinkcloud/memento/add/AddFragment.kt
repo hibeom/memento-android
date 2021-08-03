@@ -1,6 +1,7 @@
 package com.pinkcloud.memento.add
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -22,16 +23,13 @@ import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
 import com.pinkcloud.memento.utils.Constants
 
-
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 
     private lateinit var binding: FragmentAddBinding
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var requestMediaPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getContent: ActivityResultLauncher<String>
+    private lateinit var viewModel: AddViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +43,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
         val addViewModelFactory = AddViewModelFactory(dataSource, application)
 
-        val addViewModel =
-            ViewModelProvider(this, addViewModelFactory).get(AddViewModel::class.java)
+        viewModel = ViewModelProvider(this, addViewModelFactory).get(AddViewModel::class.java)
 
         return binding.root
 
@@ -58,28 +55,26 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         setRequestPermissionLauncher()
         setImagePickerLauncher()
 
-        binding.memo.buttonPhoto.setOnClickListener {
+        binding.memoView.buttonPhoto.setOnClickListener {
             val dialog = PhotoDialogFragment(this)
             dialog.show(parentFragmentManager, "PhotoFragment")
         }
 
         binding.buttonFlip.setOnClickListener {
-            if (binding.memo.layoutFrontCard.visibility == View.VISIBLE) {
-                binding.memo.layoutFrontCard.visibility = View.INVISIBLE
-                binding.memo.layoutBackCard.visibility = View.VISIBLE
-            } else {
-                binding.memo.layoutFrontCard.visibility = View.VISIBLE
-                binding.memo.layoutBackCard.visibility = View.INVISIBLE
-            }
+            binding.memoView.flip()
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
             ?.observe(viewLifecycleOwner, Observer {
-                GlideApp.with(this).load(it).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(binding.memo.buttonPhoto)
+                binding.memoView.imagePath = it.toString()
             })
+
+        viewModel.isInsertCompleted.observe(viewLifecycleOwner, Observer {isInsertCompleted ->
+            if (isInsertCompleted) {
+                findNavController().popBackStack()
+                viewModel.isInsertCompleted.value = false
+            }
+        })
     }
 
     private fun setImagePickerLauncher() {
@@ -89,7 +84,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
                 GlideApp.with(this).load(it).centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .into(binding.memo.buttonPhoto)
+                    .into(binding.memoView.buttonPhoto)
             }
         }
     }
@@ -160,10 +155,16 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_confirm -> {
-                // Insert memo
-
-                findNavController().popBackStack()
-                true
+                if (binding.memoView.imagePath == null) {
+                    AlertDialog.Builder(requireContext()).setMessage(R.string.dialog_no_photo)
+                        .show()
+                    true
+                } else {
+                    binding.memoView.apply {
+                        viewModel.insertMemo(imagePath!!, frontCaption, backCaption, priority, alarmTime, isAlarmEnabled)
+                    }
+                    true
+                }
             }
             R.id.action_settings -> {
                 Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
