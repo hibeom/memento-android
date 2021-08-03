@@ -8,12 +8,15 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import com.pinkcloud.memento.R
-import com.pinkcloud.memento.formatMillisToDatetime
+import com.pinkcloud.memento.utils.formatMillisToDatetime
+import timber.log.Timber
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr), PickerDialogFragment.PickDatetimeListener {
 
     val layoutFrontCard: ConstraintLayout
     val layoutBackCard: ConstraintLayout
@@ -52,14 +55,25 @@ class MemoView @JvmOverloads constructor(
         isAlarmEnabled = false
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         textAlarmTime.text = formatMillisToDatetime(System.currentTimeMillis())
-
         textAlarmState.setOnClickListener {
             isAlarmEnabled = !isAlarmEnabled
         }
+        textAlarmTime.setOnClickListener {
+            PickerDialogFragment(this).apply {
+                isCancelable = false
+                show(
+                    this@MemoView.findFragment<Fragment>().requireActivity().supportFragmentManager,
+                    "PickerDialogFragment"
+                )
+            }
+        }
     }
 
-
+    override fun onPickDatetime(millis: Long) {
+        textAlarmTime.text = formatMillisToDatetime(millis)
+        invalidate()
+    }
 }

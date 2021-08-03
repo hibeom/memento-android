@@ -14,13 +14,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.pinkcloud.memento.Constants
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.PhotoDialogFragment
-import com.pinkcloud.memento.copyGalleryImage
+import com.pinkcloud.memento.common.getRealPath
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.glide.GlideApp
+import com.pinkcloud.memento.utils.Constants
 
 
 /**
@@ -85,7 +85,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     private fun setImagePickerLauncher() {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
-                copyGalleryImage(requireContext(), it)
+                getRealPath(requireContext(), it)
                 GlideApp.with(this).load(it).centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
@@ -138,7 +138,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
                 }
             }
             1 -> {
-                TODO("Implement fetching an image from Media Later")
+                TODO("Implement fetching an image from Media Later with getRealPath")
                 requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     .let {
                         if (it == PackageManager.PERMISSION_GRANTED) openGallery()
