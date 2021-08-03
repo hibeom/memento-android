@@ -13,7 +13,7 @@ import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
 
         val viewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
-        val adapter = MemoAdapter()
+        val adapter = MemoAdapter(this)
         binding.listMemo.adapter = adapter
 
         viewModel.memos.observe(viewLifecycleOwner, Observer {
@@ -77,5 +77,9 @@ class HomeFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDoubleTapItem(memoId: Long) {
+        Toast.makeText(context, "Double Tabbed item : $memoId", Toast.LENGTH_SHORT).show()
     }
 }

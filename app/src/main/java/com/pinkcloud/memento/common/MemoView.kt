@@ -70,6 +70,8 @@ class MemoView @JvmOverloads constructor(
             }
         }
 
+    private var childClickable: Boolean
+
     init {
         inflate(context, R.layout.layout_card, this)
         setBackgroundColor(context.getColor(R.color.gray_100))
@@ -84,6 +86,14 @@ class MemoView @JvmOverloads constructor(
         textAlarmTime = findViewById(R.id.text_alarm_time)
 
         isAlarmEnabled = false
+
+        context.theme.obtainStyledAttributes(attrs, R.styleable.MemoView, 0, 0).apply {
+            try {
+                childClickable = getBoolean(R.styleable.MemoView_childClickable, true)
+            } finally {
+                recycle()
+            }
+        }
     }
 
     override fun onFinishInflate() {
@@ -100,6 +110,18 @@ class MemoView @JvmOverloads constructor(
                     "PickerDialogFragment"
                 )
             }
+        }
+        if (!childClickable) {
+            buttonPhoto.isClickable = false
+            editFrontCaption.isEnabled = false
+            editFrontCaption.movementMethod = null
+            editFrontCaption.keyListener = null
+            editBackCaption.isEnabled = false
+            editBackCaption.movementMethod = null
+            editBackCaption.keyListener = null
+            sliderPriority.isClickable = false
+            textAlarmState.isClickable = false
+            textAlarmTime.isClickable = false
         }
     }
 

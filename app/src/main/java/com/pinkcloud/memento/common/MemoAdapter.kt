@@ -1,32 +1,42 @@
 package com.pinkcloud.memento.common
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.databinding.ListItemMemoBinding
-import timber.log.Timber
+import com.pinkcloud.memento.utils.DoubleClickListener
 
-class MemoAdapter: ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback()) {
+class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), doubleTapItemListener)
+    }
+
+    interface DoubleTapItemListener {
+        fun onDoubleTapItem(memoId: Long)
     }
 
     class ViewHolder private constructor(val binding: ListItemMemoBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Memo) {
+        fun bind(item: Memo, doubleTapItemListener: DoubleTapItemListener) {
             binding.memoView.imagePath = item.imagePath
             binding.memoView.frontCaption = item.frontCaption
             binding.memoView.backCaption = item.backCaption
             binding.memoView.priority = item.priority
             binding.memoView.alarmTime = item.alarmTime
+            binding.memoView.setOnClickListener(object: DoubleClickListener() {
+                override fun onDoubleClick(v: View?) {
+                    doubleTapItemListener.onDoubleTapItem(item.memoId)
+                }
+            })
             binding.executePendingBindings()
         }
 

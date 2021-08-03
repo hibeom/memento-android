@@ -1,18 +1,14 @@
 package com.pinkcloud.memento.add
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
-import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.copyTempImage
 import com.pinkcloud.memento.utils.scheduleAlarm
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import java.io.File
 
 class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     AndroidViewModel(application) {
