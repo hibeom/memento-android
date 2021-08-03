@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 
 class NotificationWorker(val context: Context, workerParams: WorkerParameters) : Worker(
@@ -20,11 +22,20 @@ class NotificationWorker(val context: Context, workerParams: WorkerParameters) :
         val bundle = Bundle()
         bundle.putLong(Constants.MEMO_ID, memoId)
 
+        val pendingIntent = NavDeepLinkBuilder(context).setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.homeFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
+
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
+            .setContentIntent(pendingIntent)
             .setSmallIcon(R.mipmap.ic_launcher_round)
             .setContentTitle(context.getString(R.string.notification_title))
             .setContentText(frontCaption)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT).setExtras(bundle)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setExtras(bundle)
+            .setAutoCancel(true)
 
         val id = getNotificationId()
         with(NotificationManagerCompat.from(context)) {

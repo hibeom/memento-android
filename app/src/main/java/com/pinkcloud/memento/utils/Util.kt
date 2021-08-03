@@ -27,6 +27,7 @@ object Constants {
     const val MEMO_ID = "memo_id"
     const val FRONT_CAPTION = "front_caption"
     const val LAST_NOTIFICATION_ID = "last_notification_id"
+    const val DAILY_REFRESH_WORK = "daily_refresh_work"
 }
 
 /**
@@ -58,13 +59,13 @@ fun formatMillisToDatetime(timeMillis: Long): String {
  *
  * @return uuid string generated from Worker
  * */
-fun scheduleAlarm(context: Context, memoId: Long, frontCaption: String?, alarmTime: Long): String {
+fun scheduleAlarm(context: Context, memoId: Long, frontCaption: String?, alarmTime: Long): String? {
     val data = Data.Builder()
     data.putLong(Constants.MEMO_ID, memoId)
     data.putString(Constants.FRONT_CAPTION, frontCaption)
 
     var delay = alarmTime - System.currentTimeMillis()
-    delay = if (delay >= 0) delay else 0
+    if (delay <= 0) return null
     val work = OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(data.build())
         .setInitialDelay(delay, TimeUnit.MILLISECONDS).build()
 

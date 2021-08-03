@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    //TODO Remove search layout in AddFragment
     fun setSearchVisibility(visibility: Int) {
         binding.search.layoutSearch.visibility = visibility
     }
