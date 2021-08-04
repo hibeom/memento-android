@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.R
-import com.pinkcloud.memento.glide.GlideApp
+import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
 import timber.log.Timber
 

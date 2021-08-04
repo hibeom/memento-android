@@ -20,8 +20,8 @@ import com.pinkcloud.memento.common.PhotoDialogFragment
 import com.pinkcloud.memento.common.getRealPath
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
-import com.pinkcloud.memento.glide.GlideApp
 import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.GlideApp
 
 class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
 

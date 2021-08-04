@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.utils.scheduleAlarm
 import kotlinx.coroutines.launch
 
 class AddViewModel(val database: MemoDatabaseDao, application: Application) :
@@ -23,11 +24,13 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
         isAlarmEnabled: Boolean
     ) {
         viewModelScope.launch {
-            TODO("Set alarm and insert memo")
+            val memoId = System.currentTimeMillis()
+            var alarmId: String? = null
             if (isAlarmEnabled) {
-                // set alarm
+                alarmId = scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime)
             }
-            val memo = Memo(System.currentTimeMillis(), imagePath, frontCaption, backCaption, priority, alarmTime, isAlarmEnabled, )
+            val memo = Memo(memoId, imagePath, frontCaption, backCaption, priority, alarmTime, isAlarmEnabled, alarmId, false, null)
+            database.insert(memo)
             isInsertCompleted.value = true
         }
     }

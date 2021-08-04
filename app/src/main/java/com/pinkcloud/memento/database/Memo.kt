@@ -33,7 +33,7 @@ data class Memo(
      * alarmId will be used for canceling alarm from alarmManager.
      * */
     @ColumnInfo(name = "alarm_id")
-    var alarmId: Long = System.currentTimeMillis(),
+    var alarmId: String?,
 
     @ColumnInfo(name = "is_completed")
     var isCompleted: Boolean = false,

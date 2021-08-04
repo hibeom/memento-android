@@ -1,4 +1,4 @@
-package com.pinkcloud.memento.glide;
+package com.pinkcloud.memento.utils;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
