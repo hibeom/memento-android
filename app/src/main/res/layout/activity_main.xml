@@ -26,7 +26,8 @@
 
                 <include
                     android:id="@+id/search"
-                    layout="@layout/search"/>
+                    layout="@layout/layout_search"
+                    android:visibility="invisible"/>
 
             </androidx.appcompat.widget.Toolbar>
 
