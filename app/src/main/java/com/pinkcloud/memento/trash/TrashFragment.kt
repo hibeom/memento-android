@@ -65,13 +65,16 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         menu.findItem(R.id.action_confirm).isVisible = false
         menu.findItem(R.id.action_add).isVisible = false
         menu.findItem(R.id.action_trash).isVisible = false
-        (activity as MainActivity).setSearchVisibility(View.VISIBLE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
                 Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.action_search -> {
+                (activity as MainActivity).setSearchVisibility(View.VISIBLE)
                 true
             }
             else -> super.onOptionsItemSelected(item)

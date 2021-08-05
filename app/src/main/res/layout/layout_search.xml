@@ -9,16 +9,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/search_margin"
-        android:padding="@dimen/search_padding"
-        android:paddingStart="12dp"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingVertical="@dimen/search_padding"
+        android:paddingHorizontal="@dimen/search_padding_horizontal"
         android:background="@drawable/search_background">
 
         <ImageButton
             android:id="@+id/button_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:background="@color/transparent"
             android:contentDescription="@string/search_title"
             android:src="@drawable/ic_search"
@@ -31,7 +30,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingStart="@dimen/edit_search_padding"
+            android:inputType="text"
             android:background="@null" />
+
+        <ImageButton
+            android:id="@+id/button_close"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/cancel"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

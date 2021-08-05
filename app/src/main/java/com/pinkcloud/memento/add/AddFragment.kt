@@ -146,6 +146,7 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_add).isVisible = false
+        menu.findItem(R.id.action_search).isVisible = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

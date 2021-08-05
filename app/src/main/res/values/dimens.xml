@@ -6,8 +6,10 @@
     <dimen name="reverse_button_margin">20dp</dimen>
     <dimen name="search_padding">5dp</dimen>
     <dimen name="search_margin">10dp</dimen>
-    <dimen name="edit_search_padding">28dp</dimen>
+    <dimen name="edit_search_padding">32dp</dimen>
     <dimen name="tools_content_padding">10dp</dimen>
+    <dimen name="search_padding_horizontal">10dp</dimen>
+    <dimen name="search_margin_vertical">6dp</dimen>
 
     <!-- text  -->
 </resources>

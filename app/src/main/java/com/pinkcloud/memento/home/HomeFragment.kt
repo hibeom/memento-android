@@ -65,7 +65,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_confirm).isVisible = false
-        (activity as MainActivity).setSearchVisibility(View.VISIBLE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -80,6 +79,11 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
             }
             R.id.action_trash -> {
                 findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
+                true
+            }
+            R.id.action_search -> {
+                (activity as MainActivity).setSearchVisibility(View.VISIBLE)
+                (activity as MainActivity).requestFocusOnEditSearch()
                 true
             }
             else -> super.onOptionsItemSelected(item)

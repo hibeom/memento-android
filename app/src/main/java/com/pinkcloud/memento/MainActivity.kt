@@ -10,7 +10,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.pinkcloud.memento.databinding.ActivityMainBinding
 import timber.log.Timber
@@ -33,6 +35,16 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        binding.search.buttonClose.setOnClickListener {
+            setSearchVisibility(View.INVISIBLE)
+        }
+        binding.search.editSearch.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                Timber.d("lost focus")
+            } else {
+                Timber.d("get focus")
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -45,4 +57,7 @@ class MainActivity : AppCompatActivity() {
         binding.search.layoutSearch.visibility = visibility
     }
 
+    fun requestFocusOnEditSearch() {
+        binding.search.editSearch.requestFocus()
+    }
 }

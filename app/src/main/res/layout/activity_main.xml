@@ -17,19 +17,30 @@
             android:layout_height="wrap_content"
             android:theme="@style/Theme.Memento.AppBarOverlay">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:theme="@style/Toolbar"
-                app:popupTheme="@style/Theme.Memento.PopupOverlay">
+                android:theme="@style/Toolbar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:popupTheme="@style/Theme.Memento.PopupOverlay"/>
 
                 <include
                     android:id="@+id/search"
                     layout="@layout/layout_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginHorizontal="@dimen/search_margin"
+                    android:layout_marginVertical="@dimen/search_margin_vertical"
                     android:visibility="invisible"/>
 
-            </androidx.appcompat.widget.Toolbar>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
