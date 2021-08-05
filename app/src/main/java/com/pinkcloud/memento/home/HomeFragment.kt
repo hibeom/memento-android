@@ -48,11 +48,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -83,7 +78,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
             }
             R.id.action_search -> {
                 (activity as MainActivity).setSearchVisibility(View.VISIBLE)
-                (activity as MainActivity).requestFocusOnEditSearch()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -46,11 +46,6 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        (activity as MainActivity).setSearchVisibility(View.INVISIBLE)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -1,21 +1,16 @@
 package com.pinkcloud.memento
 
+import android.graphics.Rect
 import android.os.Bundle
-import android.transition.Visibility
-import com.google.android.material.snackbar.Snackbar
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import com.pinkcloud.memento.databinding.ActivityMainBinding
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,9 +35,13 @@ class MainActivity : AppCompatActivity() {
         }
         binding.search.editSearch.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
-                Timber.d("lost focus")
+                (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+                    hideSoftInputFromWindow(v.windowToken, 0)
+                }
             } else {
-                Timber.d("get focus")
+                (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+                    showSoftInput(v, 0)
+                }
             }
         }
     }
@@ -55,9 +54,27 @@ class MainActivity : AppCompatActivity() {
 
     fun setSearchVisibility(visibility: Int) {
         binding.search.layoutSearch.visibility = visibility
+        if (visibility == View.VISIBLE) {
+            requestFocusOnEditSearch()
+        }
     }
 
     fun requestFocusOnEditSearch() {
         binding.search.editSearch.requestFocus()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev?.action == MotionEvent.ACTION_DOWN) {
+            binding.search.editSearch.let {
+                if (it.isFocused) {
+                    val rect = Rect()
+                    it.getGlobalVisibleRect(rect)
+                    if (!rect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                        it.clearFocus()
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }
