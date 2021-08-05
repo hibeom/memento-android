@@ -137,11 +137,8 @@ class CameraFragment : Fragment() {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                        Constants.KEY_TEMP_IMAGE_PATH,
-                        savedUri
-                    )
-                    findNavController().popBackStack()
+                    Timber.d("onImageSaved: ${savedUri.path}")
+                    findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAddFragment())
                 }
             })
     }

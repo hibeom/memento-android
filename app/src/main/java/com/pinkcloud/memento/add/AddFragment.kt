@@ -22,12 +22,11 @@ import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.GlideApp
+import java.io.File
 
-class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
+class AddFragment : Fragment() {
 
     private lateinit var binding: FragmentAddBinding
-    private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
-    private lateinit var requestMediaPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getContent: ActivityResultLauncher<String>
     private lateinit var viewModel: AddViewModel
 
@@ -52,22 +51,13 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setRequestPermissionLauncher()
-        setImagePickerLauncher()
-
-        binding.memoView.buttonPhoto.setOnClickListener {
-            val dialog = PhotoDialogFragment(this)
-            dialog.show(parentFragmentManager, "PhotoFragment")
-        }
+//        setImagePickerLauncher()
 
         binding.buttonFlip.setOnClickListener {
             binding.memoView.flip()
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Uri>(Constants.KEY_TEMP_IMAGE_PATH)
-            ?.observe(viewLifecycleOwner, Observer {
-                binding.memoView.imagePath = it.path
-            })
+        binding.memoView.imagePath = File(requireContext().filesDir, Constants.TEMP_FILE_NAME).absolutePath
 
         viewModel.isInsertCompleted.observe(viewLifecycleOwner, Observer {isInsertCompleted ->
             if (isInsertCompleted) {
@@ -77,71 +67,17 @@ class AddFragment : Fragment(), PhotoDialogFragment.PhotoDialogListener {
         })
     }
 
-    private fun setImagePickerLauncher() {
-        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let {
-                getRealPath(requireContext(), it)
-                GlideApp.with(this).load(it).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(binding.memoView.buttonPhoto)
-            }
-        }
-    }
-
-    private fun setRequestPermissionLauncher() {
-        requestCameraPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    startCamera()
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.camera_permission_not_allowed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        requestMediaPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    openGallery()
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.media_permission_not_allowed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-    }
-
-    private fun startCamera() {
-        findNavController().navigate(AddFragmentDirections.actionAddFragmentToCameraFragment())
-    }
-
-    override fun onDialogItemClick(dialog: DialogFragment, id: Int) {
-        when (id) {
-            0 -> {
-                requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
-                    if (it == PackageManager.PERMISSION_GRANTED) startCamera()
-                    else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                }
-            }
-            1 -> {
-                TODO("Implement fetching an image from Media Later with getRealPath")
-                requireContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .let {
-                        if (it == PackageManager.PERMISSION_GRANTED) openGallery()
-                        else requestMediaPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    }
-            }
-        }
-    }
+//    private fun setImagePickerLauncher() {
+//        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
+//            it?.let {
+//                getRealPath(requireContext(), it)
+//                GlideApp.with(this).load(it).centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .skipMemoryCache(true)
+//                    .into(binding.memoView.imagePhoto)
+//            }
+//        }
+//    }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)

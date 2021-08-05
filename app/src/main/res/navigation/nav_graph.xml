@@ -12,11 +12,14 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_homeFragment_to_addFragment"
-            app:destination="@id/addFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_trashFragment"
             app:destination="@id/trashFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -28,9 +31,6 @@
             android:id="@+id/action_addFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
-            android:id="@+id/action_addFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
-        <action
             android:id="@+id/action_addFragment_to_trashFragment"
             app:destination="@id/trashFragment"
             app:popUpTo="@id/homeFragment"/>
@@ -40,6 +40,10 @@
         android:name="com.pinkcloud.memento.common.CameraFragment"
         android:label="@string/camera_fragment_label"
         tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_addFragment"
+            app:destination="@id/addFragment"
+            app:popUpTo="@id/homeFragment"/>
     </fragment>
     <fragment
         android:id="@+id/trashFragment"

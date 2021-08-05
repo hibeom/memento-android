@@ -1,13 +1,12 @@
 package com.pinkcloud.memento.common
 
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
@@ -15,7 +14,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
-import timber.log.Timber
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -23,7 +21,7 @@ class MemoView @JvmOverloads constructor(
 
     private val layoutFrontCard: ConstraintLayout
     private val layoutBackCard: ConstraintLayout
-    val buttonPhoto: ImageButton
+    private val imagePhoto: ImageFilterView
     private val editFrontCaption: EditText
     private val editBackCaption: EditText
     private val sliderPriority: PrioritySlider
@@ -36,7 +34,7 @@ class MemoView @JvmOverloads constructor(
             GlideApp.with(this).load(field).centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .into(buttonPhoto)
+                .into(imagePhoto)
         }
     var frontCaption: String? = null
         get() = editFrontCaption.text.toString()
@@ -81,7 +79,7 @@ class MemoView @JvmOverloads constructor(
 
         layoutFrontCard = findViewById(R.id.layout_front_card)
         layoutBackCard = findViewById(R.id.layout_back_card)
-        buttonPhoto = findViewById(R.id.button_photo)
+        imagePhoto = findViewById(R.id.image_photo)
         editFrontCaption = findViewById(R.id.edit_front_caption)
         editBackCaption = findViewById(R.id.edit_back_caption)
         sliderPriority = findViewById(R.id.slider_priority)
@@ -115,7 +113,6 @@ class MemoView @JvmOverloads constructor(
             }
         }
         if (!childClickable) {
-            buttonPhoto.isClickable = false
             editFrontCaption.isEnabled = false
             editFrontCaption.movementMethod = null // To prevent intercepting key event
             editFrontCaption.keyListener = null // To prevent intercepting key event

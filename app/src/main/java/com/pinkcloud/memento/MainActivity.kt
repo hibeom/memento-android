@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.search.buttonClose.setOnClickListener {
+            binding.search.editSearch.setText("")
             setSearchVisibility(View.INVISIBLE)
         }
         binding.search.editSearch.setOnFocusChangeListener { v, hasFocus ->
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun requestFocusOnEditSearch() {
+    private fun requestFocusOnEditSearch() {
         binding.search.editSearch.requestFocus()
     }
 

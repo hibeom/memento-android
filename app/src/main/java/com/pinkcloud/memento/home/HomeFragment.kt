@@ -1,8 +1,12 @@
 package com.pinkcloud.memento.home
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +27,8 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: HomeViewModel
+
+    private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,12 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setRequestPermissionLauncher()
+
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -69,7 +81,10 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
                 true
             }
             R.id.action_add -> {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment())
+                requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
+                    if (it == PackageManager.PERMISSION_GRANTED) startCamera()
+                    else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }
                 true
             }
             R.id.action_trash -> {
@@ -87,5 +102,27 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     override fun onDoubleTapItem(memo: Memo) {
         memo.isCompleted = true
         viewModel.completeMemo(memo)
+    }
+
+    private fun setRequestPermissionLauncher() {
+        requestCameraPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    startCamera()
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.camera_permission_not_allowed),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment())
+                }
+            }
+    }
+
+    private fun startCamera() {
+        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCameraFragment())
     }
 }
