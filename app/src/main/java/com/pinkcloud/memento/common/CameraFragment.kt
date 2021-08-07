@@ -17,6 +17,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.databinding.FragmentCameraBinding
 import com.pinkcloud.memento.utils.Constants
 import timber.log.Timber
@@ -31,7 +32,7 @@ class CameraFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requireActivity().window.statusBarColor = Color.BLACK
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        (requireActivity() as MainActivity).hideActionbar()
     }
 
     override fun onDetach() {
@@ -45,7 +46,7 @@ class CameraFragment : Fragment() {
             }
         }
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+        (requireActivity() as MainActivity).showActionbar()
     }
 
     override fun onCreateView(

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.search.buttonClose.setOnClickListener {
             binding.search.editSearch.setText("")
-            setSearchVisibility(View.INVISIBLE)
+            setSearchVisibility(View.GONE)
         }
         binding.search.editSearch.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
@@ -77,5 +77,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.dispatchTouchEvent(ev)
+    }
+
+    fun showActionbar() {
+        binding.layoutAppbar.visibility = View.VISIBLE
+        supportActionBar?.show()
+    }
+
+    fun hideActionbar() {
+        binding.layoutAppbar.visibility = View.GONE
+        supportActionBar?.hide()
     }
 }

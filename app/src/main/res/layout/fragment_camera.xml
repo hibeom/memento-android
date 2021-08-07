@@ -33,11 +33,11 @@
             app:layout_constraintGuide_begin="?attr/actionBarSize"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_0.8"
+            android:id="@+id/bottom_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.8"/>
+            app:layout_constraintGuide_percent="0.85"/>
 
         <androidx.camera.view.PreviewView
             android:id="@+id/preview"
@@ -45,13 +45,13 @@
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintTop_toTopOf="@id/guideline_tool_bar"
-            app:layout_constraintBottom_toTopOf="@id/guideline_0.8"/>
+            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"/>
 
         <ImageButton
             android:id="@+id/button_take_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/guideline_0.8"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:id="@+id/button_reverse_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/guideline_0.8"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="@dimen/reverse_button_margin"
