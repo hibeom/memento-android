@@ -16,7 +16,7 @@ class TrashViewModel(val database: MemoDatabaseDao, application: Application) : 
         viewModelScope.launch {
             memo.isCompleted = false
             if (memo.isAlarmEnabled) {
-                memo.alarmId = scheduleAlarm(getApplication(), memo.memoId, memo.frontCaption, memo.alarmTime)
+                memo.alarmId = scheduleAlarm(getApplication(), memo.memoId, memo.frontCaption, memo.alarmTime, memo.imagePath)
             }
             database.update(memo)
         }

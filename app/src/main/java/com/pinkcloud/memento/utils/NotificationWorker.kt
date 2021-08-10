@@ -2,6 +2,7 @@ package com.pinkcloud.memento.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -10,6 +11,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
+import java.io.File
 
 class NotificationWorker(val context: Context, workerParams: WorkerParameters) : Worker(
     context,
@@ -18,6 +20,7 @@ class NotificationWorker(val context: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
         val memoId = inputData.getLong(Constants.MEMO_ID, 0L)
         val frontCaption = inputData.getString(Constants.FRONT_CAPTION)
+        val imagePath = inputData.getString(Constants.IMAGE_PATH)
 
         val bundle = Bundle()
         bundle.putLong(Constants.MEMO_ID, memoId)
@@ -28,6 +31,8 @@ class NotificationWorker(val context: Context, workerParams: WorkerParameters) :
             .setArguments(bundle)
             .createPendingIntent()
 
+        val bitmap = getRotatedBitmap(imagePath)
+
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -35,6 +40,7 @@ class NotificationWorker(val context: Context, workerParams: WorkerParameters) :
             .setContentText(frontCaption)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setExtras(bundle)
+            .setLargeIcon(bitmap)
             .setAutoCancel(true)
 
         val id = getNotificationId()

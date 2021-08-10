@@ -24,4 +24,7 @@ interface MemoDatabaseDao {
     
     @Query("DELETE FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= 7*24*60*60*1000")
     fun deleteOldCompletedMemos(currentTimeInMillis: Long)
+
+    @Query("SELECT * FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= 7*24*60*60*1000")
+    fun getOldCompletedMemos(currentTimeInMillis: Long): LiveData<List<Memo>>
 }

@@ -10,7 +10,14 @@ class RefreshWorker(val context: Context, workerParams: WorkerParameters) : Work
 ) {
     override fun doWork(): Result {
         val dataSource = MemoDatabase.getInstance(context).memoDatabaseDao
-        dataSource.deleteOldCompletedMemos(System.currentTimeMillis())
+        val currentTime = System.currentTimeMillis()
+
+        val oldCompletedMemos = dataSource.getOldCompletedMemos(currentTime)
+        oldCompletedMemos.value?.forEach {
+            deleteImage(it.imagePath)
+        }
+
+        dataSource.deleteOldCompletedMemos(currentTime)
 
         return Result.success()
     }

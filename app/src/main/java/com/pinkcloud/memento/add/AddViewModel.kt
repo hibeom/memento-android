@@ -25,11 +25,13 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     ) {
         viewModelScope.launch {
             val memoId = System.currentTimeMillis()
+
+            val imagePath = copyTempImage(getApplication(), "image$memoId.jpg")
+
             var alarmId: String? = null
             if (isAlarmEnabled) {
-                alarmId = scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime)
+                alarmId = scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime, imagePath)
             }
-            val imagePath = copyTempImage(getApplication(), "image$memoId.jpg")
             val memo = Memo(
                 memoId,
                 imagePath,

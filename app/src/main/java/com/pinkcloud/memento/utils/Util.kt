@@ -2,6 +2,10 @@ package com.pinkcloud.memento.utils
 
 import android.content.ContentUris
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
@@ -23,9 +27,13 @@ import java.util.concurrent.TimeUnit
 object Constants {
     const val KEY_TEMP_IMAGE_PATH = "temp_image_path"
     const val TEMP_FILE_NAME = "temp.jpg"
+
     const val CHANNEL_ID = "memo_alarm_channel"
+
     const val MEMO_ID = "memo_id"
     const val FRONT_CAPTION = "front_caption"
+    const val IMAGE_PATH = "image_path"
+
     const val LAST_NOTIFICATION_ID = "last_notification_id"
     const val DAILY_REFRESH_WORK = "daily_refresh_work"
 }
@@ -59,12 +67,13 @@ fun formatMillisToDatetime(timeMillis: Long): String {
  *
  * @return uuid string generated from Worker
  * */
-fun scheduleAlarm(context: Context, memoId: Long, frontCaption: String?, alarmTime: Long): String? {
+fun scheduleAlarm(context: Context, memoId: Long, frontCaption: String?, alarmTime: Long, imagePath: String?): String? {
     val data = Data.Builder()
     data.putLong(Constants.MEMO_ID, memoId)
     data.putString(Constants.FRONT_CAPTION, frontCaption)
+    data.putString(Constants.IMAGE_PATH, imagePath)
 
-    var delay = alarmTime - System.currentTimeMillis()
+    val delay = alarmTime - System.currentTimeMillis()
     if (delay <= 0) return null
     val work = OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(data.build())
         .setInitialDelay(delay, TimeUnit.MILLISECONDS).build()
@@ -97,4 +106,38 @@ fun copyTempImage(context: Context, dstFileName: String): String {
     val dstFile = File(context.filesDir, dstFileName)
     srcFile.copyTo(dstFile, true)
     return dstFile.absolutePath
+}
+
+/**
+ * delete a saved image when memo is deleting completely.
+ *
+ * @param filePath absolute file path of an image of memo.
+ * */
+fun deleteImage(filePath: String?) {
+    filePath?.let {
+        val file = File(it)
+        file.delete()
+    }
+}
+
+/**
+ * return correctly rotated portrait image if origin image has rotated orientation.
+ *
+ * @param imagePath absolute file path of an image of a memo.
+ * @return correctly rotated portrait image.
+ * */
+fun getRotatedBitmap(imagePath: String?): Bitmap? {
+    if (imagePath == null) return null
+
+    val exif = ExifInterface(imagePath)
+    val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1)
+    val srcBitmap = BitmapFactory.decodeFile(imagePath)
+
+    val matrix = Matrix()
+    when (orientation) {
+        ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+        ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+        ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+    }
+    return Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.width, srcBitmap.height, matrix, true)
 }
