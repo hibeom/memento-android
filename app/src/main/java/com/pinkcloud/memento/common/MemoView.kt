@@ -2,7 +2,6 @@ package com.pinkcloud.memento.common
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -12,10 +11,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
-import timber.log.Timber
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -33,10 +32,11 @@ class MemoView @JvmOverloads constructor(
     var imagePath: String? = null
         set(value) {
             field = value
-            GlideApp.with(this).load(field).centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+            val request = GlideApp.with(this).load(field).centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .skipMemoryCache(true)
-                .into(imagePhoto)
+            if (!isCacheEnable) request.diskCacheStrategy(DiskCacheStrategy.NONE)
+            request.into(imagePhoto)
         }
     var frontCaption: String? = null
         get() = editFrontCaption.text.toString()
@@ -66,7 +66,7 @@ class MemoView @JvmOverloads constructor(
             field = value
             if (value) {
                 textAlarmState.text = context.getString(R.string.on)
-                textAlarmState.setTextColor(context.getColor(R.color.aqua))
+                textAlarmState.setTextColor(context.getColor(R.color.conflowerblue))
             } else {
                 textAlarmState.text = context.getString(R.string.off)
                 textAlarmState.setTextColor(context.getColor(R.color.gray))
@@ -74,6 +74,7 @@ class MemoView @JvmOverloads constructor(
         }
 
     private var childClickable: Boolean
+    private var isCacheEnable: Boolean
 
     init {
         inflate(context, R.layout.layout_card, this)
@@ -93,6 +94,7 @@ class MemoView @JvmOverloads constructor(
         context.theme.obtainStyledAttributes(attrs, R.styleable.MemoView, 0, 0).apply {
             try {
                 childClickable = getBoolean(R.styleable.MemoView_childClickable, true)
+                isCacheEnable = getBoolean(R.styleable.MemoView_isCacheEnable, true)
             } finally {
                 recycle()
             }
