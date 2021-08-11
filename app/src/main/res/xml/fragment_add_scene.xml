@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/rest">
+        <Constraint
+            android:id="@+id/memoView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="3:4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.93" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/triggerFlip">
+        <Constraint android:id="@id/memoView">
+            <Layout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="150dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="3:4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.93" />
+            <Transform
+                android:rotationY="-90"
+                android:translationZ="-150dp"
+                android:scaleX="0.5" />
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet
+        android:id="@+id/onFlip"
+        app:deriveConstraintsFrom="@id/triggerFlip">
+        <Constraint android:id="@id/memoView">
+            <Transform
+                android:rotationY="90"
+                android:translationZ="-150dp"
+                android:scaleX="0.5"/>
+        </Constraint>
+
+    </ConstraintSet>
+
+    <Transition
+        app:constraintSetEnd="@id/triggerFlip"
+        app:constraintSetStart="@id/rest">
+        <OnSwipe
+            app:dragDirection="dragRight"
+            app:touchAnchorId="@id/memoView"
+            app:touchRegionId="@id/memoView" />
+        <KeyFrameSet>
+            <KeyAttribute
+                app:framePosition="25"
+                app:motionTarget="@id/memoView"
+                android:rotationY="0"
+                android:scaleX="1"
+                android:translationZ="0dp"/>
+        </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        app:autoTransition="jumpToEnd"
+        app:constraintSetEnd="@id/onFlip"
+        app:constraintSetStart="@id/triggerFlip" />
+
+    <Transition
+        app:autoTransition="animateToEnd"
+        app:constraintSetEnd="@id/rest"
+        app:constraintSetStart="@id/onFlip"
+        app:duration="1000">
+        <KeyFrameSet>
+            <KeyPosition
+                app:framePosition="20"
+                app:keyPositionType="pathRelative"
+                app:motionTarget="@id/memoView"
+                app:percentX="0.8" />
+            <KeyAttribute
+                app:framePosition="20"
+                app:motionTarget="@id/memoView"
+                android:rotationY="0"
+                android:scaleX="1"
+                android:translationZ="0dp"/>
+        </KeyFrameSet>
+
+    </Transition>
+
+</MotionScene>

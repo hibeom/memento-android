@@ -112,11 +112,10 @@ class MemoView @JvmOverloads constructor(
                 )
             }
         }
+        enableFront()
         if (!childClickable) {
-            editFrontCaption.isEnabled = false
             editFrontCaption.movementMethod = null // To prevent intercepting key event
             editFrontCaption.keyListener = null // To prevent intercepting key event
-            editBackCaption.isEnabled = false
             editBackCaption.movementMethod = null
             editBackCaption.keyListener = null
             sliderPriority.isClickable = false
@@ -134,9 +133,27 @@ class MemoView @JvmOverloads constructor(
         if (layoutFrontCard.visibility == View.VISIBLE) {
             layoutFrontCard.visibility = View.INVISIBLE
             layoutBackCard.visibility = View.VISIBLE
+            disableFront()
         } else {
             layoutFrontCard.visibility = View.VISIBLE
             layoutBackCard.visibility = View.INVISIBLE
+            enableFront()
         }
+    }
+
+    private fun enableFront() {
+        editFrontCaption.isEnabled = true
+        editBackCaption.isEnabled = false
+        sliderPriority.isClickable = false
+        textAlarmState.isClickable = false
+        textAlarmTime.isClickable = false
+    }
+
+    private fun disableFront() {
+        editFrontCaption.isEnabled = false
+        editBackCaption.isEnabled = true
+        sliderPriority.isClickable = true
+        textAlarmState.isClickable = true
+        textAlarmTime.isClickable = true
     }
 }

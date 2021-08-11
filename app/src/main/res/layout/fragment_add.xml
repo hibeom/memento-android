@@ -10,10 +10,12 @@
             type="com.pinkcloud.memento.add.AddViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".add.AddFragment">
+        tools:context=".add.AddFragment"
+        app:layoutDescription="@xml/fragment_add_scene"
+        app:showPaths="true">
 
         <com.pinkcloud.memento.common.MemoView
             android:id="@+id/memoView"
@@ -36,5 +38,5 @@
             app:layout_constraintTop_toBottomOf="@id/memoView"
             app:tint="@color/black" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

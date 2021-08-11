@@ -1,27 +1,21 @@
 package com.pinkcloud.memento.add
 
-import android.Manifest
 import android.app.AlertDialog
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.DialogFragment
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.R
-import com.pinkcloud.memento.common.PhotoDialogFragment
-import com.pinkcloud.memento.common.getRealPath
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
-import com.pinkcloud.memento.utils.GlideApp
+import timber.log.Timber
 import java.io.File
 
 class AddFragment : Fragment() {
@@ -63,6 +57,38 @@ class AddFragment : Fragment() {
             if (isInsertCompleted) {
                 findNavController().popBackStack()
                 viewModel.isInsertCompleted.value = false
+            }
+        })
+
+        val motionLayout = binding.root as MotionLayout
+        var isFlipped = false
+        motionLayout.setTransitionListener(object: TransitionAdapter() {
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+                when (startId) {
+                    R.id.rest -> isFlipped = false
+                }
+                super.onTransitionStarted(motionLayout, startId, endId)
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                when (startId) {
+                    R.id.onFlip -> {
+                        if (!isFlipped && progress >= 0.05f) {
+                            binding.memoView.flip()
+                            isFlipped = true
+                        }
+                    }
+                }
+                super.onTransitionChange(motionLayout, startId, endId, progress)
             }
         })
     }
