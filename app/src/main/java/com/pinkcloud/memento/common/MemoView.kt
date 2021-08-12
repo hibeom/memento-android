@@ -2,6 +2,7 @@ package com.pinkcloud.memento.common
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -14,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
+import timber.log.Timber
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -144,7 +146,7 @@ class MemoView @JvmOverloads constructor(
     private fun enableFront() {
         editFrontCaption.isEnabled = true
         editBackCaption.isEnabled = false
-        sliderPriority.isClickable = false
+        sliderPriority.isEnabled = false
         textAlarmState.isClickable = false
         textAlarmTime.isClickable = false
     }
@@ -152,7 +154,7 @@ class MemoView @JvmOverloads constructor(
     private fun disableFront() {
         editFrontCaption.isEnabled = false
         editBackCaption.isEnabled = true
-        sliderPriority.isClickable = true
+        sliderPriority.isEnabled = true
         textAlarmState.isClickable = true
         textAlarmTime.isClickable = true
     }

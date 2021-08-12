@@ -23,14 +23,15 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_front_caption"
             style="@style/EditCaption"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_photo" />
+            app:layout_constraintTop_toBottomOf="@id/image_photo"
+            android:cursorVisible="false"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -40,14 +41,15 @@
         android:layout_height="match_parent"
         android:visibility="invisible">
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_back_caption"
             style="@style/EditCaption"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
             app:layout_constraintBottom_toTopOf="@id/view_tools"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:cursorVisible="false"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/view_tools"
