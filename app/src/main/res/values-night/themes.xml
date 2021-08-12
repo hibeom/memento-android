@@ -14,5 +14,6 @@
 <!--        <item name="android:windowLightStatusBar">false</item>-->
         <!-- Customize your theme here. -->
         <item name="android:textCursorDrawable">@null</item>
+        <item name="android:colorControlNormal">@color/transparent</item>
     </style>
 </resources>

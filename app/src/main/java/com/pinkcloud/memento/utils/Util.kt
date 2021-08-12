@@ -2,6 +2,7 @@ package com.pinkcloud.memento.utils
 
 import android.content.ContentUris
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -47,15 +48,28 @@ object Constants {
 fun formatMillisToDatetime(timeMillis: Long): String {
     val instant = Instant.ofEpochMilli(timeMillis)
     val date = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+    val lang = Locale.getDefault().language
 
     val year = date.year
     val month = date.monthValue
     val day = date.dayOfMonth
     val hour = String.format("%02d", date.hour % 12)
     val minute = String.format("%02d", date.minute)
-    val ampm = if (date.hour < 12) "AM" else "PM"
 
-    return "${year}/${month}/${day} ${hour}:${minute} $ampm"
+    // 'when' expression below exists because I can't approach local string resources in Util.kt
+    // below codes can be replaced with getting string resources from app context.
+    var amStr = "AM"; var pmStr = "PM"
+    when (lang) {
+        Locale.KOREA.language -> {
+            amStr = "오전"; pmStr = "오후"
+        }
+    }
+    val ampm = if (date.hour < 12) amStr else pmStr
+
+    return when (lang) {
+        Locale.KOREA.language -> "${year}-${month}-${day} $ampm ${hour}:${minute}"
+        else -> "${year}-${month}-${day} ${hour}:${minute} $ampm"
+    }
 }
 
 /**

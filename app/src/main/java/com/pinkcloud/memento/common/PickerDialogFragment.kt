@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
+import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.LayoutDialogPickerBinding
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -13,6 +14,8 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogFragment() {
 
@@ -22,7 +25,7 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.TransparentDialog)
             val inflater = requireActivity().layoutInflater
 
             val timeMillis = System.currentTimeMillis()
@@ -49,7 +52,7 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
                 value = 0
                 displayedValues = dateList
             }
-            val ampmList = arrayOf("AM", "PM")
+            val ampmList = arrayOf(getString(R.string.AM), getString(R.string.PM))
             binding.pickerAmpm.apply {
                 minValue = 0
                 maxValue = ampmList.size - 1
@@ -88,7 +91,9 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
                     hour,
                     binding.pickerMinute.value
                 )
-                listener.onPickDatetime(pickedDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                listener.onPickDatetime(
+                    pickedDate.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                )
                 dismiss()
             }
             binding.buttonCancel.setOnClickListener {
@@ -123,13 +128,29 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
 
     private fun getDateList(firstDate: LocalDate): Array<String> {
         val dateList = mutableListOf<String>()
-        for (i in 0..364) {
-            val newDate = firstDate.plusDays(i.toLong())
-            dateList.add(
-                "${newDate.dayOfWeek.toString().substring(0, 3)} ${
-                    newDate.month.toString().substring(0, 3)
-                } ${newDate.dayOfMonth}"
-            )
+        when (Locale.getDefault().language) {
+            Locale.KOREA.language -> {
+                for (i in 0..364) {
+                    val newDate = firstDate.plusDays(i.toLong())
+                    dateList.add(
+                        newDate.format(
+                            DateTimeFormatter.ofPattern("M월 d일 E")
+                                .withLocale(Locale.forLanguageTag("ko"))
+                        )
+                    )
+                }
+            }
+            else -> {
+                for (i in 0..364) {
+                    val newDate = firstDate.plusDays(i.toLong())
+                    dateList.add(
+                        "${newDate.dayOfWeek.toString().substring(0, 3)} ${
+                            newDate.month.toString().substring(0, 3)
+                        } ${newDate.dayOfMonth}"
+                    )
+                }
+            }
+
         }
         return dateList.toTypedArray()
     }

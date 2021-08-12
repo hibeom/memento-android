@@ -21,6 +21,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="150dp"
+                android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="3:4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +29,8 @@
                 app:layout_constraintWidth_percent="0.93" />
             <Transform
                 android:rotationY="-90"
-                android:translationZ="-150dp"
-                android:scaleX="0.5" />
+                android:rotation="-20"
+                android:translationZ="25dp"/>
         </Constraint>
     </ConstraintSet>
 
@@ -39,8 +40,7 @@
         <Constraint android:id="@id/memoView">
             <Transform
                 android:rotationY="90"
-                android:translationZ="-150dp"
-                android:scaleX="0.5"/>
+                android:translationZ="25dp"/>
         </Constraint>
 
     </ConstraintSet>
@@ -56,9 +56,7 @@
             <KeyAttribute
                 app:framePosition="25"
                 app:motionTarget="@id/memoView"
-                android:rotationY="0"
-                android:scaleX="1"
-                android:translationZ="0dp"/>
+                android:rotationY="0"/>
         </KeyFrameSet>
     </Transition>
 
@@ -81,9 +79,7 @@
             <KeyAttribute
                 app:framePosition="20"
                 app:motionTarget="@id/memoView"
-                android:rotationY="0"
-                android:scaleX="1"
-                android:translationZ="0dp"/>
+                android:rotationY="0"/>
         </KeyFrameSet>
 
     </Transition>

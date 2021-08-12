@@ -36,10 +36,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DialogButton">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/conflowerblue</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="MemoView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
         <item name="layout_constraintDimensionRatio">3:4</item>
         <item name="layout_constraintWidth_percent">0.93</item>
     </style>
+
+    <style name="TransparentDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

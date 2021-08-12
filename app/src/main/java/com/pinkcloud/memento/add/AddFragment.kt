@@ -46,7 +46,7 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 //        setImagePickerLauncher()
-
+        binding.memoView.cameraDistance = 8000 * requireContext().resources.displayMetrics.density
         binding.buttonFlip.setOnClickListener {
             binding.memoView.flip()
         }
