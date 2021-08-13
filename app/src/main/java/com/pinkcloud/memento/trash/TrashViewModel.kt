@@ -27,4 +27,10 @@ class TrashViewModel(val database: MemoDatabaseDao, application: Application) : 
             database.delete(memo)
         }
     }
+
+    fun getFilteredMemos(text: String): List<Memo>? {
+        return memos.value?.filter {
+            it.frontCaption?.contains(text) ?: false
+        }
+    }
 }

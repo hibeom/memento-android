@@ -24,4 +24,10 @@ class HomeViewModel(val database: MemoDatabaseDao, application: Application) : A
             database.update(memo)
         }
     }
+
+    fun getFilteredMemos(text: String): List<Memo>? {
+        return memos.value?.filter {
+            it.frontCaption?.contains(text) ?: false
+        }
+    }
 }

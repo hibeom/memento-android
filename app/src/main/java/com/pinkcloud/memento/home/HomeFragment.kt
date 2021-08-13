@@ -8,15 +8,19 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
+import timber.log.Timber
 
 class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
@@ -27,6 +31,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: HomeViewModel
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
 
@@ -52,6 +57,10 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
+        sharedViewModel.searchText.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(viewModel.getFilteredMemos(it))
+        })
 
         return binding.root
     }

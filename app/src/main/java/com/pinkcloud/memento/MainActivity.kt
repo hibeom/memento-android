@@ -6,6 +6,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -44,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                     showSoftInput(v, 0)
                 }
             }
+        }
+        val sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        binding.search.editSearch.doAfterTextChanged {
+            sharedViewModel.changeSearchText(it.toString())
         }
     }
 

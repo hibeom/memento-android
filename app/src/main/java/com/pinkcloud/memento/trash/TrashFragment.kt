@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
@@ -22,6 +24,7 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: TrashViewModel
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +47,10 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
+        sharedViewModel.searchText.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(viewModel.getFilteredMemos(it))
+        })
 
         return binding.root
     }
