@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
+            android:padding="@dimen/edit_caption_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_photo"
             android:cursorVisible="false"/>
@@ -47,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
+            android:padding="@dimen/edit_caption_padding"
             app:layout_constraintBottom_toTopOf="@id/view_tools"
             app:layout_constraintTop_toTopOf="parent"
             android:cursorVisible="false"/>

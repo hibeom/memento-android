@@ -57,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         binding.search.layoutSearch.visibility = visibility
         if (visibility == View.VISIBLE) {
             requestFocusOnEditSearch()
-        }
+            binding.toolbar.visibility = View.GONE
+        } else binding.toolbar.visibility = View.VISIBLE
     }
 
     private fun requestFocusOnEditSearch() {

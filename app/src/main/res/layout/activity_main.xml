@@ -36,8 +36,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginHorizontal="@dimen/search_margin"
-                    android:layout_marginVertical="@dimen/search_margin_vertical"
                     android:visibility="invisible"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

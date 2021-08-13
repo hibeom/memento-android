@@ -51,6 +51,8 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
             adapter.submitList(it)
         })
 
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
         return binding.root
     }
 
@@ -62,6 +64,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         _binding = null
     }
 

@@ -10,9 +10,14 @@
         android:id="@+id/layout_search"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:paddingVertical="@dimen/search_padding"
-        android:paddingHorizontal="@dimen/search_padding_horizontal"
-        android:background="@drawable/search_background">
+        android:paddingVertical="@dimen/search_margin_vertical"
+        android:paddingHorizontal="@dimen/search_margin">
+
+        <View
+            android:id="@+id/search_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/search_background"/>
 
         <ImageButton
             android:id="@+id/button_search"
@@ -20,18 +25,22 @@
             android:layout_height="28dp"
             android:background="@color/transparent"
             android:contentDescription="@string/search_title"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/ic_search_sub"
+            android:layout_marginLeft="@dimen/search_padding_horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/search_background"
+            app:layout_constraintStart_toStartOf="@id/search_background"
+            app:layout_constraintTop_toTopOf="@id/search_background" />
 
         <EditText
             android:id="@+id/edit_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="@dimen/edit_search_padding"
+            android:paddingLeft="@dimen/edit_search_padding"
+            android:hint="@string/search_title"
+            android:textColorHint="@color/gray"
             android:inputType="text"
-            android:background="@null" />
+            android:background="@null"
+            android:cursorVisible="false"/>
 
         <ImageButton
             android:id="@+id/button_close"
@@ -40,9 +49,10 @@
             android:background="@color/transparent"
             android:contentDescription="@string/cancel"
             android:src="@drawable/ic_close"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginRight="@dimen/search_padding_horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/search_background"
+            app:layout_constraintEnd_toEndOf="@id/search_background"
+            app:layout_constraintTop_toTopOf="@id/search_background" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
