@@ -25,7 +25,12 @@
     <string name="channel_name">알람 채널</string>
     <string name="channel_description">메모 알람을 위한 알림 채널입니다.</string>
     <string name="notification_title">메모를 확인하세요!</string>
-    <string name="trash">휴지통</string>
+    <string name="trash_bin">휴지통</string>
     <string name="AM">오전</string>
     <string name="PM">오후</string>
+    <string name="font_family">글꼴</string>
+    <string name="font_size">글씨 크기</string>
+    <string name="font_sample">그의 거짓말을 믿지 마라.</string>
+    <string name="a">가</string>
+
 </resources>

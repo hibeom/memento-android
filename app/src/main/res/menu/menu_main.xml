@@ -20,11 +20,7 @@
         android:orderInCategory="300"
         android:title="@string/action_settings"
         app:showAsAction="always" />
-<!--    <item-->
-<!--        android:id="@+id/action_trash"-->
-<!--        android:orderInCategory="400"-->
-<!--        android:title="@string/trash"-->
-<!--        app:showAsAction="never"/>-->
+
     <item
         android:id="@+id/action_search"
         android:orderInCategory="0"

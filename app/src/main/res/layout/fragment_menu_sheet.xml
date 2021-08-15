@@ -7,10 +7,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/half_round_background"
-        android:padding="@dimen/tools_content_padding"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/half_round_background"
+        android:padding="@dimen/tools_content_padding">
 
         <ImageButton
             android:id="@+id/button_close_menu"
@@ -18,24 +18,152 @@
             android:layout_height="35dp"
             android:background="@color/transparent"
             android:contentDescription="@string/cancel"
-            android:src="@drawable/ic_close"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:src="@drawable/ic_close_circle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/layout_menu"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_trash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/button_close_menu"
-            android:orientation="vertical">
+            android:layout_marginVertical="@dimen/menu_layout_margin"
+            android:background="@drawable/round_gray_background"
+            app:layout_constraintTop_toBottomOf="@id/button_close_menu">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/button_trash"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:constraint_referenced_ids="text_trash, image_trash"
+                app:layout_constraintBottom_toBottomOf="@id/image_trash"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_trash" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/trash"
+                android:id="@+id/text_trash"
                 style="@style/TextTitle"
-                android:layout_marginVertical="50dp"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:text="@string/trash_bin"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_trash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:src="@drawable/ic_trash_outline"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_font_stlye"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/menu_layout_margin"
+            android:background="@drawable/round_gray_background"
+            app:layout_constraintTop_toBottomOf="@id/layout_trash">
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/button_font_family"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/bottom_stroke"
+                app:constraint_referenced_ids="text_font_family_title, text_font_family"
+                app:layout_constraintBottom_toBottomOf="@id/text_font_family"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_font_family_title" />
+
+            <TextView
+                android:id="@+id/text_font_family_title"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:text="@string/font_family"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_font_family"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                app:layout_constraintBottom_toBottomOf="@id/text_font_family_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_font_family_title" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/button_font_size"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/bottom_stroke"
+                app:constraint_referenced_ids="text_font_size_title, button_text_bigger"
+                app:layout_constraintBottom_toBottomOf="@id/button_text_bigger"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_font_size_title" />
+
+            <TextView
+                android:id="@+id/text_font_size_title"
+                style="@style/TextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:text="@string/font_size"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/text_font_sample"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_font_family" />
+
+            <TextView
+                android:id="@+id/button_text_smaller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:text="@string/a"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/text_font_size_title"
+                app:layout_constraintEnd_toStartOf="@id/button_text_bigger"
+                app:layout_constraintTop_toTopOf="@id/text_font_size_title" />
+
+            <TextView
+                android:id="@+id/button_text_bigger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                android:text="@string/a"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/text_font_size_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_font_size_title" />
+
+            <TextView
+                android:id="@+id/text_font_sample"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/menu_item_padding"
+                style="@style/TextContent"
+                android:text="@string/font_sample"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_font_size_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -17,7 +17,7 @@
             android:layout_marginHorizontal="20dp"
             app:layout_constraintTop_toTopOf="@id/picker_date"
             app:layout_constraintBottom_toBottomOf="@id/picker_date"
-            android:background="@drawable/search_background"/>
+            android:background="@drawable/round_gray_background"/>
 
         <NumberPicker
             android:id="@+id/picker_date"

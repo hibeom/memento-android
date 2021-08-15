@@ -30,7 +30,11 @@
     <string name="channel_name">Alarm Channel</string>
     <string name="channel_description">Notification channel for scheduled memo alarm</string>
     <string name="notification_title">Check this memo!</string>
-    <string name="trash">Trash</string>
+    <string name="trash_bin">Trash Bin</string>
     <string name="AM">AM</string>
     <string name="PM">PM</string>
+    <string name="font_family">Font</string>
+    <string name="font_size">Font size</string>
+    <string name="font_sample">Don\'t believe his lies.</string>
+    <string name="a">A</string>
 </resources>

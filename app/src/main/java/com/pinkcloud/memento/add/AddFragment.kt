@@ -8,10 +8,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
@@ -22,6 +25,7 @@ class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
     private lateinit var getContent: ActivityResultLauncher<String>
     private lateinit var viewModel: AddViewModel
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +62,8 @@ class AddFragment : Fragment() {
                 viewModel.isInsertCompleted.value = false
             }
         })
+        binding.sharedViewModel = sharedViewModel
+        binding.lifecycleOwner = this
 
         val motionLayout = binding.root as MotionLayout
         var isFlipped = false
@@ -129,7 +135,7 @@ class AddFragment : Fragment() {
                 }
             }
             R.id.action_menu -> {
-                Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+                (requireActivity() as MainActivity).openBottomSheetMenu(R.id.addFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)

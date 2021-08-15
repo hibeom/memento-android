@@ -50,16 +50,18 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         val adapter = MemoAdapter(this)
         binding.listMemo.adapter = adapter
 
-        viewModel.memos.observe(viewLifecycleOwner, Observer {
+        viewModel.memos.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
-        sharedViewModel.searchText.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.searchText.observe(viewLifecycleOwner, {
             adapter.submitList(viewModel.getFilteredMemos(it))
         })
-
+        sharedViewModel.fontSize.observe(viewLifecycleOwner, Observer {
+            adapter.notifyDataSetChanged()
+        })
         return binding.root
     }
 
@@ -87,7 +89,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_menu -> {
-                (requireActivity() as MainActivity).openBottomSheetMenu()
+                (requireActivity() as MainActivity).openBottomSheetMenu(R.id.homeFragment)
                 true
             }
             R.id.action_add -> {

@@ -37,6 +37,10 @@ object Constants {
 
     const val LAST_NOTIFICATION_ID = "last_notification_id"
     const val DAILY_REFRESH_WORK = "daily_refresh_work"
+
+    const val FONT_SIZE = "font_size"
+    const val DEFAULT_FONT_SIZE = 16
+    const val FONT_TYPE = "font_type"
 }
 
 /**

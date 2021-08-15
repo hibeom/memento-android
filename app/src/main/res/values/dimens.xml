@@ -12,5 +12,9 @@
     <dimen name="search_margin_vertical">10dp</dimen>
     <dimen name="edit_caption_padding">5dp</dimen>
     <dimen name="radius_background">20dp</dimen>
+    <dimen name="menu_layout_margin">15dp</dimen>
+    <dimen name="menu_item_padding">15dp</dimen>
     <!-- text  -->
+    <dimen name="title_text">16sp</dimen>
+    <dimen name="content_text">16sp</dimen>
 </resources>

@@ -6,15 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.IdRes
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.databinding.FragmentMenuSheetBinding
 
-class MenuSheetFragment: BottomSheetDialogFragment() {
+class MenuSheetFragment(private val fragmentId: Int?) :
+    BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentMenuSheetBinding
+    @IdRes
+    private var trashAction: Int = R.id.action_homeFragment_to_trashFragment
+    private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +32,32 @@ class MenuSheetFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMenuSheetBinding.inflate(inflater, container, false)
+        sharedViewModel.fontSize.observe(viewLifecycleOwner, {
+            binding.textFontSample.textSize = it.toFloat()
+        })
         binding.buttonCloseMenu.setOnClickListener {
             dismiss()
+        }
+        when (fragmentId) {
+            R.id.trashFragment -> {
+                binding.layoutTrash.visibility = View.GONE
+            }
+            R.id.homeFragment -> {
+                trashAction = R.id.action_homeFragment_to_trashFragment
+            }
+            R.id.addFragment -> {
+                trashAction = R.id.action_addFragment_to_trashFragment
+            }
+        }
+        binding.buttonTrash.setOnClickListener {
+            findNavController().navigate(trashAction)
+            dismiss()
+        }
+        binding.buttonTextBigger.setOnClickListener {
+            sharedViewModel.enlargeFont()
+        }
+        binding.buttonTextSmaller.setOnClickListener {
+            sharedViewModel.reduceFont()
         }
         return binding.root
     }
@@ -31,11 +65,12 @@ class MenuSheetFragment: BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = BottomSheetDialog(requireContext(), R.style.TransparentDialog);
         dialog.setOnShowListener { it ->
-            (it as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.let { view ->
-                val bottomSheetBehavior = BottomSheetBehavior.from(view)
-                // Behavior is working. You need to adjust layout size to make it fill parent height.
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
+            (it as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+                ?.let { view ->
+                    val bottomSheetBehavior = BottomSheetBehavior.from(view)
+                    // Behavior is working. You need to adjust layout size to make it fill parent height.
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
         }
         return dialog
     }

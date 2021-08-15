@@ -103,6 +103,11 @@ class MemoView @JvmOverloads constructor(
         }
     }
 
+    fun setCaptionTextSize(textSize: Float) {
+        editFrontCaption.textSize = textSize
+        editBackCaption.textSize = textSize
+    }
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         textAlarmTime.text = formatMillisToDatetime(System.currentTimeMillis())
@@ -118,6 +123,7 @@ class MemoView @JvmOverloads constructor(
                 )
             }
         }
+
         if (!isHintEnable) {
             editFrontCaption.hint = ""
             editBackCaption.hint = ""

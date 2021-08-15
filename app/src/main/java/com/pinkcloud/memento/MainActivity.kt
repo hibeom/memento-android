@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -49,7 +50,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
+        val viewModelFactory = SharedViewModelFactory(application)
+        val sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
         binding.search.editSearch.doAfterTextChanged {
             sharedViewModel.changeSearchText(it.toString())
         }
@@ -99,8 +101,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    fun openBottomSheetMenu() {
-        menuSheetFragment = MenuSheetFragment()
+    fun openBottomSheetMenu(@IdRes fragmentId: Int?) {
+        menuSheetFragment =
+            MenuSheetFragment(fragmentId ?: R.id.homeFragment)
         menuSheetFragment.show(supportFragmentManager, menuSheetFragment.tag)
     }
 }

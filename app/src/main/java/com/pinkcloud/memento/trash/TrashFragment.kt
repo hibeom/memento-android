@@ -72,7 +72,7 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_menu -> {
-                Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+                (requireActivity() as MainActivity).openBottomSheetMenu(R.id.trashFragment)
                 true
             }
             R.id.action_search -> {

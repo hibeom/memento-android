@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="sharedViewModel"
+            type="com.pinkcloud.memento.SharedViewModel" />
+
+        <variable
             name="addViewModel"
             type="com.pinkcloud.memento.add.AddViewModel" />
     </data>
@@ -20,11 +24,12 @@
             android:id="@+id/memoView"
             style="@style/MemoView"
             android:elevation="@dimen/card_elevation"
+            app:isCacheEnable="false"
+            captionTextSize="@{sharedViewModel.fontSize.floatValue()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:isCacheEnable="false"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_flip"
