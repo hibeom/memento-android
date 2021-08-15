@@ -97,8 +97,12 @@
             <TextView
                 android:id="@+id/text_font_family"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/font_text_menu_height"
                 android:padding="@dimen/menu_item_padding"
+                style="@style/TextTitle"
+                android:textColor="@color/black"
+                android:text="@string/default_font"
+                android:gravity="center_vertical"
                 app:layout_constraintBottom_toBottomOf="@id/text_font_family_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_font_family_title" />
@@ -155,10 +159,10 @@
             <TextView
                 android:id="@+id/text_font_sample"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/menu_item_padding"
+                android:layout_height="@dimen/font_text_menu_height"
                 style="@style/TextContent"
                 android:text="@string/font_sample"
+                android:gravity="center_vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_font_size_title" />

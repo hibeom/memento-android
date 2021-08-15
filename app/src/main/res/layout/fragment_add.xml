@@ -4,11 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="sharedViewModel"
-            type="com.pinkcloud.memento.SharedViewModel" />
-
         <variable
             name="addViewModel"
             type="com.pinkcloud.memento.add.AddViewModel" />
@@ -25,7 +20,6 @@
             style="@style/MemoView"
             android:elevation="@dimen/card_elevation"
             app:isCacheEnable="false"
-            captionTextSize="@{sharedViewModel.fontSize.floatValue()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

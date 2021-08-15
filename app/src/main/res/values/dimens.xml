@@ -14,6 +14,7 @@
     <dimen name="radius_background">20dp</dimen>
     <dimen name="menu_layout_margin">15dp</dimen>
     <dimen name="menu_item_padding">15dp</dimen>
+    <dimen name="font_text_menu_height">52dp</dimen>
     <!-- text  -->
     <dimen name="title_text">16sp</dimen>
     <dimen name="content_text">16sp</dimen>

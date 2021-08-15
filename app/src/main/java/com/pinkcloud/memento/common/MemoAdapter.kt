@@ -9,18 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.databinding.ListItemMemoBinding
 import com.pinkcloud.memento.utils.DoubleClickListener
-import timber.log.Timber
 
 class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback()) {
-
-    var captionTextSize: Float = 16f
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.setCaptionFont(captionTextSize)
         holder.bind(getItem(position), doubleTapItemListener)
     }
 
@@ -41,11 +37,8 @@ class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): Lis
                     doubleTapItemListener.onDoubleTapItem(item)
                 }
             })
+            binding.memoView.setCaptionTextStyle()
             binding.executePendingBindings()
-        }
-
-        fun setCaptionFont(captionTextSize: Float) {
-            binding.memoView.setCaptionTextSize(captionTextSize)
         }
 
         companion object {

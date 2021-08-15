@@ -1,6 +1,7 @@
 package com.pinkcloud.memento.common
 
 import android.app.Dialog
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.databinding.FragmentMenuSheetBinding
+import com.pinkcloud.memento.utils.Configuration
+import com.pinkcloud.memento.utils.getFontName
+import com.pinkcloud.memento.utils.getMeasuredFontSize
+import com.pinkcloud.memento.utils.getTypeface
+import timber.log.Timber
 
 class MenuSheetFragment(private val fragmentId: Int?) :
     BottomSheetDialogFragment() {
@@ -32,8 +38,17 @@ class MenuSheetFragment(private val fragmentId: Int?) :
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMenuSheetBinding.inflate(inflater, container, false)
-        sharedViewModel.fontSize.observe(viewLifecycleOwner, {
-            binding.textFontSample.textSize = it.toFloat()
+        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
+            Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
+            binding.textFontSample.textSize = getMeasuredFontSize()
+        })
+        sharedViewModel.fontType.observe(viewLifecycleOwner, {
+            Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
+            val typeface = getTypeface(requireContext())
+            binding.textFontFamily.typeface = typeface
+            binding.textFontFamily.text = getFontName(requireContext())
+            binding.textFontSample.typeface = typeface
+            binding.textFontSample.textSize = getMeasuredFontSize()
         })
         binding.buttonCloseMenu.setOnClickListener {
             dismiss()
@@ -59,6 +74,10 @@ class MenuSheetFragment(private val fragmentId: Int?) :
         binding.buttonTextSmaller.setOnClickListener {
             sharedViewModel.reduceFont()
         }
+        binding.buttonFontFamily.setOnClickListener {
+            sharedViewModel.changeFont()
+        }
+        binding.textFontFamily.text = getFontName(requireContext())
         return binding.root
     }
 

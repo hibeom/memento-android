@@ -62,8 +62,12 @@ class AddFragment : Fragment() {
                 viewModel.isInsertCompleted.value = false
             }
         })
-        binding.sharedViewModel = sharedViewModel
-        binding.lifecycleOwner = this
+        sharedViewModel.fontType.observe(viewLifecycleOwner, {
+            binding.memoView.setCaptionTextStyle()
+        })
+        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
+            binding.memoView.setCaptionTextStyle()
+        })
 
         val motionLayout = binding.root as MotionLayout
         var isFlipped = false

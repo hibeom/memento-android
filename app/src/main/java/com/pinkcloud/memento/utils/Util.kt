@@ -6,15 +6,18 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.annotation.IdRes
 import androidx.core.net.toFile
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.pinkcloud.memento.R
 import timber.log.Timber
 import java.io.File
 import java.time.Instant
@@ -39,8 +42,24 @@ object Constants {
     const val DAILY_REFRESH_WORK = "daily_refresh_work"
 
     const val FONT_SIZE = "font_size"
-    const val DEFAULT_FONT_SIZE = 16
+    const val DEFAULT_FONT_SIZE = 2
     const val FONT_TYPE = "font_type"
+    const val DEFAULT_FONT = 0
+    const val FONT_NANUM_BARUNPEN = 1
+    const val FONT_NANUM_BRUSH = 2
+    const val FONT_NANUM_PEN = 3
+    const val FONT_COUNT = 4
+}
+
+/**
+ * Application Configuration
+ *
+ * fontSizeLevel 0-4
+ * fontType 0: DEFAULT - 3: NANUM PEN
+ * */
+object Configuration {
+    var fontSizeLevel: Int = 2
+    var fontType: Int = 0
 }
 
 /**
@@ -158,4 +177,57 @@ fun getRotatedBitmap(imagePath: String?): Bitmap? {
         ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
     }
     return Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.width, srcBitmap.height, matrix, true)
+}
+
+/**
+ * get measured font size by an each font type.
+ * even when font has a same font size, its size looks different.
+ * 16sp of Default font size looks bigger then 16sp of Nanum fonts.
+ *
+ * @return measured font size
+ * */
+fun getMeasuredFontSize(): Float {
+    val measuredSizeInt = when (Configuration.fontType) {
+        Constants.FONT_NANUM_BARUNPEN -> {
+            18 + Configuration.fontSizeLevel
+        }
+        Constants.FONT_NANUM_BRUSH -> {
+            20 + Configuration.fontSizeLevel
+        }
+        Constants.FONT_NANUM_PEN -> {
+            20 + Configuration.fontSizeLevel
+        }
+        else -> {
+            16 + Configuration.fontSizeLevel
+        }
+    }
+    Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
+    return measuredSizeInt.toFloat()
+}
+
+fun getFontName(context: Context): String {
+    return when (Configuration.fontType) {
+        Constants.FONT_NANUM_BARUNPEN -> context.getString(R.string.font_nanum_barunpen)
+        Constants.FONT_NANUM_BRUSH -> context.getString(R.string.font_nanum_brush)
+        Constants.FONT_NANUM_PEN -> context.getString(R.string.font_nanum_pen)
+        else -> context.getString(R.string.default_font)
+    }
+}
+
+fun getFontFamily(fontType: Int): Int? {
+    return when (fontType) {
+        Constants.FONT_NANUM_BARUNPEN -> R.font.nanum_barunpen
+        Constants.FONT_NANUM_BRUSH -> R.font.nanum_brush
+        Constants.FONT_NANUM_PEN -> R.font.nanum_pen
+        else -> null
+    }
+}
+
+fun getTypeface(context: Context): Typeface {
+    val fontFamily = getFontFamily(Configuration.fontType)
+    var typeface = Typeface.DEFAULT
+    fontFamily?.let {
+        typeface = context.resources.getFont(it)
+    }
+    return typeface
 }

@@ -1,6 +1,7 @@
 package com.pinkcloud.memento.common
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import android.widget.EditText
@@ -15,6 +16,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
+import com.pinkcloud.memento.utils.getMeasuredFontSize
+import com.pinkcloud.memento.utils.getTypeface
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -103,9 +106,11 @@ class MemoView @JvmOverloads constructor(
         }
     }
 
-    fun setCaptionTextSize(textSize: Float) {
-        editFrontCaption.textSize = textSize
-        editBackCaption.textSize = textSize
+    fun setCaptionTextStyle() {
+        editFrontCaption.textSize = getMeasuredFontSize()
+        editBackCaption.textSize = getMeasuredFontSize()
+        editFrontCaption.typeface = getTypeface(context)
+        editBackCaption.typeface = getTypeface(context)
     }
 
     override fun onFinishInflate() {
@@ -123,6 +128,7 @@ class MemoView @JvmOverloads constructor(
                 )
             }
         }
+        setCaptionTextStyle()
 
         if (!isHintEnable) {
             editFrontCaption.hint = ""

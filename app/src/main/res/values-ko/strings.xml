@@ -32,5 +32,8 @@
     <string name="font_size">글씨 크기</string>
     <string name="font_sample">그의 거짓말을 믿지 마라.</string>
     <string name="a">가</string>
-
+    <string name="default_font">기본</string>
+    <string name="font_nanum_barunpen">나눔바른펜</string>
+    <string name="font_nanum_brush">나눔손글씨 붓</string>
+    <string name="font_nanum_pen">나눔손글씨 펜</string>
 </resources>

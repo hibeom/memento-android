@@ -37,4 +37,8 @@
     <string name="font_size">Font size</string>
     <string name="font_sample">Don\'t believe his lies.</string>
     <string name="a">A</string>
+    <string name="default_font">Default</string>
+    <string name="font_nanum_barunpen">Nanum Barunpen</string>
+    <string name="font_nanum_brush">Nanum Brush</string>
+    <string name="font_nanum_pen">Nanum Pen</string>
 </resources>
