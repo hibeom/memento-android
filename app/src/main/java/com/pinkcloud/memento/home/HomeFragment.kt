@@ -59,7 +59,9 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         sharedViewModel.searchText.observe(viewLifecycleOwner, {
             adapter.submitList(viewModel.getFilteredMemos(it))
         })
-        sharedViewModel.fontSize.observe(viewLifecycleOwner, Observer {
+        sharedViewModel.fontSize.observe(viewLifecycleOwner, {
+            // TODO Need to consider managing font by global variable like in application class.
+            adapter.captionTextSize = it.toFloat()
             adapter.notifyDataSetChanged()
         })
         return binding.root
