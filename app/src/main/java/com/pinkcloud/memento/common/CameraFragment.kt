@@ -1,6 +1,8 @@
 package com.pinkcloud.memento.common
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
@@ -8,6 +10,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -18,8 +23,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
+import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentCameraBinding
+import com.pinkcloud.memento.home.HomeFragmentDirections
 import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.saveEmptyTempImage
 import timber.log.Timber
 import java.io.File
 
@@ -28,6 +36,8 @@ class CameraFragment : Fragment() {
     private lateinit var binding: FragmentCameraBinding
     private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private lateinit var imageCapture: ImageCapture
+
+    private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -55,9 +65,51 @@ class CameraFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCameraBinding.inflate(inflater, container, false)
-        startCamera()
+        setRequestPermissionLauncher()
+        setButtonListeners()
+
+        requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
+            if (it == PackageManager.PERMISSION_GRANTED) startCamera()
+            else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
 
         return binding.root
+    }
+
+    private fun setButtonListeners() {
+        binding.buttonBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.buttonTakePhoto.setOnClickListener {
+            takePhoto()
+        }
+        binding.buttonReverseCamera.setOnClickListener {
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                CameraSelector.DEFAULT_FRONT_CAMERA
+            } else {
+                CameraSelector.DEFAULT_BACK_CAMERA
+            }
+            startCamera()
+        }
+        binding.buttonWithoutPhoto.setOnClickListener {
+            saveEmptyTempImage(requireContext())
+            findNavController().navigate(R.id.action_cameraFragment_to_addFragment)
+        }
+    }
+
+    private fun setRequestPermissionLauncher() {
+        requestCameraPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    startCamera()
+                } else {
+                    binding.preview.visibility = View.GONE
+                    binding.groupCameraTools.visibility = View.GONE
+                    binding.buttonWithoutPhoto.visibility = View.VISIBLE
+                }
+            }
     }
 
     private fun startCamera() {
@@ -92,25 +144,6 @@ class CameraFragment : Fragment() {
             }
 
         }, ContextCompat.getMainExecutor(context))
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.buttonBack.setOnClickListener {
-            findNavController().popBackStack()
-        }
-        binding.buttonTakePhoto.setOnClickListener {
-            takePhoto()
-        }
-        binding.buttonReverseCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
-                CameraSelector.DEFAULT_FRONT_CAMERA
-            } else {
-                CameraSelector.DEFAULT_BACK_CAMERA
-            }
-            startCamera()
-        }
     }
 
     private fun takePhoto() {

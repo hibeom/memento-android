@@ -44,4 +44,5 @@
     <string name="order_by">Order by</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
+    <string name="progress_without_photo">Progress without photo</string>
 </resources>

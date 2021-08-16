@@ -7,12 +7,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import androidx.annotation.IdRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.net.toFile
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
@@ -20,6 +23,7 @@ import androidx.work.WorkManager
 import com.pinkcloud.memento.R
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
 import java.time.Instant
 import java.time.ZoneId
 import java.util.*
@@ -148,6 +152,21 @@ fun copyTempImage(context: Context, dstFileName: String): String {
     val dstFile = File(context.filesDir, dstFileName)
     srcFile.copyTo(dstFile, true)
     return dstFile.absolutePath
+}
+
+/**
+ * save empty black drawable image to an temp image file.
+ * */
+fun saveEmptyTempImage(context: Context) {
+    val bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.empty)
+    val tempFile = File(
+        context.filesDir,
+        Constants.TEMP_FILE_NAME
+    )
+    val outputStream = FileOutputStream(tempFile)
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+    outputStream.flush()
+    outputStream.close()
 }
 
 /**

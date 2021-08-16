@@ -31,8 +31,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     private lateinit var viewModel: HomeViewModel
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
-    private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,7 +70,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setRequestPermissionLauncher()
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -99,11 +96,9 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
                 true
             }
             R.id.action_add -> {
-                requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
-                    if (it == PackageManager.PERMISSION_GRANTED) startCamera()
-                    else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-                }
+                startCamera()
                 true
+
             }
             R.id.action_search -> {
                 (activity as MainActivity).setSearchVisibility(View.VISIBLE)
@@ -116,24 +111,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
     override fun onDoubleTapItem(memo: Memo) {
         memo.isCompleted = true
         viewModel.completeMemo(memo)
-    }
-
-    private fun setRequestPermissionLauncher() {
-        requestCameraPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    startCamera()
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.camera_permission_not_allowed),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToAddFragment())
-                }
-            }
     }
 
     private fun startCamera() {

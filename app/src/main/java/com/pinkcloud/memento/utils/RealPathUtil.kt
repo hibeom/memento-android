@@ -1,4 +1,4 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.utils
 
 import android.content.ContentUris
 import android.content.Context
