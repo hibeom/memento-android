@@ -36,4 +36,7 @@
     <string name="font_nanum_barunpen">나눔바른펜</string>
     <string name="font_nanum_brush">나눔손글씨 붓</string>
     <string name="font_nanum_pen">나눔손글씨 펜</string>
+    <string name="order_by">정렬순서</string>
+    <string name="newest">최신순</string>
+    <string name="oldest">오래된순</string>
 </resources>

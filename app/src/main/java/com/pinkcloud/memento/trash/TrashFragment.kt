@@ -55,7 +55,9 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         sharedViewModel.fontType.observe(viewLifecycleOwner, {
             adapter.notifyDataSetChanged()
         })
-
+        sharedViewModel.orderBy.observe(viewLifecycleOwner, {
+            viewModel.orderBy.value = it
+        })
         return binding.root
     }
 

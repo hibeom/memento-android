@@ -14,10 +14,16 @@ class SharedViewModel(val mApplication: Application): AndroidViewModel(mApplicat
     val fontSizeLevel = MutableLiveData(Configuration.fontSizeLevel)
     val fontType = MutableLiveData(Configuration.fontType)
 
+    val orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+
     private val sharedPref: SharedPreferences = mApplication.getSharedPreferences(
         mApplication.getString(R.string.preference_file_key),
         Context.MODE_PRIVATE
     )
+
+    init {
+        orderBy.value = sharedPref.getInt(Constants.ORDER_BY, Constants.ORDER_BY_PRIORITY)
+    }
 
     fun changeSearchText(text: String) {
         searchText.value = text
@@ -56,6 +62,14 @@ class SharedViewModel(val mApplication: Application): AndroidViewModel(mApplicat
     private fun saveFontType() {
         with(sharedPref.edit()) {
             putInt(Constants.FONT_TYPE, fontType.value!!)
+            apply()
+        }
+    }
+
+    fun changeOrderBy() {
+        orderBy.value = orderBy.value!!.plus(1) % 3
+        with(sharedPref.edit()) {
+            putInt(Constants.ORDER_BY, orderBy.value!!)
             apply()
         }
     }

@@ -2,15 +2,26 @@ package com.pinkcloud.memento.trash
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.scheduleAlarm
 import kotlinx.coroutines.launch
 
 class TrashViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
 
-    val memos = database.getCompletedMemos()
+    val orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+    val memos = Transformations.switchMap(orderBy) {
+        when (it) {
+            Constants.ORDER_BY_PRIORITY -> database.getCompletedMemos()
+            Constants.ORDER_BY_NEWEST -> database.getCompletedMemosByDate(false)
+            Constants.ORDER_BY_OLDEST -> database.getCompletedMemosByDate(true)
+            else -> database.getCompletedMemos()
+        }
+    }
 
     fun restoreMemo(memo: Memo) {
         viewModelScope.launch {

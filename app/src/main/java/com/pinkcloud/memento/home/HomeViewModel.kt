@@ -2,15 +2,27 @@ package com.pinkcloud.memento.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.cancelAlarm
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class HomeViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
 
-    val memos = database.getOngoingMemos()
+    val orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+    val memos = Transformations.switchMap(orderBy) {
+        when (it) {
+            Constants.ORDER_BY_PRIORITY -> database.getOngoingMemos()
+            Constants.ORDER_BY_NEWEST -> database.getOngoingMemosByDate(false)
+            Constants.ORDER_BY_OLDEST -> database.getOngoingMemosByDate(true)
+            else -> database.getOngoingMemos()
+        }
+    }
 
     fun completeMemo(memo: Memo) {
         viewModelScope.launch {
@@ -27,6 +39,8 @@ class HomeViewModel(val database: MemoDatabaseDao, application: Application) : A
 
     fun getFilteredMemos(text: String): List<Memo>? {
         return memos.value?.filter {
+            // TODO Need to improve search algorithm.
+            // ignore upper, lower case
             it.frontCaption?.contains(text) ?: false
         }
     }

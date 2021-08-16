@@ -41,4 +41,7 @@
     <string name="font_nanum_barunpen">Nanum Barunpen</string>
     <string name="font_nanum_brush">Nanum Brush</string>
     <string name="font_nanum_pen">Nanum Pen</string>
+    <string name="order_by">Order by</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
 </resources>

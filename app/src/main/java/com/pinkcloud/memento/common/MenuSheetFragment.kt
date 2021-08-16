@@ -1,7 +1,6 @@
 package com.pinkcloud.memento.common
 
 import android.app.Dialog
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.IdRes
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -18,11 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.databinding.FragmentMenuSheetBinding
-import com.pinkcloud.memento.utils.Configuration
-import com.pinkcloud.memento.utils.getFontName
-import com.pinkcloud.memento.utils.getMeasuredFontSize
-import com.pinkcloud.memento.utils.getTypeface
-import timber.log.Timber
+import com.pinkcloud.memento.utils.*
 
 class MenuSheetFragment(private val fragmentId: Int?) :
     BottomSheetDialogFragment() {
@@ -38,21 +31,29 @@ class MenuSheetFragment(private val fragmentId: Int?) :
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMenuSheetBinding.inflate(inflater, container, false)
-        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
-            Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
-            binding.textFontSample.textSize = getMeasuredFontSize()
-        })
-        sharedViewModel.fontType.observe(viewLifecycleOwner, {
-            Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
-            val typeface = getTypeface(requireContext())
-            binding.textFontFamily.typeface = typeface
-            binding.textFontFamily.text = getFontName(requireContext())
-            binding.textFontSample.typeface = typeface
-            binding.textFontSample.textSize = getMeasuredFontSize()
-        })
+        setFontMenuActions()
+        setTrashMenuActions()
+        setOrderMenuActions()
         binding.buttonCloseMenu.setOnClickListener {
             dismiss()
         }
+        return binding.root
+    }
+
+    private fun setOrderMenuActions() {
+        binding.buttonOrder.setOnClickListener {
+            sharedViewModel.changeOrderBy()
+        }
+        sharedViewModel.orderBy.observe(viewLifecycleOwner, {
+            when (it) {
+                Constants.ORDER_BY_PRIORITY -> binding.textOrder.text = getString(R.string.priority)
+                Constants.ORDER_BY_NEWEST -> binding.textOrder.text = getString(R.string.newest)
+                Constants.ORDER_BY_OLDEST -> binding.textOrder.text = getString(R.string.oldest)
+            }
+        })
+    }
+
+    private fun setTrashMenuActions() {
         when (fragmentId) {
             R.id.trashFragment -> {
                 binding.layoutTrash.visibility = View.GONE
@@ -68,6 +69,19 @@ class MenuSheetFragment(private val fragmentId: Int?) :
             findNavController().navigate(trashAction)
             dismiss()
         }
+    }
+
+    private fun setFontMenuActions() {
+        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
+            binding.textFontSample.textSize = getMeasuredFontSize()
+        })
+        sharedViewModel.fontType.observe(viewLifecycleOwner, {
+            val typeface = getTypeface(requireContext())
+            binding.textFontFamily.typeface = typeface
+            binding.textFontFamily.text = getFontName(requireContext())
+            binding.textFontSample.typeface = typeface
+            binding.textFontSample.textSize = getMeasuredFontSize()
+        })
         binding.buttonTextBigger.setOnClickListener {
             sharedViewModel.enlargeFont()
         }
@@ -78,7 +92,6 @@ class MenuSheetFragment(private val fragmentId: Int?) :
             sharedViewModel.changeFont()
         }
         binding.textFontFamily.text = getFontName(requireContext())
-        return binding.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -49,6 +49,11 @@ object Constants {
     const val FONT_NANUM_BRUSH = 2
     const val FONT_NANUM_PEN = 3
     const val FONT_COUNT = 4
+
+    const val ORDER_BY = "order_by"
+    const val ORDER_BY_PRIORITY = 0
+    const val ORDER_BY_NEWEST = 1
+    const val ORDER_BY_OLDEST = 2
 }
 
 /**
@@ -201,10 +206,15 @@ fun getMeasuredFontSize(): Float {
             16 + Configuration.fontSizeLevel
         }
     }
-    Timber.d("fontType: ${Configuration.fontType}, fontSizeLevel: ${Configuration.fontSizeLevel}")
     return measuredSizeInt.toFloat()
 }
 
+/**
+ * get font name to be displayed on MenuSheetFragment
+ *
+ * @param context to get string resource
+ * @return font name text
+ * */
 fun getFontName(context: Context): String {
     return when (Configuration.fontType) {
         Constants.FONT_NANUM_BARUNPEN -> context.getString(R.string.font_nanum_barunpen)
@@ -214,6 +224,12 @@ fun getFontName(context: Context): String {
     }
 }
 
+/**
+ * get font family resource by fontType
+ *
+ * @param fontType 0: DEFATUL, 1: NANUM BARUNPEN, 2: NANUM BRUSH, 3: NANUM PEN
+ * @return font family resource
+ * */
 fun getFontFamily(fontType: Int): Int? {
     return when (fontType) {
         Constants.FONT_NANUM_BARUNPEN -> R.font.nanum_barunpen
@@ -223,6 +239,11 @@ fun getFontFamily(fontType: Int): Int? {
     }
 }
 
+/**
+ * get typeface of a fontType
+ *
+ * @return DEFAULT typeface if font family is null
+ * */
 fun getTypeface(context: Context): Typeface {
     val fontFamily = getFontFamily(Configuration.fontType)
     var typeface = Typeface.DEFAULT
