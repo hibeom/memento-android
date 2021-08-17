@@ -69,7 +69,6 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_confirm).isVisible = false
         menu.findItem(R.id.action_add).isVisible = false
-        menu.findItem(R.id.action_trash).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

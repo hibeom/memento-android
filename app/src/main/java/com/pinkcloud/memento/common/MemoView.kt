@@ -75,6 +75,7 @@ class MemoView @JvmOverloads constructor(
 
     private var childClickable: Boolean
     private var isCacheEnable: Boolean
+    private var isHintEnable: Boolean
 
     init {
         inflate(context, R.layout.layout_card, this)
@@ -95,6 +96,7 @@ class MemoView @JvmOverloads constructor(
             try {
                 childClickable = getBoolean(R.styleable.MemoView_childClickable, true)
                 isCacheEnable = getBoolean(R.styleable.MemoView_isCacheEnable, true)
+                isHintEnable = getBoolean(R.styleable.MemoView_isHintEnable, true)
             } finally {
                 recycle()
             }
@@ -116,6 +118,11 @@ class MemoView @JvmOverloads constructor(
                 )
             }
         }
+        if (!isHintEnable) {
+            editFrontCaption.hint = ""
+            editBackCaption.hint = ""
+        }
+
         enableFront()
         if (!childClickable) {
             editFrontCaption.movementMethod = null // To prevent intercepting key event

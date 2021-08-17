@@ -133,10 +133,6 @@ class AddFragment : Fragment() {
                 Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
                 true
             }
-            R.id.action_trash -> {
-                findNavController().navigate(AddFragmentDirections.actionAddFragmentToTrashFragment())
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

@@ -99,10 +99,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
                 }
                 true
             }
-            R.id.action_trash -> {
-                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToTrashFragment())
-                true
-            }
             R.id.action_search -> {
                 (activity as MainActivity).setSearchVisibility(View.VISIBLE)
                 true

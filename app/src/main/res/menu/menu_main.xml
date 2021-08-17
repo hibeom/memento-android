@@ -7,27 +7,28 @@
         android:icon="@drawable/ic_add"
         android:orderInCategory="100"
         android:title="@string/action_add"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_confirm"
         android:icon="@drawable/ic_confirm"
         android:orderInCategory="200"
         android:title="@string/action_confirm"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_menu"
         android:orderInCategory="300"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_trash"
-        android:orderInCategory="400"
-        android:title="@string/trash"
-        app:showAsAction="never"/>
+        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/action_trash"-->
+<!--        android:orderInCategory="400"-->
+<!--        android:title="@string/trash"-->
+<!--        app:showAsAction="never"/>-->
     <item
         android:id="@+id/action_search"
         android:orderInCategory="0"
         android:title="@string/search_title"
         android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>

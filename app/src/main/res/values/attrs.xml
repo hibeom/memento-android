@@ -3,5 +3,6 @@
     <declare-styleable name="MemoView">
         <attr name="childClickable" format="boolean" />
         <attr name="isCacheEnable" format="boolean"/>
+        <attr name="isHintEnable" format="boolean"/>
     </declare-styleable>
 </resources>
