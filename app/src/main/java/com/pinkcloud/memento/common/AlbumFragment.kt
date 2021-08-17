@@ -64,11 +64,8 @@ class AlbumFragment: Fragment() {
             it?.let {
                 binding.textContinue.visibility = View.VISIBLE
                 binding.textPickImage.visibility = View.VISIBLE
-
-                Timber.d("uri : ${it.path}")
-                val path = getRealPath(requireContext(), it)
-                Timber.d("real path : $path")
-                GlideApp.with(this).load(path).centerCrop()
+//                val path = getRealPath(requireContext(), it)
+                GlideApp.with(this).load(it).centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(binding.imagePhoto)
