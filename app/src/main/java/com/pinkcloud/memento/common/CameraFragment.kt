@@ -187,6 +187,7 @@ class CameraFragment : Fragment() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val savedUri = Uri.fromFile(photoFile)
                     Timber.d("onImageSaved: ${savedUri.path}")
+                    TODO("crop image")
                     findNavController().navigate(CameraFragmentDirections.actionCameraFragmentToAddFragment())
                 }
             })

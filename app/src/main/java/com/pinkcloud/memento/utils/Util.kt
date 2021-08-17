@@ -168,8 +168,7 @@ fun saveEmptyTempImage(context: Context) {
     saveBitmap(bitmap, tempFile)
 }
 
-fun saveViewImage(context: Context, view: ImageView) {
-    val bitmap = view.drawable.toBitmap()
+fun saveViewImage(context: Context, bitmap: Bitmap) {
     val tempFile = File(
         context.filesDir,
         Constants.TEMP_FILE_NAME

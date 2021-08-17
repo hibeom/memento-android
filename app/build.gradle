@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.pinkcloud.memento"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -85,4 +85,7 @@ dependencies {
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:$work_version")
     androidTestImplementation("androidx.work:work-testing:$work_version")
+
+    // Image Cropper
+    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
 }

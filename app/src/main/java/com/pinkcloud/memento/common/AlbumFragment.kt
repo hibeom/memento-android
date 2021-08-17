@@ -2,6 +2,7 @@ package com.pinkcloud.memento.common
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +54,8 @@ class AlbumFragment: Fragment() {
             getContent.launch("image/*")
         }
         binding.textContinue.setOnClickListener {
-            saveViewImage(requireContext(), binding.imagePhoto)
+            saveViewImage(requireContext(), binding.imagePhoto.croppedBitmap.bitmap)
+            // TODO Save Cropped image
             findNavController().navigate(R.id.action_albumFragment_to_addFragment)
         }
         return binding.root
@@ -65,10 +67,12 @@ class AlbumFragment: Fragment() {
                 binding.textContinue.visibility = View.VISIBLE
                 binding.textPickImage.visibility = View.VISIBLE
 //                val path = getRealPath(requireContext(), it)
-                GlideApp.with(this).load(it).centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(binding.imagePhoto)
+//                GlideApp.with(this).load(it).centerCrop()
+//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                    .skipMemoryCache(true)
+//                    .into(binding.imagePhoto)
+                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
+                binding.imagePhoto.setImageBitmap(bitmap)
             }
         }
     }
