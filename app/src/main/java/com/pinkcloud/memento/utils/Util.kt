@@ -14,8 +14,10 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toFile
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
@@ -163,7 +165,20 @@ fun saveEmptyTempImage(context: Context) {
         context.filesDir,
         Constants.TEMP_FILE_NAME
     )
-    val outputStream = FileOutputStream(tempFile)
+    saveBitmap(bitmap, tempFile)
+}
+
+fun saveViewImage(context: Context, view: ImageView) {
+    val bitmap = view.drawable.toBitmap()
+    val tempFile = File(
+        context.filesDir,
+        Constants.TEMP_FILE_NAME
+    )
+    saveBitmap(bitmap, tempFile)
+}
+
+fun saveBitmap(bitmap: Bitmap, dstFile: File) {
+    val outputStream = FileOutputStream(dstFile)
     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
     outputStream.flush()
     outputStream.close()

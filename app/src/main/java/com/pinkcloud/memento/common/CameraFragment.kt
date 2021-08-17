@@ -107,8 +107,7 @@ class CameraFragment : Fragment() {
             dialog.show(parentFragmentManager, tag)
         }
         binding.buttonAlbum.setOnClickListener {
-            val bottomDialog = AlbumSheetFragment()
-            bottomDialog.show(parentFragmentManager, tag)
+            findNavController().navigate(R.id.action_cameraFragment_to_albumFragment)
         }
     }
 

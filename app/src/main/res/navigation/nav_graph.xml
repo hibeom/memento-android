@@ -44,9 +44,21 @@
             android:id="@+id/action_cameraFragment_to_addFragment"
             app:destination="@id/addFragment"
             app:popUpTo="@id/homeFragment"/>
+        <action
+            android:id="@+id/action_cameraFragment_to_albumFragment"
+            app:destination="@id/albumFragment"/>
     </fragment>
     <fragment
         android:id="@+id/trashFragment"
         android:name="com.pinkcloud.memento.trash.TrashFragment"
         android:label="TrashFragment" />
+    <fragment
+        android:id="@+id/albumFragment"
+        android:name="com.pinkcloud.memento.common.AlbumFragment"
+        android:label="AlbumFragment" >
+        <action
+            android:id="@+id/action_albumFragment_to_addFragment"
+            app:destination="@id/addFragment"
+            app:popUpTo="@id/homeFragment"/>
+    </fragment>
 </navigation>

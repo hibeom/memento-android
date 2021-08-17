@@ -23,7 +23,6 @@ import java.io.File
 class AddFragment : Fragment() {
 
     private lateinit var binding: FragmentAddBinding
-    private lateinit var getContent: ActivityResultLauncher<String>
     private lateinit var viewModel: AddViewModel
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
@@ -48,7 +47,6 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        setImagePickerLauncher()
         binding.memoView.cameraDistance = 8000 * requireContext().resources.displayMetrics.density
         binding.buttonFlip.setOnClickListener {
             binding.memoView.flip()
@@ -102,18 +100,6 @@ class AddFragment : Fragment() {
         })
     }
 
-//    private fun setImagePickerLauncher() {
-//        getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
-//            it?.let {
-//                getRealPath(requireContext(), it)
-//                GlideApp.with(this).load(it).centerCrop()
-//                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .skipMemoryCache(true)
-//                    .into(binding.memoView.imagePhoto)
-//            }
-//        }
-//    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.action_add).isVisible = false
@@ -144,9 +130,5 @@ class AddFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun openGallery() {
-        getContent.launch("image/*")
     }
 }

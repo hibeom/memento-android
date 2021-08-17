@@ -47,4 +47,6 @@
     <string name="oldest">Oldest</string>
     <string name="progress_without_photo">Progress without photo</string>
     <string name="ask_progress_without_photo">Continue without photo?</string>
+    <string name="continue_with_this_photo">continue with this photo</string>
+    <string name="pick_another_photo">pick another photo</string>
 </resources>
