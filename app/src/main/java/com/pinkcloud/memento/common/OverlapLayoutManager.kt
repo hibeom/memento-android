@@ -1,12 +1,15 @@
 package com.pinkcloud.memento.common
 
+import android.graphics.PointF
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import timber.log.Timber
 import kotlin.math.abs
+import kotlin.math.min
 
-class OverlapLayoutManager : RecyclerView.LayoutManager() {
+class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothScroller.ScrollVectorProvider {
 
     var currentPosition: Int = 0
 
@@ -19,7 +22,6 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         Timber.d("onLayoutChildren")
-//        detachAndScrapAttachedViews(recycler)
         if (state.itemCount <= 0) return
         var startPosition = 0
         var endPosition = startPosition + 1
@@ -29,9 +31,12 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
             val bottomChild = getChildAt(0)!! // child at bottom
             val bottomChildPosition = getPosition(bottomChild)
             startPosition = bottomChildPosition + 1
-            endPosition = topChildPosition + 1
+            endPosition = min(topChildPosition + 1, startPosition + 1)
+            //        detachAndScrapAttachedViews(recycler)
         }
         for (i in startPosition until endPosition + 1) {
+            // TODO 정렬 순서가 바뀌거나...삭제, 혹은 notifyDatasetChange 호출 시...detachAndScrap 해주어야?
+            // 다른 방법은?
             val view = recycler.getViewForPosition(i)
             addView(view, 0) // stack reverse
             layoutView(view)
@@ -126,7 +131,65 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         layoutDecoratedWithMargins(view, left, top, right, bottom)
     }
 
+    override fun onItemsRemoved(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
+        Timber.d("onItemsRemoved")
+        Timber.d("positionStart:$positionStart") // removed item position
+        super.onItemsRemoved(recyclerView, positionStart, itemCount)
+    }
+
+    override fun onScrollStateChanged(state: Int) {
+        when (state) {
+            RecyclerView.SCROLL_STATE_IDLE -> {
+                if (childCount == 0) return
+//                val topChild = getChildAt(childCount - 1)!!
+//                if (abs(topChild.top) > abs(topChild.bottom)) {
+//                    topChild.offsetTopAndBottom(-topChild.bottom)
+//                } else {
+//                    topChild.offsetTopAndBottom(-topChild.top)
+//                }
+            }
+        }
+    }
+
+    override fun smoothScrollToPosition(
+        recyclerView: RecyclerView,
+        state: RecyclerView.State?,
+        position: Int
+    ) {
+        val linearSmoothScroller = LinearSmoothScroller(recyclerView.context)
+        linearSmoothScroller.targetPosition = position
+        startSmoothScroll(linearSmoothScroller)
+    }
+
     override fun canScrollVertically(): Boolean {
         return true
+    }
+
+    override fun computeScrollVectorForPosition(targetPosition: Int): PointF? {
+        Timber.d("currentPosition:$currentPosition")
+
+        if (childCount == 0) return null
+        val topChild = getChildAt(childCount - 1)!!
+        val height = topChild.measuredHeight
+        var y = 0f
+        if (targetPosition < currentPosition) {
+            Timber.d("1. target < current")
+            // 앞(아래)으로 가면 y가 음수
+            y = topChild.top.toFloat()
+            y += (currentPosition - targetPosition)*height*-1
+        } else if (targetPosition > currentPosition) {
+            Timber.d("2. target > current")
+
+            // 뒤(위)로 가면 y가 양수
+            y = topChild.bottom.toFloat()
+            y += (targetPosition - currentPosition - 1)*height
+        } else {
+            Timber.d("3. target == current")
+
+            // 자기 자신인 경우 위치 교정
+            y = topChild.top.toFloat()
+        }
+        // TODO y 이가 뭘 의미하는지 모르겠다.
+        return PointF(0f, y)
     }
 }

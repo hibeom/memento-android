@@ -19,6 +19,7 @@ import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
+import timber.log.Timber
 
 class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
@@ -69,11 +70,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
@@ -96,7 +92,8 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
                 true
             }
             R.id.action_add -> {
-                startCamera()
+//                startCamera()
+                binding.listMemo.smoothScrollToPosition(4)
                 true
 
             }
