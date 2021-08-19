@@ -1,5 +1,6 @@
 package com.pinkcloud.memento.common
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import timber.log.Timber
@@ -18,9 +19,23 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         Timber.d("onLayoutChildren")
-        detachAndScrapAttachedViews(recycler)
+//        detachAndScrapAttachedViews(recycler)
         if (state.itemCount <= 0) return
-        fill(recycler)
+        var startPosition = 0
+        var endPosition = startPosition + 1
+        if (childCount > 0) {
+            val topChild = getChildAt(childCount - 1)!!
+            val topChildPosition = getPosition(topChild)
+            val bottomChild = getChildAt(0)!! // child at bottom
+            val bottomChildPosition = getPosition(bottomChild)
+            startPosition = bottomChildPosition + 1
+            endPosition = topChildPosition + 1
+        }
+        for (i in startPosition until endPosition + 1) {
+            val view = recycler.getViewForPosition(i)
+            addView(view, 0) // stack reverse
+            layoutView(view)
+        }
     }
 
     // sofa, carpet, blank, coffee
@@ -44,11 +59,27 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         if (dy >= 0) {
             /** scroll up*/
             if (topChildPosition == state.itemCount-1) return 0 /** fix the last card*/
-            topChild?.offsetTopAndBottom(-dy)
-            if (topChild?.bottom!! <= 0) {
+
+            val bottomDiff = topChild.bottom
+            var dyRemain = dy
+            if (bottomDiff < dy) {
+                dyRemain = dy - bottomDiff
+                topChild.offsetTopAndBottom(-bottomDiff)
+
                 removeView(topChild)
                 recycler.recycleView(topChild)
+
+                topChild = getChildAt(childCount - 1)
+                currentPosition += 1
+
+                if (currentPosition == state.itemCount - 1) {
+                    return bottomDiff
+                }
+                val view = recycler.getViewForPosition(currentPosition + 1)
+                addView(view, 0) // stack reverse
+                layoutView(view)
             }
+            topChild?.offsetTopAndBottom(-dyRemain)
         } else {
             /** scroll down*/
             val topDiff = abs(topChild.top)
@@ -60,17 +91,18 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
                     return topDiff
                 }
 
-                // addView
+                // remove and recycle bottom child
+                if (currentPosition < state.itemCount - 1) {
+                    val bottomChild = getChildAt(0)
+                    bottomChild?.let {
+                        removeView(bottomChild)
+                        recycler.recycleView(bottomChild)
+                    }
+                }
+
                 currentPosition -= 1
                 val view = recycler.getViewForPosition(currentPosition)
-                addView(view )
-                // TODO
-                // addView 하고 어느 순간부터 인지. onLayoutChildren 을 호출하면서,
-                // recyclerview 가 다시 세팅된다.
-                // TODO 뷰가 많아서 onLayoutChildren 을 호출하는게 아닐까?
-                // 아닌가? addView 할 때마다 호출하는 건가? 그건 아닐거 같은데...상식적으로 생각했을때. 그랬다면..무한 루프 돌겠지..onlayout -> addview -> onlayout -> ...
-                // 확인해보니 addView 호출 시, onLayoutChildren 을 호출하는 것은 아니다.
-                // 그런데 addView 가 여러차례 호출될 시, onLayoutChildren 이 추가적으로 호출된다..
+                addView(view)
                 measureChildWithMargins(view, 0, 0)
                 val left = paddingLeft
                 val right = left + view.measuredWidth
@@ -81,32 +113,17 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
                 topChild = view
             }
             topChild.offsetTopAndBottom(-dyRemain)
-            return dyRemain
         }
         return dy
     }
 
-    private fun fill(recycler: RecyclerView.Recycler) {
-        var startPosition = 0
-        if (childCount > 0) {
-            val bottomChild = getChildAt(0)!! // child at bottom
-            val bottomChildPosition = getPosition(bottomChild)
-            startPosition = bottomChildPosition + 1
-        }
-        // TODO
-        // 전부 addView 하는게 아니다.
-        // 범블비 샘플을 봐도, bottom 공간이 있을 때까지 add 한다.
-        for (i in startPosition until itemCount) {
-            val view = recycler.getViewForPosition(i)
-            addView(view, 0) // stack reverse
-
-            measureChildWithMargins(view, 0, 0)
-            val left = paddingLeft
-            val right = left + view.measuredWidth
-            val top = 0
-            val bottom = top + view.measuredHeight
-            layoutDecoratedWithMargins(view, left, top, right, bottom)
-        }
+    private fun layoutView(view: View) {
+        measureChildWithMargins(view, 0, 0)
+        val left = paddingLeft
+        val right = left + view.measuredWidth
+        val top = 0
+        val bottom = top + view.measuredHeight
+        layoutDecoratedWithMargins(view, left, top, right, bottom)
     }
 
     override fun canScrollVertically(): Boolean {
