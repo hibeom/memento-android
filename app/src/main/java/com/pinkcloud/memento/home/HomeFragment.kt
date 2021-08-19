@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
@@ -20,7 +19,6 @@ import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
-import timber.log.Timber
 
 class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
@@ -88,8 +86,8 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
-                Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
+            R.id.action_menu -> {
+                (requireActivity() as MainActivity).openBottomSheetMenu()
                 true
             }
             R.id.action_add -> {

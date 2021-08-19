@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
@@ -15,7 +14,6 @@ import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
-import com.pinkcloud.memento.home.HomeFragmentDirections
 
 class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
@@ -73,7 +71,7 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.action_menu -> {
                 Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
                 true
             }

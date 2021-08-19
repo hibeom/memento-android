@@ -15,7 +15,6 @@ import com.pinkcloud.memento.R
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
-import timber.log.Timber
 import java.io.File
 
 class AddFragment : Fragment() {
@@ -129,7 +128,7 @@ class AddFragment : Fragment() {
                     true
                 }
             }
-            R.id.action_settings -> {
+            R.id.action_menu -> {
                 Toast.makeText(context, "Navigate to Settings Fragment", Toast.LENGTH_LONG).show()
                 true
             }

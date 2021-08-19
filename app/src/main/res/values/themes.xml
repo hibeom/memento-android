@@ -14,11 +14,10 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:textCursorDrawable">@null</item>
-<!--        <item name="actionOverflowButtonStyle">@style/OverFlowButton</item>-->
         <item name="android:colorControlNormal">@color/transparent</item>
     </style>
 
-    <style name="Theme.Memento.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Memento.AppBarOverlay" parent="Widget.AppCompat.ActionBar"/>
 
     <style name="Theme.Memento.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

@@ -12,12 +12,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.pinkcloud.memento.common.MenuSheetFragment
 import com.pinkcloud.memento.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var menuSheetFragment: MenuSheetFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         binding.search.editSearch.doAfterTextChanged {
             sharedViewModel.changeSearchText(it.toString())
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -94,5 +97,10 @@ class MainActivity : AppCompatActivity() {
     fun hideActionbar() {
         binding.layoutAppbar.visibility = View.GONE
         supportActionBar?.hide()
+    }
+
+    fun openBottomSheetMenu() {
+        menuSheetFragment = MenuSheetFragment()
+        menuSheetFragment.show(supportFragmentManager, menuSheetFragment.tag)
     }
 }

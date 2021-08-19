@@ -15,7 +15,7 @@
         android:title="@string/action_confirm"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_menu"
         android:icon="@drawable/ic_menu"
         android:orderInCategory="300"
         android:title="@string/action_settings"
