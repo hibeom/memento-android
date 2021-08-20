@@ -5,14 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.min
 
-class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothScroller.ScrollVectorProvider {
+class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
     var currentPosition: Int = 0
     var recycler: RecyclerView.Recycler? = null
+    var state: RecyclerView.State? = null
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
         return RecyclerView.LayoutParams(
@@ -40,6 +42,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         Timber.d("relayout children")
         currentPosition = min(currentPosition, state.itemCount - 1)
         this.recycler = recycler
+        this.state = state
 
         for (i in currentPosition until state.itemCount) {
             if (i > currentPosition + 1) break
@@ -64,7 +67,8 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
 
         if (dy >= 0) {
             /** scroll up*/
-            if (currentPosition == state.itemCount-1) return 0 /** fix the last card*/
+            if (currentPosition == state.itemCount - 1) return 0
+            /** fix the last card*/
 
             val bottomDiff = topChild.bottom
             var dyRemain = dy
@@ -162,57 +166,57 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
     override fun onScrollStateChanged(state: Int) {
         when (state) {
             RecyclerView.SCROLL_STATE_IDLE -> {
-                if (childCount == 0) return
-//                val topChild = getChildAt(childCount - 1)!!
-//                if (abs(topChild.top) > abs(topChild.bottom)) {
-//                    topChild.offsetTopAndBottom(-topChild.bottom)
-//                } else {
-//                    topChild.offsetTopAndBottom(-topChild.top)
-//                }
+                if (recycler == null || this.state == null) return
+                val topChild = getChildAt(childCount - 1)!!
+                if (abs(topChild.top) > abs(topChild.bottom)) {
+                    monotoneScrollToPosition(recycler!!, this.state!!, currentPosition + 1)
+                } else {
+                    monotoneScrollToPosition(recycler!!, this.state!!, currentPosition)
+                }
             }
         }
     }
 
     override fun smoothScrollToPosition(
         recyclerView: RecyclerView,
-        state: RecyclerView.State?,
+        state: RecyclerView.State,
         position: Int
     ) {
-        val linearSmoothScroller = LinearSmoothScroller(recyclerView.context)
-        linearSmoothScroller.targetPosition = position
-        startSmoothScroll(linearSmoothScroller)
+        // My silly smooth scroll. Need to improved smooth scoll
+        if (childCount == 0) return
+        recycler?.let { monotoneScrollToPosition(it, state, position) }
+    }
+
+    private fun monotoneScrollToPosition(
+        recycler: RecyclerView.Recycler,
+        state: RecyclerView.State,
+        position: Int
+    ) {
+        val topChild = getChildAt(childCount - 1)!!
+        val topChildPosition = getPosition(topChild)
+        val childHeight = topChild.measuredHeight
+        var dy = 0
+        if (topChildPosition < position) {
+            // 스크롤 업
+            dy = (position - topChildPosition - 1) * childHeight + topChild.bottom
+        } else {
+            // 스크롤 다운
+            dy = (topChildPosition - position) * childHeight + -topChild.top
+            dy *= -1
+        }
+
+        val step = if (dy >= 0) 20 else -20
+        GlobalScope.launch(Dispatchers.Main) {
+            while (abs(dy) >= abs(step)) {
+                delay(1)
+                val remain = scrollVerticallyBy(step, recycler, state)
+                dy += -remain
+            }
+        }
     }
 
     override fun canScrollVertically(): Boolean {
         return true
-    }
-
-    override fun computeScrollVectorForPosition(targetPosition: Int): PointF? {
-        Timber.d("currentPosition:$currentPosition")
-
-        if (childCount == 0) return null
-        val topChild = getChildAt(childCount - 1)!!
-        val height = topChild.measuredHeight
-        var y = 0f
-        if (targetPosition < currentPosition) {
-            Timber.d("1. target < current")
-            // 앞(아래)으로 가면 y가 음수
-            y = topChild.top.toFloat()
-            y += (currentPosition - targetPosition)*height*-1
-        } else if (targetPosition > currentPosition) {
-            Timber.d("2. target > current")
-
-            // 뒤(위)로 가면 y가 양수
-            y = topChild.bottom.toFloat()
-            y += (targetPosition - currentPosition - 1)*height
-        } else {
-            Timber.d("3. target == current")
-
-            // 자기 자신인 경우 위치 교정
-            y = topChild.top.toFloat()
-        }
-        // TODO y 이가 뭘 의미하는지 모르겠다.
-        return PointF(0f, y)
     }
 
     // when font changed

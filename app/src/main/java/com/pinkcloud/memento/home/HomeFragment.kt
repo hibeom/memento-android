@@ -70,6 +70,12 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // TODO scroll to position from navigation deep link
+//        binding.listMemo.smoothScrollToPosition(4)
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
@@ -92,8 +98,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
                 true
             }
             R.id.action_add -> {
-//                startCamera()
-                binding.listMemo.smoothScrollToPosition(4)
+                startCamera()
                 true
 
             }
