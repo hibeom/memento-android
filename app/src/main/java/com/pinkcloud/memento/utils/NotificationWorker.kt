@@ -35,7 +35,7 @@ class NotificationWorker(val context: Context, workerParams: WorkerParameters) :
 
         val builder = NotificationCompat.Builder(context, Constants.CHANNEL_ID)
             .setContentIntent(pendingIntent)
-            .setSmallIcon(R.mipmap.ic_launcher_round)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(context.getString(R.string.notification_title))
             .setContentText(frontCaption)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
