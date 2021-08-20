@@ -12,6 +12,7 @@ import kotlin.math.min
 class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothScroller.ScrollVectorProvider {
 
     var currentPosition: Int = 0
+    var recycler: RecyclerView.Recycler? = null
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
         return RecyclerView.LayoutParams(
@@ -21,25 +22,27 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
     }
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
-        Timber.d("onLayoutChildren")
         if (state.itemCount <= 0) return
-        var startPosition = 0
-        var endPosition = startPosition + 1
-        if (childCount > 0) {
-            val topChild = getChildAt(childCount - 1)!!
-            val topChildPosition = getPosition(topChild)
-            currentPosition = topChildPosition
-            val bottomChild = getChildAt(0)!! // child at bottom
-            val bottomChildPosition = getPosition(bottomChild)
-            startPosition = bottomChildPosition + 1
-            endPosition = min(topChildPosition + 1, startPosition + 1)
-            //        detachAndScrapAttachedViews(recycler)
-        }
-        for (i in startPosition until state.itemCount) {
-            // TODO 정렬 순서가 바뀌거나...삭제, 혹은 notifyDatasetChange 호출 시...detachAndScrap 해주어야?
-            // 다른 방법은?
-            if (i > endPosition) break
+//        var startPosition = 0
+//        var endPosition = startPosition + 1
+//        if (childCount > 0) {
+//            val topChild = getChildAt(childCount - 1)!!
+//            val topChildPosition = getPosition(topChild)
+//            val bottomChild = getChildAt(0)!! // child at bottom
+//            val bottomChildPosition = getPosition(bottomChild)
+//            startPosition = bottomChildPosition + 1
+//            endPosition = min(topChildPosition + 1, startPosition + 1)
+//            //        detachAndScrapAttachedViews(recycler)
+//        }
+//        Timber.d("startPosition:$startPosition")
+//        Timber.d("itemCount:${state.itemCount}")
+        if (childCount > 0) return
+        Timber.d("relayout children")
+        currentPosition = min(currentPosition, state.itemCount - 1)
+        this.recycler = recycler
 
+        for (i in currentPosition until state.itemCount) {
+            if (i > currentPosition + 1) break
             val view = recycler.getViewForPosition(i)
             addView(view, 0) // stack reverse
             layoutView(view)
@@ -57,16 +60,11 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         state: RecyclerView.State
     ): Int {
         if (childCount <= 0) return 0
-        // top 에서 2번째부턴 1, 2번 째 children 을 함께 offset
-        // currentPosition 의 뷰의 bottom 이 0 보다 작아지면, currentPosition  = currentPosition + 1
-
-        var topChild = getChildAt(childCount - 1)
-        val topChildPosition = getPosition(topChild!!)
-        currentPosition = topChildPosition
+        var topChild = getChildAt(childCount - 1)!!
 
         if (dy >= 0) {
             /** scroll up*/
-            if (topChildPosition == state.itemCount-1) return 0 /** fix the last card*/
+            if (currentPosition == state.itemCount-1) return 0 /** fix the last card*/
 
             val bottomDiff = topChild.bottom
             var dyRemain = dy
@@ -77,7 +75,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
                 removeView(topChild)
                 recycler.recycleView(topChild)
 
-                topChild = getChildAt(childCount - 1)
+                topChild = getChildAt(childCount - 1)!!
                 currentPosition += 1
 
                 if (currentPosition == state.itemCount - 1) {
@@ -87,7 +85,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
                 addView(view, 0) // stack reverse
                 layoutView(view)
             }
-            topChild?.offsetTopAndBottom(-dyRemain)
+            topChild.offsetTopAndBottom(-dyRemain)
         } else {
             /** scroll down*/
             val topDiff = abs(topChild.top)
@@ -99,7 +97,6 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
                     return topDiff
                 }
 
-                // remove and recycle bottom child
                 if (currentPosition < state.itemCount - 1) {
                     val bottomChild = getChildAt(0)
                     bottomChild?.let {
@@ -108,7 +105,11 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
                     }
                 }
 
+                if (currentPosition == 0) {
+                    return topDiff
+                }
                 currentPosition -= 1
+
                 val view = recycler.getViewForPosition(currentPosition)
                 addView(view)
                 measureChildWithMargins(view, 0, 0)
@@ -134,16 +135,28 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         layoutDecoratedWithMargins(view, left, top, right, bottom)
     }
 
+    /**
+     * @param positionStart removed item position
+     * @param itemCount removed items count
+     * */
     override fun onItemsRemoved(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
         // when search text changed or complete memo
         Timber.d("onItemsRemoved")
-        Timber.d("positionStart:$positionStart") // removed item position
-        super.onItemsRemoved(recyclerView, positionStart, itemCount)
+        Timber.d("positionStart:$positionStart")
+        currentPosition = positionStart
+        recycler?.let { removeAndRecycleAllViews(it) }
     }
 
+    /**
+     * @param positionStart added item position
+     * @param itemCount added items count
+     * */
     override fun onItemsAdded(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
         // when search text changed or add memo
-        super.onItemsAdded(recyclerView, positionStart, itemCount)
+        Timber.d("onItemsAdded")
+        Timber.d("positionStart:$positionStart")
+        currentPosition = positionStart
+        recycler?.let { removeAndRecycleAllViews(it) }
     }
 
     override fun onScrollStateChanged(state: Int) {
@@ -202,22 +215,20 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         return PointF(0f, y)
     }
 
+    // when font changed
     override fun onItemsChanged(recyclerView: RecyclerView) {
-        // when font changed
         Timber.d("onItemsChanged")
-        removeAllViews()
-        super.onItemsChanged(recyclerView)
+        recycler?.let { detachAndScrapAttachedViews(it) }
     }
 
     override fun onItemsUpdated(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
         Timber.d("onItemsUpdated")
-        super.onItemsUpdated(recyclerView, positionStart, itemCount)
     }
 
+    // when changing order
     override fun onItemsMoved(recyclerView: RecyclerView, from: Int, to: Int, itemCount: Int) {
-        // when changing order
         Timber.d("onItemsMoved")
-        removeAllViews()
-        super.onItemsMoved(recyclerView, from, to, itemCount)
+        currentPosition = 0
+        recycler?.let { detachAndScrapAttachedViews(it) }
     }
 }
