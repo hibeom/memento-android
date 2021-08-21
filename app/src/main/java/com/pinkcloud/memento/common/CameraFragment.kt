@@ -69,7 +69,9 @@ class CameraFragment : Fragment() {
         setButtonListeners()
 
         requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
-            if (it == PackageManager.PERMISSION_GRANTED) startCamera()
+            if (it == PackageManager.PERMISSION_GRANTED) {
+                startCamera()
+            }
             else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
@@ -92,8 +94,21 @@ class CameraFragment : Fragment() {
             startCamera()
         }
         binding.buttonWithoutPhoto.setOnClickListener {
-            saveEmptyTempImage(requireContext())
-            findNavController().navigate(R.id.action_cameraFragment_to_addFragment)
+            progressWithoutPhoto()
+        }
+        binding.buttonNext.setOnClickListener {
+            val dialog = AlertDialogFragment()
+            dialog.content = getString(R.string.ask_progress_without_photo)
+            dialog.setOkClickListener(object :AlertDialogFragment.OkClickListener {
+                override fun onOkClick() {
+                    progressWithoutPhoto()
+                }
+            })
+            dialog.show(parentFragmentManager, tag)
+        }
+        binding.buttonAlbum.setOnClickListener {
+            val bottomDialog = AlbumSheetFragment()
+            bottomDialog.show(parentFragmentManager, tag)
         }
     }
 
@@ -106,13 +121,14 @@ class CameraFragment : Fragment() {
                     startCamera()
                 } else {
                     binding.preview.visibility = View.GONE
-                    binding.groupCameraTools.visibility = View.GONE
                     binding.buttonWithoutPhoto.visibility = View.VISIBLE
                 }
             }
     }
 
     private fun startCamera() {
+        binding.groupCameraTools.visibility = View.VISIBLE
+
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener(Runnable {
@@ -177,4 +193,8 @@ class CameraFragment : Fragment() {
             })
     }
 
+    private fun progressWithoutPhoto() {
+        saveEmptyTempImage(requireContext())
+        findNavController().navigate(R.id.action_cameraFragment_to_addFragment)
+    }
 }

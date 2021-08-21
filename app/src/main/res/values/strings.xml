@@ -24,6 +24,7 @@
     <string name="cd_take_photo">Take Photo</string>
     <string name="cd_button_photo">Fetch Photo</string>
     <string name="cd_reverse_camera">Reverse Camera</string>
+    <string name="cd_album">album</string>
     <string name="search_title">Search</string>
     <string name="ok">OK</string>
     <string name="dialog_no_photo">Add photo before creating a memo.</string>
@@ -45,4 +46,5 @@
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
     <string name="progress_without_photo">Progress without photo</string>
+    <string name="ask_progress_without_photo">Continue without photo?</string>
 </resources>

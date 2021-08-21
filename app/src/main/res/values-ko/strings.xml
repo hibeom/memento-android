@@ -19,6 +19,7 @@
     <string name="cd_take_photo">사진 찍기</string>
     <string name="cd_button_photo">사진 가져오기</string>
     <string name="cd_reverse_camera">카메라 전환하기</string>
+    <string name="cd_album">앨범</string>
     <string name="search_title">검색</string>
     <string name="ok">확인</string>
     <string name="dialog_no_photo">사진을 추가하신 후 메모 생성이 가능합니다.</string>
@@ -40,4 +41,5 @@
     <string name="newest">최신순</string>
     <string name="oldest">오래된순</string>
     <string name="progress_without_photo">사진없이 진행하기</string>
+    <string name="ask_progress_without_photo">사진없이 메모를 등록하시겠습니까?</string>
 </resources>
