@@ -60,6 +60,8 @@ object Constants {
     const val ORDER_BY_PRIORITY = 0
     const val ORDER_BY_NEWEST = 1
     const val ORDER_BY_OLDEST = 2
+
+    const val FLASH_MODE = "flash_mode"
 }
 
 /**
@@ -92,7 +94,8 @@ fun formatMillisToDatetime(timeMillis: Long): String {
 
     // 'when' expression below exists because I can't approach local string resources in Util.kt
     // below codes can be replaced with getting string resources from app context.
-    var amStr = "AM"; var pmStr = "PM"
+    var amStr = "AM";
+    var pmStr = "PM"
     when (lang) {
         Locale.KOREA.language -> {
             amStr = "오전"; pmStr = "오후"
@@ -115,7 +118,13 @@ fun formatMillisToDatetime(timeMillis: Long): String {
  *
  * @return uuid string generated from Worker
  * */
-fun scheduleAlarm(context: Context, memoId: Long, frontCaption: String?, alarmTime: Long, imagePath: String?): String? {
+fun scheduleAlarm(
+    context: Context,
+    memoId: Long,
+    frontCaption: String?,
+    alarmTime: Long,
+    imagePath: String?
+): String? {
     val data = Data.Builder()
     data.putLong(Constants.MEMO_ID, memoId)
     data.putString(Constants.FRONT_CAPTION, frontCaption)

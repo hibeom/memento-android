@@ -2,6 +2,7 @@ package com.pinkcloud.memento.common
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
@@ -10,10 +11,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -25,7 +24,6 @@ import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentCameraBinding
-import com.pinkcloud.memento.home.HomeFragmentDirections
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.saveEmptyTempImage
 import timber.log.Timber
@@ -36,8 +34,10 @@ class CameraFragment : Fragment() {
     private lateinit var binding: FragmentCameraBinding
     private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private lateinit var imageCapture: ImageCapture
+    private var flashMode: Int = ImageCapture.FLASH_MODE_AUTO
 
     private lateinit var requestCameraPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,12 +67,17 @@ class CameraFragment : Fragment() {
         binding = FragmentCameraBinding.inflate(inflater, container, false)
         setRequestPermissionLauncher()
         setButtonListeners()
+        sharedPref = requireContext().getSharedPreferences(
+            requireContext().getString(R.string.preference_file_key),
+            Context.MODE_PRIVATE
+        )
+        flashMode = sharedPref.getInt(Constants.FLASH_MODE, ImageCapture.FLASH_MODE_AUTO)
+        setFlashIcon(flashMode)
 
         requireContext().checkSelfPermission(Manifest.permission.CAMERA).let {
             if (it == PackageManager.PERMISSION_GRANTED) {
                 startCamera()
-            }
-            else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            } else requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
 
         return binding.root
@@ -99,7 +104,7 @@ class CameraFragment : Fragment() {
         binding.buttonNext.setOnClickListener {
             val dialog = AlertDialogFragment()
             dialog.content = getString(R.string.ask_progress_without_photo)
-            dialog.setOkClickListener(object :AlertDialogFragment.OkClickListener {
+            dialog.setOkClickListener(object : AlertDialogFragment.OkClickListener {
                 override fun onOkClick() {
                     progressWithoutPhoto()
                 }
@@ -108,6 +113,15 @@ class CameraFragment : Fragment() {
         }
         binding.buttonAlbum.setOnClickListener {
             findNavController().navigate(R.id.action_cameraFragment_to_albumFragment)
+        }
+        binding.buttonFlash.setOnClickListener {
+            flashMode = flashMode.plus(1).rem(3)
+            with(sharedPref.edit()) {
+                putInt(Constants.FLASH_MODE, flashMode)
+                apply()
+            }
+            setFlashIcon(flashMode)
+            imageCapture.flashMode = flashMode
         }
     }
 
@@ -143,6 +157,7 @@ class CameraFragment : Fragment() {
 
             imageCapture = ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+                .setFlashMode(flashMode)
                 .build()
 
             try {
@@ -195,5 +210,13 @@ class CameraFragment : Fragment() {
     private fun progressWithoutPhoto() {
         saveEmptyTempImage(requireContext())
         findNavController().navigate(R.id.action_cameraFragment_to_addFragment)
+    }
+
+    private fun setFlashIcon(flashMode: Int) {
+        when (flashMode) {
+            ImageCapture.FLASH_MODE_AUTO -> binding.buttonFlash.setImageResource(R.drawable.ic_flash_auto)
+            ImageCapture.FLASH_MODE_ON -> binding.buttonFlash.setImageResource(R.drawable.ic_flash_on)
+            ImageCapture.FLASH_MODE_OFF -> binding.buttonFlash.setImageResource(R.drawable.ic_flash_off)
+        }
     }
 }

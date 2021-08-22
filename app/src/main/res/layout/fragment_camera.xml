@@ -31,9 +31,9 @@
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
             app:layout_constraintDimensionRatio="1"
-            app:layout_constraintTop_toTopOf="@id/guideline_tool_bar"
-            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"/>
+            app:layout_constraintTop_toTopOf="@id/guideline_tool_bar" />
 
         <ImageButton
             android:id="@+id/button_back"
@@ -56,6 +56,18 @@
             android:src="@drawable/ic_notification"
             app:layout_constraintBottom_toBottomOf="@id/guideline_tool_bar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
+        <ImageButton
+            android:id="@+id/button_flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_flash_auto"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_tool_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 

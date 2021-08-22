@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.pinkcloud.memento.utils.Configuration
 import com.pinkcloud.memento.utils.Constants
 
-class SharedViewModel(val mApplication: Application): AndroidViewModel(mApplication) {
+class SharedViewModel(application: Application) : AndroidViewModel(application) {
     val searchText = MutableLiveData("")
 
     val fontSizeLevel = MutableLiveData(Configuration.fontSizeLevel)
@@ -16,8 +16,8 @@ class SharedViewModel(val mApplication: Application): AndroidViewModel(mApplicat
 
     val orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
 
-    private val sharedPref: SharedPreferences = mApplication.getSharedPreferences(
-        mApplication.getString(R.string.preference_file_key),
+    private val sharedPref: SharedPreferences = application.getSharedPreferences(
+        application.getString(R.string.preference_file_key),
         Context.MODE_PRIVATE
     )
 
