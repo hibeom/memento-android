@@ -63,7 +63,8 @@ class AlbumFragment: Fragment() {
 
     private fun registerContentResult() {
         getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let {
+            if (it == null) findNavController().popBackStack()
+            else {
                 binding.textContinue.visibility = View.VISIBLE
                 binding.textPickImage.visibility = View.VISIBLE
 //                val path = getRealPath(requireContext(), it)
