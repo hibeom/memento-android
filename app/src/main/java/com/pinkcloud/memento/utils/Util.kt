@@ -1,29 +1,20 @@
 package com.pinkcloud.memento.utils
 
-import android.content.ContentUris
+import android.content.ClipData
 import android.content.Context
-import android.content.res.Resources
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Typeface
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.media.ExifInterface
-import android.net.Uri
-import android.os.Environment
-import android.provider.DocumentsContract
-import android.provider.MediaStore
-import android.widget.ImageView
-import androidx.annotation.IdRes
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.net.toFile
+import androidx.core.content.FileProvider
+import androidx.core.view.drawToBitmap
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.pinkcloud.memento.R
-import timber.log.Timber
+import com.pinkcloud.memento.common.MemoView
 import java.io.File
 import java.io.FileOutputStream
 import java.time.Instant
@@ -192,6 +183,13 @@ fun saveBitmap(bitmap: Bitmap, dstFile: File) {
     outputStream.close()
 }
 
+fun getTempFile(context: Context): File {
+    return File(
+        context.filesDir,
+        Constants.TEMP_FILE_NAME
+    )
+}
+
 /**
  * delete a saved image when memo is deleting completely.
  *
@@ -293,4 +291,22 @@ fun getTypeface(context: Context): Typeface {
         typeface = context.resources.getFont(it)
     }
     return typeface
+}
+
+fun shareMemo(context: Context, memoView: MemoView) {
+    val bitmap = memoView.drawToBitmap()
+    saveViewImage(context, bitmap)
+    val uriToImage = FileProvider.getUriForFile(
+        context,
+        "com.pinkcloud.memento.fileprovider",
+        getTempFile(context)
+    )
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_STREAM, uriToImage)
+        type = "image/jpeg"
+    }
+    shareIntent.clipData = ClipData.newRawUri("", uriToImage)
+    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    context.startActivity(Intent.createChooser(shareIntent, context.resources.getText(R.string.app_name)))
 }

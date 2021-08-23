@@ -154,6 +154,12 @@ class MemoView @JvmOverloads constructor(
 //        invalidate()
     }
 
+    fun resetVisibility() {
+        if (layoutFrontCard.visibility == View.INVISIBLE) {
+            flip()
+        }
+    }
+
     fun flip() {
         if (layoutFrontCard.visibility == View.VISIBLE) {
             layoutFrontCard.visibility = View.INVISIBLE

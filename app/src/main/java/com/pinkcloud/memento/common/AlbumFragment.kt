@@ -55,7 +55,6 @@ class AlbumFragment: Fragment() {
         }
         binding.textContinue.setOnClickListener {
             saveViewImage(requireContext(), binding.imagePhoto.croppedBitmap.bitmap)
-            // TODO Save Cropped image
             findNavController().navigate(R.id.action_albumFragment_to_addFragment)
         }
         return binding.root

@@ -10,11 +10,12 @@ import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
+import com.pinkcloud.memento.common.MemoView
 import com.pinkcloud.memento.common.OverlapLayoutManager
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 import com.pinkcloud.memento.utils.Constants
-import timber.log.Timber
+import com.pinkcloud.memento.utils.shareMemo
 
 class HomeFragment : Fragment() {
 
@@ -81,27 +82,20 @@ class HomeFragment : Fragment() {
             viewModel.completeMemo(memo)
         }
         binding.buttonShare.setOnClickListener {
-            // TODO share memo by current position in overlap layoutmanager
-            Timber.d("currentPosition:${layoutManager.currentPosition}")
+            val view = layoutManager.getCurrentView()!!
+            val memoView = view.findViewById<MemoView>(R.id.memoView)
+            memoView.resetVisibility()
+            shareMemo(requireContext(), memoView)
         }
         binding.buttonEdit.setOnClickListener {
             val memo = adapter.getMemo(layoutManager.currentPosition)!!
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditFragment(memo.memoId))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToEditFragment(
+                    memo.memoId
+                )
+            )
         }
 
-//        val memoId = arguments?.getLong(Constants.MEMO_ID)
-//        memoId?.let {
-//            viewModel.memos.value?.forEachIndexed { index, memo ->
-//                Timber.d("memoId: ${memo.memoId}")
-//                Timber.d("id from notification: $it")
-//                if (memo.memoId == it) {
-//                    Timber.d("found")
-//                    binding.listMemo.smoothScrollToPosition(index) // doesn't work
-//                }
-//            }
-//        }
-//        layoutManager.currentPosition = 3
-//        adapter.notifyDataSetChanged()
         return binding.root
     }
 

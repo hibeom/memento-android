@@ -44,6 +44,7 @@ class TrashFragment : Fragment() {
 
         viewModel.memos.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            setToolButtonsVisible(it.isNotEmpty())
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -99,6 +100,14 @@ class TrashFragment : Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setToolButtonsVisible(visible: Boolean) {
+        if (visible) {
+            binding.buttonRecovery.visibility = View.VISIBLE
+        } else {
+            binding.buttonRecovery.visibility = View.GONE
         }
     }
 }
