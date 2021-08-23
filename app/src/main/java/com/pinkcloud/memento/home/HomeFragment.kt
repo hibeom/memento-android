@@ -1,15 +1,9 @@
 package com.pinkcloud.memento.home
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
@@ -17,7 +11,6 @@ import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.common.OverlapLayoutManager
-import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 import com.pinkcloud.memento.utils.Constants
@@ -45,15 +38,27 @@ class HomeFragment : Fragment() {
         val application = requireActivity().application
         val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
         val homeViewModelFactory = HomeViewModelFactory(dataSource, application)
+        val memoId = arguments?.getLong(Constants.MEMO_ID)
 
         viewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
         val adapter = MemoAdapter()
         binding.listMemo.adapter = adapter
+        val layoutManager = binding.listMemo.layoutManager as OverlapLayoutManager
 
-        viewModel.memos.observe(viewLifecycleOwner, {
-            adapter.submitList(it)
-            setToolButtonsVisible(it.isNotEmpty())
+        viewModel.memos.observe(viewLifecycleOwner, { memos ->
+            adapter.submitList(memos)
+            setToolButtonsVisible(memos.isNotEmpty())
+
+            memoId?.let {
+                memos.forEachIndexed { index, memo ->
+                    if (memo.memoId == it) {
+                        layoutManager.currentPosition = index
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                arguments = null
+            }
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -71,22 +76,32 @@ class HomeFragment : Fragment() {
             viewModel.orderBy.value = it
         })
 
-        val layoutmanager = binding.listMemo.layoutManager as OverlapLayoutManager
         binding.buttonTrash.setOnClickListener {
-            Timber.d("currentPosition:${layoutmanager.currentPosition}")
-            val memo = adapter.getMemo(layoutmanager.currentPosition)
-            memo?.let {
-                viewModel.completeMemo(it)
-            }
+            val memo = adapter.getMemo(layoutManager.currentPosition)!!
+            viewModel.completeMemo(memo)
         }
         binding.buttonShare.setOnClickListener {
             // TODO share memo by current position in overlap layoutmanager
-            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+            Timber.d("currentPosition:${layoutManager.currentPosition}")
         }
         binding.buttonEdit.setOnClickListener {
-            // TODO edit memo by current position in overlap layoutmanager
-            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+            val memo = adapter.getMemo(layoutManager.currentPosition)!!
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToEditFragment(memo.memoId))
         }
+
+//        val memoId = arguments?.getLong(Constants.MEMO_ID)
+//        memoId?.let {
+//            viewModel.memos.value?.forEachIndexed { index, memo ->
+//                Timber.d("memoId: ${memo.memoId}")
+//                Timber.d("id from notification: $it")
+//                if (memo.memoId == it) {
+//                    Timber.d("found")
+//                    binding.listMemo.smoothScrollToPosition(index) // doesn't work
+//                }
+//            }
+//        }
+//        layoutManager.currentPosition = 3
+//        adapter.notifyDataSetChanged()
         return binding.root
     }
 
@@ -100,22 +115,6 @@ class HomeFragment : Fragment() {
             binding.buttonShare.visibility = View.GONE
             binding.buttonTrash.visibility = View.GONE
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // TODO scroll to position from navigation deep link
-        val memoId = arguments?.getLong(Constants.MEMO_ID)
-        memoId?.let {
-            viewModel.memos.value?.forEachIndexed { index, memo ->
-                Timber.d("memoId: ${memo.memoId}")
-                Timber.d("id from notification: $it")
-                if (memo.memoId == it) {
-                    Timber.d("found")
-                    binding.listMemo.smoothScrollToPosition(index) // doesn't work
-                }
-            }
-        }
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {

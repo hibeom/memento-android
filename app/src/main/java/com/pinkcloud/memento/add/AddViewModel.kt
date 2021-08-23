@@ -14,7 +14,7 @@ import timber.log.Timber
 class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     AndroidViewModel(application) {
 
-    var isInsertCompleted = MutableLiveData<Boolean>(false)
+    var isInsertCompleted = MutableLiveData(false)
 
     fun insertMemo(
         frontCaption: String?,

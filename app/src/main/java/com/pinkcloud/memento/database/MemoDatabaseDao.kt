@@ -15,6 +15,9 @@ interface MemoDatabaseDao {
     @Delete
     suspend fun delete(memo: Memo)
 
+    @Query("SELECT * FROM memo_table WHERE memo_id = :memoId")
+    fun getMemo(memoId: Long): LiveData<Memo>
+
     // Query dao with returning LiveData is suspend fun as far as I know.
     @Query("SELECT * FROM memo_table WHERE is_completed = 0 ORDER BY priority DESC")
     fun getOngoingMemos(): LiveData<List<Memo>>

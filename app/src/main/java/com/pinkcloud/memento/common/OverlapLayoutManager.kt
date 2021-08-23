@@ -26,6 +26,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         if (state.itemCount <= 0) return
         if (childCount > 0) return
         Timber.d("relayout children")
+        Timber.d("current position: $currentPosition")
         currentPosition = min(currentPosition, state.itemCount - 1)
         this.recycler = recycler
         this.state = state
@@ -155,6 +156,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         Timber.d("onItemsRemoved")
         Timber.d("positionStart:$positionStart")
         currentPosition = min(positionStart, this.itemCount - 1)
+        if (this.itemCount <= 0) currentPosition = 0
         recycler?.let { removeAndRecycleAllViews(it) }
     }
 

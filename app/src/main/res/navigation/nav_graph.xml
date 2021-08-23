@@ -20,6 +20,10 @@
         <action
             android:id="@+id/action_homeFragment_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editFragment"
+            app:destination="@id/editFragment"
+            app:popUpTo="@id/homeFragment"/>
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -60,5 +64,13 @@
             android:id="@+id/action_albumFragment_to_addFragment"
             app:destination="@id/addFragment"
             app:popUpTo="@id/homeFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.pinkcloud.memento.edit.EditFragment"
+        android:label="EditFragment">
+        <argument
+            android:name="memoId"
+            app:argType="long"/>
     </fragment>
 </navigation>
