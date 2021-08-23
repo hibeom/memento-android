@@ -23,7 +23,7 @@ import com.pinkcloud.memento.databinding.FragmentHomeBinding
 import com.pinkcloud.memento.utils.Constants
 import timber.log.Timber
 
-class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
         viewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
-        val adapter = MemoAdapter(this)
+        val adapter = MemoAdapter()
         binding.listMemo.adapter = adapter
 
         viewModel.memos.observe(viewLifecycleOwner, {
@@ -73,8 +73,11 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
         val layoutmanager = binding.listMemo.layoutManager as OverlapLayoutManager
         binding.buttonTrash.setOnClickListener {
-            // TODO complete memo by current position in overlap layoutmanager
             Timber.d("currentPosition:${layoutmanager.currentPosition}")
+            val memo = adapter.getMemo(layoutmanager.currentPosition)
+            memo?.let {
+                viewModel.completeMemo(it)
+            }
         }
         binding.buttonShare.setOnClickListener {
             // TODO share memo by current position in overlap layoutmanager
@@ -147,11 +150,6 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDoubleTapItem(memo: Memo) {
-        memo.isCompleted = true
-        viewModel.completeMemo(memo)
     }
 
     private fun startCamera() {

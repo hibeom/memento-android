@@ -154,7 +154,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         // when search text changed or complete memo
         Timber.d("onItemsRemoved")
         Timber.d("positionStart:$positionStart")
-        currentPosition = positionStart
+        currentPosition = min(positionStart, this.itemCount - 1)
         recycler?.let { removeAndRecycleAllViews(it) }
     }
 
@@ -240,6 +240,6 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
     override fun onItemsMoved(recyclerView: RecyclerView, from: Int, to: Int, itemCount: Int) {
         Timber.d("onItemsMoved")
         currentPosition = 0
-        recycler?.let { detachAndScrapAttachedViews(it) }
+        recycler?.let { removeAndRecycleAllViews(it) }
     }
 }

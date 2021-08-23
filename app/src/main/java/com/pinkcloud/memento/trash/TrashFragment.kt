@@ -11,11 +11,13 @@ import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
+import com.pinkcloud.memento.common.OverlapLayoutManager
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
+import timber.log.Timber
 
-class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
+class TrashFragment : Fragment() {
 
     private var _binding: FragmentTrashBinding? = null
 
@@ -37,7 +39,7 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
         viewModel = ViewModelProvider(this, trashViewModelFactory).get(TrashViewModel::class.java)
 
-        val adapter = MemoAdapter(this)
+        val adapter = MemoAdapter()
         binding.listTrash.adapter = adapter
 
         viewModel.memos.observe(viewLifecycleOwner, Observer {
@@ -58,6 +60,15 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         sharedViewModel.orderBy.observe(viewLifecycleOwner, {
             viewModel.orderBy.value = it
         })
+
+        val layoutmanager = binding.listTrash.layoutManager as OverlapLayoutManager
+        binding.buttonRecovery.setOnClickListener {
+            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+            val memo = adapter.getMemo(layoutmanager.currentPosition)
+            memo?.let {
+                viewModel.restoreMemo(memo)
+            }
+        }
         return binding.root
     }
 
@@ -89,10 +100,5 @@ class TrashFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDoubleTapItem(memo: Memo) {
-        memo.isCompleted = false
-        viewModel.restoreMemo(memo)
     }
 }
