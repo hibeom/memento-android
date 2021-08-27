@@ -17,6 +17,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
     }
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
+        Timber.d("onLayoutChildren")
         detachAndScrapAttachedViews(recycler)
         if (state.itemCount <= 0) return
         fill(recycler)
@@ -66,6 +67,10 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
                 // TODO
                 // addView 하고 어느 순간부터 인지. onLayoutChildren 을 호출하면서,
                 // recyclerview 가 다시 세팅된다.
+                // TODO 뷰가 많아서 onLayoutChildren 을 호출하는게 아닐까?
+                // 아닌가? addView 할 때마다 호출하는 건가? 그건 아닐거 같은데...상식적으로 생각했을때. 그랬다면..무한 루프 돌겠지..onlayout -> addview -> onlayout -> ...
+                // 확인해보니 addView 호출 시, onLayoutChildren 을 호출하는 것은 아니다.
+                // 그런데 addView 가 여러차례 호출될 시, onLayoutChildren 이 추가적으로 호출된다..
                 measureChildWithMargins(view, 0, 0)
                 val left = paddingLeft
                 val right = left + view.measuredWidth
