@@ -28,15 +28,18 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         if (childCount > 0) {
             val topChild = getChildAt(childCount - 1)!!
             val topChildPosition = getPosition(topChild)
+            currentPosition = topChildPosition
             val bottomChild = getChildAt(0)!! // child at bottom
             val bottomChildPosition = getPosition(bottomChild)
             startPosition = bottomChildPosition + 1
             endPosition = min(topChildPosition + 1, startPosition + 1)
             //        detachAndScrapAttachedViews(recycler)
         }
-        for (i in startPosition until endPosition + 1) {
+        for (i in startPosition until state.itemCount) {
             // TODO 정렬 순서가 바뀌거나...삭제, 혹은 notifyDatasetChange 호출 시...detachAndScrap 해주어야?
             // 다른 방법은?
+            if (i > endPosition) break
+
             val view = recycler.getViewForPosition(i)
             addView(view, 0) // stack reverse
             layoutView(view)
@@ -132,9 +135,15 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
     }
 
     override fun onItemsRemoved(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
+        // when search text changed or complete memo
         Timber.d("onItemsRemoved")
         Timber.d("positionStart:$positionStart") // removed item position
         super.onItemsRemoved(recyclerView, positionStart, itemCount)
+    }
+
+    override fun onItemsAdded(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
+        // when search text changed or add memo
+        super.onItemsAdded(recyclerView, positionStart, itemCount)
     }
 
     override fun onScrollStateChanged(state: Int) {
@@ -191,5 +200,24 @@ class OverlapLayoutManager : RecyclerView.LayoutManager(), RecyclerView.SmoothSc
         }
         // TODO y 이가 뭘 의미하는지 모르겠다.
         return PointF(0f, y)
+    }
+
+    override fun onItemsChanged(recyclerView: RecyclerView) {
+        // when font changed
+        Timber.d("onItemsChanged")
+        removeAllViews()
+        super.onItemsChanged(recyclerView)
+    }
+
+    override fun onItemsUpdated(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
+        Timber.d("onItemsUpdated")
+        super.onItemsUpdated(recyclerView, positionStart, itemCount)
+    }
+
+    override fun onItemsMoved(recyclerView: RecyclerView, from: Int, to: Int, itemCount: Int) {
+        // when changing order
+        Timber.d("onItemsMoved")
+        removeAllViews()
+        super.onItemsMoved(recyclerView, from, to, itemCount)
     }
 }
