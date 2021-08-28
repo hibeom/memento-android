@@ -63,7 +63,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
                 // addView
                 currentPosition -= 1
                 val view = recycler.getViewForPosition(currentPosition)
-                addView(view, 0)
+                addView(view )
                 // TODO
                 // addView 하고 어느 순간부터 인지. onLayoutChildren 을 호출하면서,
                 // recyclerview 가 다시 세팅된다.
