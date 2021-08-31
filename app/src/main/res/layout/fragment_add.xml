@@ -9,11 +9,10 @@
             type="com.pinkcloud.memento.add.AddViewModel" />
     </data>
 
-    <com.pinkcloud.memento.common.SuperMotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".add.AddFragment"
-        app:layoutDescription="@xml/fragment_add_scene">
+        tools:context=".add.AddFragment">
 
         <com.pinkcloud.memento.common.MemoView
             android:id="@+id/memoView"
@@ -29,14 +28,10 @@
             android:id="@+id/button_flip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/card_content_margin"
             android:background="@color/transparent"
             android:src="@drawable/ic_flip"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_goneMarginEnd="@dimen/search_margin"
-            android:layout_marginBottom="@dimen/search_margin"
-            app:tint="@color/black" />
+            app:layout_constraintBottom_toTopOf="@id/memoView"
+            app:layout_constraintEnd_toEndOf="@id/memoView"/>
 
-    </com.pinkcloud.memento.common.SuperMotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

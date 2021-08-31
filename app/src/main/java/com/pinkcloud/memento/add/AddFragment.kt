@@ -47,7 +47,6 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.memoView.cameraDistance = 8000 * requireContext().resources.displayMetrics.density
         binding.buttonFlip.setOnClickListener {
             binding.memoView.flip()
         }
@@ -67,37 +66,37 @@ class AddFragment : Fragment() {
             binding.memoView.setCaptionTextStyle()
         })
 
-        val motionLayout = binding.root as MotionLayout
-        var isFlipped = false
-        motionLayout.setTransitionListener(object: TransitionAdapter() {
-            override fun onTransitionStarted(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int
-            ) {
-                when (startId) {
-                    R.id.rest -> isFlipped = false
-                }
-                super.onTransitionStarted(motionLayout, startId, endId)
-            }
-
-            override fun onTransitionChange(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int,
-                progress: Float
-            ) {
-                when (startId) {
-                    R.id.onFlip -> {
-                        if (!isFlipped && progress >= 0.05f) {
-                            binding.memoView.flip()
-                            isFlipped = true
-                        }
-                    }
-                }
-                super.onTransitionChange(motionLayout, startId, endId, progress)
-            }
-        })
+//        val motionLayout = binding.root as MotionLayout
+//        var isFlipped = false
+//        motionLayout.setTransitionListener(object: TransitionAdapter() {
+//            override fun onTransitionStarted(
+//                motionLayout: MotionLayout?,
+//                startId: Int,
+//                endId: Int
+//            ) {
+//                when (startId) {
+//                    R.id.rest -> isFlipped = false
+//                }
+//                super.onTransitionStarted(motionLayout, startId, endId)
+//            }
+//
+//            override fun onTransitionChange(
+//                motionLayout: MotionLayout?,
+//                startId: Int,
+//                endId: Int,
+//                progress: Float
+//            ) {
+//                when (startId) {
+//                    R.id.onFlip -> {
+//                        if (!isFlipped && progress >= 0.05f) {
+//                            binding.memoView.flip()
+//                            isFlipped = true
+//                        }
+//                    }
+//                }
+//                super.onTransitionChange(motionLayout, startId, endId, progress)
+//            }
+//        })
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

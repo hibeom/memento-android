@@ -3,12 +3,16 @@ package com.pinkcloud.memento.common
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.pinkcloud.memento.R
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.databinding.ListItemMemoBinding
 import com.pinkcloud.memento.utils.DoubleClickListener
+import timber.log.Timber
 
 class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback()) {
 
@@ -31,6 +35,7 @@ class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): Lis
             binding.memoView.frontCaption = item.frontCaption
             binding.memoView.backCaption = item.backCaption
             binding.memoView.priority = item.priority
+            binding.memoView.isAlarmEnabled = item.isAlarmEnabled
             binding.memoView.alarmTime = item.alarmTime
             binding.memoView.setOnClickListener(object: DoubleClickListener() {
                 override fun onDoubleClick(v: View?) {
@@ -38,6 +43,9 @@ class MemoAdapter(private val doubleTapItemListener: DoubleTapItemListener): Lis
                 }
             })
             binding.memoView.setCaptionTextStyle()
+            binding.buttonFlip.setOnClickListener {
+                binding.memoView.flip()
+            }
             binding.executePendingBindings()
         }
 

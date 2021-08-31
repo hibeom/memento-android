@@ -46,11 +46,14 @@
 
     <Transition
         app:constraintSetEnd="@id/triggerFlip"
-        app:constraintSetStart="@id/rest">
-        <OnSwipe
-            app:dragDirection="dragRight"
-            app:touchAnchorId="@id/memoView"
-            app:touchRegionId="@id/memoView" />
+        app:constraintSetStart="@id/rest"
+        app:duration="300">
+<!--        <OnSwipe-->
+<!--            app:dragDirection="dragRight"-->
+<!--            app:touchAnchorId="@id/memoView"-->
+<!--            app:touchRegionId="@id/memoView" />-->
+        <OnClick
+            app:targetId="@id/button_flip" />
         <KeyFrameSet>
             <KeyAttribute
                 app:framePosition="25"

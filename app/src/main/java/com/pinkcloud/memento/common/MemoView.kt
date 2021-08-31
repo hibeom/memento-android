@@ -18,6 +18,7 @@ import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
 import com.pinkcloud.memento.utils.getMeasuredFontSize
 import com.pinkcloud.memento.utils.getTypeface
+import timber.log.Timber
 
 class MemoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -104,6 +105,7 @@ class MemoView @JvmOverloads constructor(
                 recycle()
             }
         }
+        cameraDistance = 8000 * resources.displayMetrics.density
     }
 
     fun setCaptionTextStyle() {
@@ -135,16 +137,16 @@ class MemoView @JvmOverloads constructor(
             editBackCaption.hint = ""
         }
 
-        enableFront()
         if (!childClickable) {
             editFrontCaption.movementMethod = null // To prevent intercepting key event
             editFrontCaption.keyListener = null // To prevent intercepting key event
             editBackCaption.movementMethod = null
             editBackCaption.keyListener = null
-            sliderPriority.isClickable = false
+            sliderPriority.isEnabled = false
             textAlarmState.isClickable = false
             textAlarmTime.isClickable = false
         }
+        if (childClickable) enableFront()
     }
 
     override fun onPickDatetime(millis: Long) {
@@ -156,11 +158,11 @@ class MemoView @JvmOverloads constructor(
         if (layoutFrontCard.visibility == View.VISIBLE) {
             layoutFrontCard.visibility = View.INVISIBLE
             layoutBackCard.visibility = View.VISIBLE
-            disableFront()
+            if (childClickable) disableFront()
         } else {
             layoutFrontCard.visibility = View.VISIBLE
             layoutBackCard.visibility = View.INVISIBLE
-            enableFront()
+            if (childClickable) enableFront()
         }
     }
 
