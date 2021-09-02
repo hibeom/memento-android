@@ -43,6 +43,29 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
     // ------------ addView position 1
     // ------------ addView position 2                   1st child
     // ------------ addView position 3 (startPosition) , 0th child
+
+    // There was a problem adding topChild above current shown view
+    // If you encounter the same problem, check the code below. You can address this by changing children only when scrolling down if topDiff > 0
+    //    val topDiff = topChild.top
+    //    var dyRemain = dy
+    //
+    //    if (topDiff <= -dy && topDiff >= 0) {
+    //        dyRemain = dy + topDiff
+    //        topChild.offsetTopAndBottom(topDiff)
+    //        Timber.d("dy:$dy, dyRemain:$dyRemain, topDiff:$topDiff")
+    //        if (currentPosition == 0) {
+    //            return -topDiff
+    //        }
+    //
+    //        if (currentPosition < state.itemCount - 1) {
+    //            val bottomChild = getChildAt(0)
+    //            bottomChild?.let {
+    //                removeView(bottomChild)
+    //                recycler.recycleView(bottomChild)
+    //            }
+    //        }
+    //        currentPosition -= 1
+    //        ...
     override fun scrollVerticallyBy(
         dy: Int,
         recycler: RecyclerView.Recycler,
@@ -181,10 +204,8 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         val childHeight = topChild.measuredHeight
         var dy = 0
         if (topChildPosition < position) {
-            // 스크롤 업
             dy = (position - topChildPosition - 1) * childHeight + topChild.bottom
         } else {
-            // 스크롤 다운
             dy = (topChildPosition - position) * childHeight + -topChild.top
             dy *= -1
         }
