@@ -16,9 +16,11 @@ import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
+import com.pinkcloud.memento.common.OverlapLayoutManager
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
+import com.pinkcloud.memento.utils.Constants
 import timber.log.Timber
 
 class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
@@ -51,6 +53,7 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
 
         viewModel.memos.observe(viewLifecycleOwner, {
             adapter.submitList(it)
+            setToolButtonsVisible(it.isNotEmpty())
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -67,12 +70,48 @@ class HomeFragment : Fragment(), MemoAdapter.DoubleTapItemListener {
         sharedViewModel.orderBy.observe(viewLifecycleOwner, {
             viewModel.orderBy.value = it
         })
+
+        val layoutmanager = binding.listMemo.layoutManager as OverlapLayoutManager
+        binding.buttonTrash.setOnClickListener {
+            // TODO complete memo by current position in overlap layoutmanager
+            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+        }
+        binding.buttonShare.setOnClickListener {
+            // TODO share memo by current position in overlap layoutmanager
+            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+        }
+        binding.buttonEdit.setOnClickListener {
+            // TODO edit memo by current position in overlap layoutmanager
+            Timber.d("currentPosition:${layoutmanager.currentPosition}")
+        }
         return binding.root
+    }
+
+    private fun setToolButtonsVisible(visible: Boolean) {
+        if (visible) {
+            binding.buttonEdit.visibility = View.VISIBLE
+            binding.buttonShare.visibility = View.VISIBLE
+            binding.buttonTrash.visibility = View.VISIBLE
+        } else {
+            binding.buttonEdit.visibility = View.GONE
+            binding.buttonShare.visibility = View.GONE
+            binding.buttonTrash.visibility = View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // TODO scroll to position from navigation deep link
-//        binding.listMemo.smoothScrollToPosition(4)
+        val memoId = arguments?.getLong(Constants.MEMO_ID)
+        memoId?.let {
+            viewModel.memos.value?.forEachIndexed { index, memo ->
+                Timber.d("memoId: ${memo.memoId}")
+                Timber.d("id from notification: $it")
+                if (memo.memoId == it) {
+                    Timber.d("found")
+                    binding.listMemo.smoothScrollToPosition(index) // doesn't work
+                }
+            }
+        }
         super.onViewCreated(view, savedInstanceState)
     }
 

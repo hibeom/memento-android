@@ -1,12 +1,11 @@
 package com.pinkcloud.memento.common
 
-import android.graphics.PointF
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import timber.log.Timber
+import java.lang.Integer.max
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -25,19 +24,6 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         if (state.itemCount <= 0) return
-//        var startPosition = 0
-//        var endPosition = startPosition + 1
-//        if (childCount > 0) {
-//            val topChild = getChildAt(childCount - 1)!!
-//            val topChildPosition = getPosition(topChild)
-//            val bottomChild = getChildAt(0)!! // child at bottom
-//            val bottomChildPosition = getPosition(bottomChild)
-//            startPosition = bottomChildPosition + 1
-//            endPosition = min(topChildPosition + 1, startPosition + 1)
-//            //        detachAndScrapAttachedViews(recycler)
-//        }
-//        Timber.d("startPosition:$startPosition")
-//        Timber.d("itemCount:${state.itemCount}")
         if (childCount > 0) return
         Timber.d("relayout children")
         currentPosition = min(currentPosition, state.itemCount - 1)
@@ -64,6 +50,8 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
     ): Int {
         if (childCount <= 0) return 0
         var topChild = getChildAt(childCount - 1)!!
+//        var topChildPosition = getPosition(topChild)
+//        Timber.d("top child position: $topChildPosition")
 
         if (dy >= 0) {
             /** scroll up*/
@@ -72,7 +60,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
             val bottomDiff = topChild.bottom
             var dyRemain = dy
-            if (bottomDiff < dy) {
+            if (bottomDiff <= dy) {
                 dyRemain = dy - bottomDiff
                 topChild.offsetTopAndBottom(-bottomDiff)
 
@@ -107,10 +95,6 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
                         removeView(bottomChild)
                         recycler.recycleView(bottomChild)
                     }
-                }
-
-                if (currentPosition == 0) {
-                    return topDiff
                 }
                 currentPosition -= 1
 
@@ -207,10 +191,12 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
         val step = if (dy >= 0) 20 else -20
         GlobalScope.launch(Dispatchers.Main) {
-            while (abs(dy) >= abs(step)) {
+            while (abs(dy) > 0) {
                 delay(1)
-                val remain = scrollVerticallyBy(step, recycler, state)
-                dy += -remain
+                val targetDy = if (step > 0) min(dy, step) else max(dy, step)
+                val actualDy = scrollVerticallyBy(targetDy, recycler, state)
+                if (actualDy == 0) break
+                dy += -actualDy
             }
         }
     }
