@@ -49,4 +49,6 @@
     <string name="ask_progress_without_photo">Continue without photo?</string>
     <string name="continue_with_this_photo">continue with this photo</string>
     <string name="pick_another_photo">pick another photo</string>
+    <string name="front_caption_is_full">There is no space. Use the back sheet.</string>
+    <string name="back_caption_is_full">There is no space.</string>
 </resources>

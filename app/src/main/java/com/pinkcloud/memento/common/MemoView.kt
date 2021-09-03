@@ -7,8 +7,11 @@ import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doBeforeTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -108,6 +111,18 @@ class MemoView @JvmOverloads constructor(
         cameraDistance = 8000 * resources.displayMetrics.density
     }
 
+    /**
+     * limit max line of front and back caption EditText view
+     * */
+    private var maxFrontLines = 4
+    private var maxBackLines = 10
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        maxFrontLines = editFrontCaption.measuredHeight/editFrontCaption.lineHeight
+        maxBackLines = editBackCaption.measuredHeight/editBackCaption.lineHeight
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
     fun setCaptionTextStyle() {
         editFrontCaption.textSize = getMeasuredFontSize()
         editBackCaption.textSize = getMeasuredFontSize()
@@ -146,7 +161,23 @@ class MemoView @JvmOverloads constructor(
             textAlarmState.isClickable = false
             textAlarmTime.isClickable = false
         }
-        if (childClickable) enableFront()
+        if (childClickable) {
+            enableFront()
+            editFrontCaption.doAfterTextChanged {
+                val lineCount = editFrontCaption.lineCount
+                if (lineCount > maxFrontLines) {
+                    editFrontCaption.setText(it?.substring(0, it.length-1))
+                    Toast.makeText(context, R.string.front_caption_is_full, Toast.LENGTH_SHORT).show()
+                }
+            }
+            editBackCaption.doAfterTextChanged {
+                val lineCount = editBackCaption.lineCount
+                if (lineCount > maxBackLines) {
+                    editBackCaption.setText(it?.substring(0, it.length-1))
+                    Toast.makeText(context, R.string.back_caption_is_full, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun onPickDatetime(millis: Long) {
