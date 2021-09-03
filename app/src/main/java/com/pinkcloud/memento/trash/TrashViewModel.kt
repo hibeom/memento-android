@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
 import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.koreanmatcher.KoreanTextMatcher
 import com.pinkcloud.memento.utils.scheduleAlarm
 import kotlinx.coroutines.launch
 
@@ -41,7 +42,12 @@ class TrashViewModel(val database: MemoDatabaseDao, application: Application) : 
 
     fun getFilteredMemos(text: String): List<Memo>? {
         return memos.value?.filter {
-            it.frontCaption?.contains(text) ?: false
+            val lowerText = text.lowercase()
+            val frontResult = it.frontCaption?.lowercase()?.contains(lowerText) ?: false
+            val backResult = it.backCaption?.lowercase()?.contains(lowerText) ?: false
+            val frontResultKorean = KoreanTextMatcher.match(it.frontCaption, lowerText).success()
+            val backResultKorean = KoreanTextMatcher.match(it.backCaption, lowerText).success()
+            frontResult || backResult || frontResultKorean || backResultKorean
         }
     }
 }
