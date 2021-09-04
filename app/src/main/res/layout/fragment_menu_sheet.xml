@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:theme="@style/Theme.Memento"
         android:background="@drawable/half_round_background"
         android:padding="@dimen/tools_content_padding">
 
