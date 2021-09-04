@@ -25,6 +25,8 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_front_caption"
             style="@style/EditCaption"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
@@ -44,6 +46,8 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_back_caption"
             style="@style/EditCaption"
+            android:textColorHint="@color/gray"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="@dimen/card_content_margin"
@@ -65,6 +69,7 @@
             <TextView
                 android:id="@+id/text_priority_title"
                 style="@style/TextTitle"
+                android:textColor="@color/gray_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/priority"
@@ -94,6 +99,7 @@
             <TextView
                 android:id="@+id/text_alarm_title"
                 style="@style/TextTitle"
+                android:textColor="@color/gray_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/alarm"
@@ -114,6 +120,7 @@
             <TextView
                 android:id="@+id/text_alarm_time"
                 style="@style/TextTitle"
+                android:textColor="@color/gray_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="5dp"

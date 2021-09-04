@@ -125,11 +125,11 @@ class TrashFragment : Fragment() {
         lifecycleScope.launch {
             whenResumed {
                 binding.textTrashGuide.apply {
-                    animate().alpha(1f).setDuration(1000).setListener(null)
+                    animate().alpha(1f).setDuration(2000).setListener(null)
                 }
                 delay(4000)
                 binding.textTrashGuide.apply {
-                    animate().alpha(0f).setDuration(1000).setListener(null)
+                    animate().alpha(0f).setDuration(2000).setListener(null)
                 }
             }
         }

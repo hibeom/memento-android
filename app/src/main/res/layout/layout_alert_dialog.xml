@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/title_text"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:text="abc"
             android:layout_marginVertical="@dimen/dialog_content_margin"
             app:layout_constraintStart_toStartOf="parent"

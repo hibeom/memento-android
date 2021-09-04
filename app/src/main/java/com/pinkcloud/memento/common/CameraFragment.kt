@@ -41,7 +41,7 @@ class CameraFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        requireActivity().window.statusBarColor = Color.BLACK
+        requireActivity().window.statusBarColor = requireContext().getColor(R.color.background_dark)
         (requireActivity() as MainActivity).hideActionbar()
     }
 

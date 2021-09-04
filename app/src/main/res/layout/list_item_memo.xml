@@ -25,7 +25,7 @@
             android:id="@+id/button_flip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/transparent"
             android:src="@drawable/ic_flip"
             app:layout_constraintBottom_toTopOf="@id/memoView"
             app:layout_constraintEnd_toEndOf="@id/memoView"/>
