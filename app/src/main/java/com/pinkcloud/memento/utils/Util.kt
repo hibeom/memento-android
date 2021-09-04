@@ -237,10 +237,10 @@ fun getMeasuredFontSize(): Float {
             18 + Configuration.fontSizeLevel
         }
         Constants.FONT_NANUM_BRUSH -> {
-            23 + Configuration.fontSizeLevel
+            25 + Configuration.fontSizeLevel
         }
         Constants.FONT_NANUM_PEN -> {
-            22 + Configuration.fontSizeLevel
+            24 + Configuration.fontSizeLevel
         }
         else -> {
             16 + Configuration.fontSizeLevel

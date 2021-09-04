@@ -38,7 +38,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun enlargeFont() {
-        if (fontSizeLevel.value == 4) return
+        if (fontSizeLevel.value == 6) return
         val newVal = fontSizeLevel.value!!.plus(1)
         Configuration.fontSizeLevel = newVal
         fontSizeLevel.value = newVal

@@ -16,7 +16,9 @@
             android:id="@+id/list_trash"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager=".common.OverlapLayoutManager" />
+            app:layoutManager=".common.OverlapLayoutManager"
+            tools:layout_editor_absoluteX="-10dp"
+            tools:layout_editor_absoluteY="0dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_guideline"
@@ -26,6 +28,18 @@
             app:layout_constraintGuide_percent="0.9" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_trash"
+            android:tint="@color/red_600"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/bottom_tool_margin"
+            android:padding="@dimen/card_content_margin"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/button_recovery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +47,21 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_trash_guide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            style="@style/TextButton"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            app:layout_constraintWidth_percent="0.8"
+            android:text="@string/trash_guide"
+            android:alpha="0"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

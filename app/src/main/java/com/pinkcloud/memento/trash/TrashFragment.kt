@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenResumed
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
@@ -15,6 +17,8 @@ import com.pinkcloud.memento.common.OverlapLayoutManager
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class TrashFragment : Fragment() {
@@ -64,12 +68,18 @@ class TrashFragment : Fragment() {
 
         val layoutmanager = binding.listTrash.layoutManager as OverlapLayoutManager
         binding.buttonRecovery.setOnClickListener {
-            Timber.d("currentPosition:${layoutmanager.currentPosition}")
             val memo = adapter.getMemo(layoutmanager.currentPosition)
             memo?.let {
                 viewModel.restoreMemo(memo)
             }
         }
+        binding.buttonDelete.setOnClickListener {
+            val memo = adapter.getMemo(layoutmanager.currentPosition)
+            memo?.let {
+                viewModel.deleteMemo(memo)
+            }
+        }
+        setGuideTextAnimation()
         return binding.root
     }
 
@@ -108,6 +118,20 @@ class TrashFragment : Fragment() {
             binding.buttonRecovery.visibility = View.VISIBLE
         } else {
             binding.buttonRecovery.visibility = View.GONE
+        }
+    }
+
+    private fun setGuideTextAnimation() {
+        lifecycleScope.launch {
+            whenResumed {
+                binding.textTrashGuide.apply {
+                    animate().alpha(1f).setDuration(1000).setListener(null)
+                }
+                delay(4000)
+                binding.textTrashGuide.apply {
+                    animate().alpha(0f).setDuration(1000).setListener(null)
+                }
+            }
         }
     }
 }

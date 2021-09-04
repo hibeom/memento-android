@@ -36,6 +36,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/button_edit"
+            android:layout_marginEnd="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -60,6 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_edit"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:layout_marginStart="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
