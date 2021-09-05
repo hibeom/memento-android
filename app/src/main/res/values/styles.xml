@@ -59,7 +59,7 @@
     <style name="MemoView">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
-        <item name="layout_constraintDimensionRatio">3:4</item>
+        <item name="layout_constraintDimensionRatio">3:3.7</item>
         <item name="layout_constraintWidth_percent">0.93</item>
     </style>
 

@@ -3,8 +3,10 @@ package com.pinkcloud.memento.add
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.fragment.app.Fragment
@@ -18,6 +20,8 @@ import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.hideKeyboard
+import timber.log.Timber
 import java.io.File
 
 class AddFragment : Fragment() {
@@ -39,6 +43,8 @@ class AddFragment : Fragment() {
         val addViewModelFactory = AddViewModelFactory(dataSource, application)
 
         viewModel = ViewModelProvider(this, addViewModelFactory).get(AddViewModel::class.java)
+
+        setKeyboardHideAction()
 
         return binding.root
 
@@ -128,6 +134,17 @@ class AddFragment : Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setKeyboardHideAction() {
+        binding.root.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    hideKeyboard(requireContext(), v)
+                }
+            }
+            true
         }
     }
 }

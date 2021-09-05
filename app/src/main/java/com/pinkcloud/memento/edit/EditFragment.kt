@@ -3,6 +3,8 @@ package com.pinkcloud.memento.edit
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentEditBinding
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.cancelAlarm
+import com.pinkcloud.memento.utils.hideKeyboard
 import com.pinkcloud.memento.utils.scheduleAlarm
 import java.io.File
 
@@ -65,6 +68,7 @@ class EditFragment : Fragment() {
         sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
             binding.memoView.setCaptionTextStyle()
         })
+        setKeyboardHideAction()
 
         return binding.root
     }
@@ -89,15 +93,13 @@ class EditFragment : Fragment() {
                     memo.priority = priority
                     if (isAlarmEnabled) {
                         if (memo.isAlarmEnabled) {
-                            // 알람 켜져있었고, 켜진경우 : 기존 워크 삭제하고 새로 생성
-                            cancelAlarm(context, memo.alarmId!!)
+                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
                         }
                         val alarmId = scheduleAlarm(context, memo.memoId, frontCaption, alarmTime, imagePath)
                         memo.alarmId = alarmId
                     } else {
                         if (memo.isAlarmEnabled) {
-                            // 알람 켜져있었는데, 꺼진경우 : alarmId 로 기존 워크 삭제
-                            cancelAlarm(context, memo.alarmId!!)
+                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
                             memo.alarmId = null
                         }
                     }
@@ -113,6 +115,17 @@ class EditFragment : Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setKeyboardHideAction() {
+        binding.root.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    hideKeyboard(requireContext(), v)
+                }
+            }
+            true
         }
     }
 }

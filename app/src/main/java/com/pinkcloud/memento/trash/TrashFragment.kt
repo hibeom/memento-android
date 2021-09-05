@@ -116,8 +116,10 @@ class TrashFragment : Fragment() {
     private fun setToolButtonsVisible(visible: Boolean) {
         if (visible) {
             binding.buttonRecovery.visibility = View.VISIBLE
+            binding.buttonDelete.visibility = View.VISIBLE
         } else {
             binding.buttonRecovery.visibility = View.GONE
+            binding.buttonDelete.visibility = View.GONE
         }
     }
 

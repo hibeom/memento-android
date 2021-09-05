@@ -234,6 +234,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
 
     override fun onItemsUpdated(recyclerView: RecyclerView, positionStart: Int, itemCount: Int) {
         Timber.d("onItemsUpdated")
+        recycler?.let { removeAndRecycleAllViews(it) }
     }
 
     // when changing order

@@ -15,6 +15,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.pinkcloud.memento.common.MenuSheetFragment
 import com.pinkcloud.memento.databinding.ActivityMainBinding
+import com.pinkcloud.memento.utils.hideKeyboard
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,9 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.search.editSearch.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
-                (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
-                    hideSoftInputFromWindow(v.windowToken, 0)
-                }
+                hideKeyboard(this, v)
             } else {
                 (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager).apply {
                     showSoftInput(v, 0)

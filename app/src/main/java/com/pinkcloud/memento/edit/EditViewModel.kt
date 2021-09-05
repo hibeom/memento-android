@@ -16,9 +16,6 @@ class EditViewModel(private val memoId: Long, val database: MemoDatabaseDao, app
 
     fun updateMemo(memo: Memo) {
         viewModelScope.launch {
-            // TODO update alarm status
-
-            // TODO update memo
             database.update(memo)
             isEditCompleted.value = true
         }

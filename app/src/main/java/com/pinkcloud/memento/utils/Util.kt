@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Typeface
 import android.media.ExifInterface
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import androidx.work.Data
@@ -309,4 +312,10 @@ fun shareMemo(context: Context, memoView: MemoView) {
     shareIntent.clipData = ClipData.newRawUri("", uriToImage)
     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     context.startActivity(Intent.createChooser(shareIntent, context.resources.getText(R.string.app_name)))
+}
+
+fun hideKeyboard(context: Context, v: View) {
+    (context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+        hideSoftInputFromWindow(v.windowToken, 0)
+    }
 }
