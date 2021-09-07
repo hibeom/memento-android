@@ -31,5 +31,14 @@
         app:layout_constraintBottom_toTopOf="@id/memoView"
         app:layout_constraintEnd_toEndOf="@id/memoView"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/FAB"
+            android:src="@drawable/ic_fab_confirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

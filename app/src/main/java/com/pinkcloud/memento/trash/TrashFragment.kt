@@ -93,12 +93,6 @@ class TrashFragment : Fragment() {
         inflater.inflate(R.menu.menu_main, menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.action_confirm).isVisible = false
-        menu.findItem(R.id.action_add).isVisible = false
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_menu -> {

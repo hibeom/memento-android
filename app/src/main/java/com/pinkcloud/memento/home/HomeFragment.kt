@@ -95,6 +95,9 @@ class HomeFragment : Fragment() {
                 )
             )
         }
+        binding.buttonAdd.setOnClickListener {
+            startCamera()
+        }
 
         return binding.root
     }
@@ -121,21 +124,11 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.menu_main, menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.action_confirm).isVisible = false
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_menu -> {
                 (requireActivity() as MainActivity).openBottomSheetMenu(R.id.homeFragment)
                 true
-            }
-            R.id.action_add -> {
-                startCamera()
-                true
-
             }
             R.id.action_search -> {
                 (activity as MainActivity).setSearchVisibility(View.VISIBLE)

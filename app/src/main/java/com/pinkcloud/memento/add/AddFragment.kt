@@ -71,6 +71,16 @@ class AddFragment : Fragment() {
         sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
             binding.memoView.setCaptionTextStyle()
         })
+        binding.buttonConfirm.setOnClickListener {
+            if (binding.memoView.imagePath == null) {
+                AlertDialog.Builder(requireContext()).setMessage(R.string.dialog_no_photo)
+                    .show()
+            } else {
+                binding.memoView.apply {
+                    viewModel.insertMemo(frontCaption, backCaption, priority, alarmTime, isAlarmEnabled)
+                }
+            }
+        }
 
 //        val motionLayout = binding.root as MotionLayout
 //        var isFlipped = false
@@ -107,7 +117,6 @@ class AddFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.action_add).isVisible = false
         menu.findItem(R.id.action_search).isVisible = false
     }
 
@@ -117,18 +126,6 @@ class AddFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_confirm -> {
-                if (binding.memoView.imagePath == null) {
-                    AlertDialog.Builder(requireContext()).setMessage(R.string.dialog_no_photo)
-                        .show()
-                    true
-                } else {
-                    binding.memoView.apply {
-                        viewModel.insertMemo(frontCaption, backCaption, priority, alarmTime, isAlarmEnabled)
-                    }
-                    true
-                }
-            }
             R.id.action_menu -> {
                 (requireActivity() as MainActivity).openBottomSheetMenu(R.id.addFragment)
                 true
