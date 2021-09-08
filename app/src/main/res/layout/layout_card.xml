@@ -102,12 +102,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/alarm"
                 android:layout_marginLeft="@dimen/tools_content_padding"
-                app:layout_constraintBottom_toTopOf="@id/text_alarm_time"
+                app:layout_constraintTop_toTopOf="@id/text_alarm_time"
+                app:layout_constraintBottom_toBottomOf="@id/text_alarm_time"
                 app:layout_constraintStart_toStartOf="@id/view_tools" />
 
             <TextView
                 android:id="@+id/text_alarm_state"
                 style="@style/TextTitle"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/on"
@@ -122,13 +124,21 @@
                 android:textColor="@color/gray_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="10dp"
-                android:layout_marginRight="@dimen/tools_content_padding"
                 app:layout_constraintBottom_toBottomOf="@id/view_tools"
-                app:layout_constraintEnd_toEndOf="@id/view_tools" />
+                app:layout_constraintEnd_toStartOf="@id/checkbox_alarm_state" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_alarm_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/background_dark"
+                android:minWidth="0dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toEndOf="@id/view_tools"
+                app:layout_constraintTop_toTopOf="@id/text_alarm_time"
+                app:layout_constraintBottom_toBottomOf="@id/text_alarm_time"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

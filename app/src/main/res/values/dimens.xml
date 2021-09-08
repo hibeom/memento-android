@@ -27,4 +27,10 @@
     <dimen name="text_button_horizontal_margin">16dp</dimen>
     <dimen name="text_button_bottom_margin">16dp</dimen>
     <dimen name="text_button_vertical_interval">4dp</dimen>
+
+    <!-- alarm switch -->
+    <dimen name="thumb_padding">2dp</dimen>
+    <dimen name="thumb_size">22dp</dimen>
+    <dimen name="track_height">26dp</dimen>
+    <dimen name="track_radius">13dp</dimen>
 </resources>

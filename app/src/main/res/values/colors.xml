@@ -21,4 +21,5 @@
     <color name="red_600">#FFE53935</color>
     <color name="background_dark">#FF121212</color>
     <color name="gray_800">#FF424242</color>
+    <color name="gray_600">#FF828388</color>
 </resources>
