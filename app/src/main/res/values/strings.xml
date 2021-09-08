@@ -52,4 +52,5 @@
     <string name="front_caption_is_full">There is no space. Use the back sheet.</string>
     <string name="back_caption_is_full">There is no space.</string>
     <string name="trash_guide">memo in trash bin will be completely deleted after 7 days.</string>
+    <string name="flip">flip</string>
 </resources>

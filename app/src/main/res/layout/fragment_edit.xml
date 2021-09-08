@@ -12,24 +12,33 @@
         android:layout_height="match_parent"
         tools:context=".edit.EditFragment">
 
-    <com.pinkcloud.memento.common.MemoView
-        android:id="@+id/memoView"
-        style="@style/MemoView"
-        android:elevation="@dimen/card_elevation"
-        app:isCacheEnable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.pinkcloud.memento.common.MemoView
+            android:id="@+id/memoView"
+            style="@style/MemoView"
+            android:elevation="@dimen/card_elevation"
+            app:isCacheEnable="false"
+            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/button_flip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:src="@drawable/ic_flip"
-        app:layout_constraintBottom_toTopOf="@id/memoView"
-        app:layout_constraintEnd_toEndOf="@id/memoView"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/button_flip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/bottom_tool_margin"
+            android:src="@drawable/ic_flip"
+            android:padding="@dimen/card_content_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

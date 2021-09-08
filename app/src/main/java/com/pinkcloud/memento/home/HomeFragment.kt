@@ -2,10 +2,13 @@ package com.pinkcloud.memento.home
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
@@ -95,6 +98,11 @@ class HomeFragment : Fragment() {
                 )
             )
         }
+        binding.buttonFlip.setOnClickListener {
+            val view = layoutManager.getCurrentView()!!
+            val memoView = view.findViewById<MemoView>(R.id.memoView)
+            memoView.flip()
+        }
 
         return binding.root
     }
@@ -104,10 +112,12 @@ class HomeFragment : Fragment() {
             binding.buttonEdit.visibility = View.VISIBLE
             binding.buttonShare.visibility = View.VISIBLE
             binding.buttonTrash.visibility = View.VISIBLE
+            binding.buttonFlip.visibility = View.VISIBLE
         } else {
             binding.buttonEdit.visibility = View.GONE
             binding.buttonShare.visibility = View.GONE
             binding.buttonTrash.visibility = View.GONE
+            binding.buttonFlip.visibility = View.GONE
         }
     }
 

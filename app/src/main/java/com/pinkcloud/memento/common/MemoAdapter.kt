@@ -1,10 +1,13 @@
 package com.pinkcloud.memento.common
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.pinkcloud.memento.R
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.databinding.ListItemMemoBinding
 
@@ -33,9 +36,7 @@ class MemoAdapter: ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback())
             binding.memoView.alarmTime = item.alarmTime
             binding.memoView.setCaptionTextStyle()
             binding.memoView.resetVisibility()
-            binding.buttonFlip.setOnClickListener {
-                binding.memoView.flip()
-            }
+
             binding.executePendingBindings()
         }
 

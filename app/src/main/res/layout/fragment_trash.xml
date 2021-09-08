@@ -15,10 +15,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_trash"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager=".common.OverlapLayoutManager"
-            tools:layout_editor_absoluteX="-10dp"
-            tools:layout_editor_absoluteY="0dp" />
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
+            app:layoutManager=".common.OverlapLayoutManager" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_guideline"
@@ -36,7 +36,20 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_flip"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:layout_marginStart="@dimen/bottom_tool_margin"
+            android:padding="@dimen/card_content_margin"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/button_flip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_flip"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_recovery"
+            app:layout_constraintStart_toEndOf="@id/button_delete"
             android:padding="@dimen/card_content_margin"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -47,6 +60,7 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_flip"
             android:layout_marginEnd="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
 

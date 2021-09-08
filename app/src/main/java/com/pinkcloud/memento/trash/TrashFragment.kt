@@ -3,18 +3,19 @@ package com.pinkcloud.memento.trash
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
+import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.common.MemoAdapter
+import com.pinkcloud.memento.common.MemoView
 import com.pinkcloud.memento.common.OverlapLayoutManager
-import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
 import kotlinx.coroutines.delay
@@ -66,18 +67,23 @@ class TrashFragment : Fragment() {
             viewModel.orderBy.value = it
         })
 
-        val layoutmanager = binding.listTrash.layoutManager as OverlapLayoutManager
+        val layoutManager = binding.listTrash.layoutManager as OverlapLayoutManager
         binding.buttonRecovery.setOnClickListener {
-            val memo = adapter.getMemo(layoutmanager.currentPosition)
+            val memo = adapter.getMemo(layoutManager.currentPosition)
             memo?.let {
                 viewModel.restoreMemo(memo)
             }
         }
         binding.buttonDelete.setOnClickListener {
-            val memo = adapter.getMemo(layoutmanager.currentPosition)
+            val memo = adapter.getMemo(layoutManager.currentPosition)
             memo?.let {
                 viewModel.deleteMemo(memo)
             }
+        }
+        binding.buttonFlip.setOnClickListener {
+            val view = layoutManager.getCurrentView()!!
+            val memoView = view.findViewById<MemoView>(R.id.memoView)
+            memoView.flip()
         }
         setGuideTextAnimation()
         return binding.root
@@ -117,9 +123,11 @@ class TrashFragment : Fragment() {
         if (visible) {
             binding.buttonRecovery.visibility = View.VISIBLE
             binding.buttonDelete.visibility = View.VISIBLE
+            binding.buttonFlip.visibility = View.VISIBLE
         } else {
             binding.buttonRecovery.visibility = View.GONE
             binding.buttonDelete.visibility = View.GONE
+            binding.buttonFlip.visibility = View.GONE
         }
     }
 
