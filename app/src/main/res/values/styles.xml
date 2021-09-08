@@ -69,10 +69,4 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="FAB">
-        <item name="android:backgroundTint">@color/conflowerblue</item>
-        <item name="android:layout_margin">@dimen/fab_margin</item>
-        <item name="tint">?attr/colorPrimary</item>
-    </style>
-
 </resources>

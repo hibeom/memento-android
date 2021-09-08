@@ -174,13 +174,11 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         when (state) {
             RecyclerView.SCROLL_STATE_IDLE -> {
                 if (recycler == null || this.state == null) return
-                val topChild = getChildAt(childCount - 1)
-                topChild?.let {
-                    if (abs(topChild.top) > abs(topChild.bottom)) {
-                        monotoneScrollToPosition(recycler!!, this.state!!, currentPosition + 1)
-                    } else {
-                        monotoneScrollToPosition(recycler!!, this.state!!, currentPosition)
-                    }
+                val topChild = getChildAt(childCount - 1)!!
+                if (abs(topChild.top) > abs(topChild.bottom)) {
+                    monotoneScrollToPosition(recycler!!, this.state!!, currentPosition + 1)
+                } else {
+                    monotoneScrollToPosition(recycler!!, this.state!!, currentPosition)
                 }
             }
         }

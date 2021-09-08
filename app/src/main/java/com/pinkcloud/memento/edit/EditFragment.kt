@@ -68,30 +68,6 @@ class EditFragment : Fragment() {
         sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
             binding.memoView.setCaptionTextStyle()
         })
-        binding.buttonConfirm.setOnClickListener {
-            binding.memoView.apply {
-                val memo = viewModel.memo.value!!
-                memo.frontCaption = frontCaption
-                memo.backCaption = backCaption
-                memo.priority = priority
-                if (isAlarmEnabled) {
-                    if (memo.isAlarmEnabled) {
-                        memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
-                    }
-                    val alarmId = scheduleAlarm(context, memo.memoId, frontCaption, alarmTime, imagePath)
-                    memo.alarmId = alarmId
-                } else {
-                    if (memo.isAlarmEnabled) {
-                        memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
-                        memo.alarmId = null
-                    }
-                }
-                memo.alarmTime = alarmTime
-                memo.isAlarmEnabled = isAlarmEnabled
-
-                viewModel.updateMemo(memo)
-            }
-        }
         setKeyboardHideAction()
 
         return binding.root
@@ -99,6 +75,7 @@ class EditFragment : Fragment() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.action_add).isVisible = false
         menu.findItem(R.id.action_search).isVisible = false
     }
 
@@ -108,6 +85,31 @@ class EditFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_confirm -> {
+                binding.memoView.apply {
+                    val memo = viewModel.memo.value!!
+                    memo.frontCaption = frontCaption
+                    memo.backCaption = backCaption
+                    memo.priority = priority
+                    if (isAlarmEnabled) {
+                        if (memo.isAlarmEnabled) {
+                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
+                        }
+                        val alarmId = scheduleAlarm(context, memo.memoId, frontCaption, alarmTime, imagePath)
+                        memo.alarmId = alarmId
+                    } else {
+                        if (memo.isAlarmEnabled) {
+                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
+                            memo.alarmId = null
+                        }
+                    }
+                    memo.alarmTime = alarmTime
+                    memo.isAlarmEnabled = isAlarmEnabled
+
+                    viewModel.updateMemo(memo)
+                }
+                true
+            }
             R.id.action_menu -> {
                 (requireActivity() as MainActivity).openBottomSheetMenu(R.id.addFragment)
                 true
