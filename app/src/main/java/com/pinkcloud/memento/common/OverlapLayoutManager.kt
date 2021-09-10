@@ -204,7 +204,7 @@ class OverlapLayoutManager : RecyclerView.LayoutManager() {
         val topChild = getChildAt(childCount - 1)!!
         val topChildPosition = getPosition(topChild)
         val childHeight = topChild.measuredHeight
-        var dy = 0
+        var dy: Int
         if (topChildPosition < position) {
             dy = (position - topChildPosition - 1) * childHeight + topChild.bottom
         } else {

@@ -3,13 +3,11 @@ package com.pinkcloud.memento.trash
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
-import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
@@ -20,7 +18,6 @@ import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class TrashFragment : Fragment() {
 
@@ -49,7 +46,7 @@ class TrashFragment : Fragment() {
 
         viewModel.memos.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            setToolButtonsVisible(it.isNotEmpty())
+            setToolButtonsVisibility(it.isNotEmpty())
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -119,15 +116,17 @@ class TrashFragment : Fragment() {
         }
     }
 
-    private fun setToolButtonsVisible(visible: Boolean) {
+    private fun setToolButtonsVisibility(visible: Boolean) {
         if (visible) {
             binding.buttonRecovery.visibility = View.VISIBLE
             binding.buttonDelete.visibility = View.VISIBLE
             binding.buttonFlip.visibility = View.VISIBLE
+            binding.textEmpty.visibility = View.GONE
         } else {
             binding.buttonRecovery.visibility = View.GONE
             binding.buttonDelete.visibility = View.GONE
             binding.buttonFlip.visibility = View.GONE
+            binding.textEmpty.visibility = View.VISIBLE
         }
     }
 

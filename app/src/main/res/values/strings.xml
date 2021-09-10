@@ -51,6 +51,8 @@
     <string name="pick_another_photo">pick another photo</string>
     <string name="front_caption_is_full">There is no space. Use the back sheet.</string>
     <string name="back_caption_is_full">There is no space.</string>
-    <string name="trash_guide">memo in trash bin will be completely deleted after 7 days.</string>
+    <string name="trash_guide">Memo in recycle bin will be completely deleted after 7 days.</string>
     <string name="flip">flip</string>
+    <string name="add_new_memo">Add a new memo</string>
+    <string name="recycle_bin_is_empty">Recycle bin is empty.</string>
 </resources>

@@ -71,11 +71,23 @@
             android:layout_width="0dp"
             style="@style/TextButton"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
             android:gravity="center"
             app:layout_constraintWidth_percent="0.8"
             android:text="@string/trash_guide"
             android:alpha="0"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            style="@style/TextTitle"
+            android:text="@string/recycle_bin_is_empty"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,13 +2,10 @@ package com.pinkcloud.memento.home
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
@@ -52,7 +49,7 @@ class HomeFragment : Fragment() {
 
         viewModel.memos.observe(viewLifecycleOwner, { memos ->
             adapter.submitList(memos)
-            setToolButtonsVisible(memos.isNotEmpty())
+            setToolButtonsVisibility(memos.isNotEmpty())
 
             memoId?.let {
                 memos.forEachIndexed { index, memo ->
@@ -103,21 +100,36 @@ class HomeFragment : Fragment() {
             val memoView = view.findViewById<MemoView>(R.id.memoView)
             memoView.flip()
         }
+        binding.groupStart.setOnClickListener {
+            startCamera()
+        }
 
         return binding.root
     }
 
-    private fun setToolButtonsVisible(visible: Boolean) {
+    private fun setToolButtonsVisibility(visible: Boolean) {
         if (visible) {
             binding.buttonEdit.visibility = View.VISIBLE
             binding.buttonShare.visibility = View.VISIBLE
             binding.buttonTrash.visibility = View.VISIBLE
             binding.buttonFlip.visibility = View.VISIBLE
+            binding.groupStart.visibility = View.GONE
         } else {
             binding.buttonEdit.visibility = View.GONE
             binding.buttonShare.visibility = View.GONE
             binding.buttonTrash.visibility = View.GONE
             binding.buttonFlip.visibility = View.GONE
+            binding.groupStart.visibility = View.VISIBLE
+            binding.textStart.apply {
+                alpha = 0f
+                visibility = View.VISIBLE
+                animate().alpha(1f).setDuration(2000).setListener(null)
+            }
+            binding.imageStart.apply {
+                alpha = 0f
+                visibility = View.VISIBLE
+                animate().alpha(1f).setDuration(2000).setListener(null)
+            }
         }
     }
 

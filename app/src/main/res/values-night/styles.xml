@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Toolbar">
-        <item name="android:textColorSecondary">@color/conflowerblue</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
         <item name="colorPrimary">@color/black</item>
     </style>
 

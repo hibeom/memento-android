@@ -75,5 +75,41 @@
             android:layout_marginStart="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_start"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="image_start, text_start"
+            app:layout_constraintTop_toTopOf="@id/image_start"
+            app:layout_constraintBottom_toBottomOf="@id/text_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_start"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.8"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1"
+            android:src="@drawable/frame_sample"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextTitle"
+            android:text="@string/add_new_memo"
+            android:layout_marginTop="@dimen/text_start_top_margin"
+            app:layout_constraintTop_toBottomOf="@id/image_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -35,7 +35,6 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
             val year = date.year
             val month = date.monthValue
             val day = date.dayOfMonth
-            val weekDay = date.dayOfWeek
             var hour = String.format("%02d", date.hour % 12).toInt()
             if (hour == 0) hour = 12
             val minute = String.format("%02d", date.minute).toInt()
@@ -63,7 +62,7 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
                 minValue = 1
                 maxValue = 12
                 value = hour
-                setOnValueChangedListener { picker, oldVal, newVal ->
+                setOnValueChangedListener { _, oldVal, newVal ->
                     if (oldVal == 12 && newVal == 11 || oldVal == 11 && newVal == 12) {
                         if (binding.pickerAmpm.value == 0) {
                             changeValueByOne(binding.pickerAmpm, true)
@@ -83,7 +82,6 @@ class PickerDialogFragment(private val listener: PickDatetimeListener) : DialogF
                 val newDate = firstDate.plusDays(binding.pickerDate.value.toLong())
                 var hour = binding.pickerHour.value % 12
                 hour = if (binding.pickerAmpm.value == 0) hour else hour + 12
-                Log.d("[devlog]", hour.toString())
                 val pickedDate = LocalDateTime.of(
                     newDate.year,
                     newDate.monthValue,
