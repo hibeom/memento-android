@@ -36,9 +36,20 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_flip"
+            app:layout_constraintEnd_toStartOf="@id/button_recovery"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             android:layout_marginStart="@dimen/bottom_tool_margin"
+            android:padding="@dimen/card_content_margin"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/button_recovery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_restore"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_flip"
+            app:layout_constraintStart_toEndOf="@id/button_delete"
             android:padding="@dimen/card_content_margin"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -48,19 +59,8 @@
             android:src="@drawable/ic_flip"
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_recovery"
-            app:layout_constraintStart_toEndOf="@id/button_delete"
-            android:padding="@dimen/card_content_margin"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/button_recovery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_recovery"
-            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_flip"
+            app:layout_constraintStart_toEndOf="@id/button_recovery"
             android:layout_marginEnd="@dimen/bottom_tool_margin"
             android:padding="@dimen/card_content_margin"/>
 

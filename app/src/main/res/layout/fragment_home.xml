@@ -28,25 +28,25 @@
             app:layout_constraintGuide_percent="0.9" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/button_trash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_trash"
-            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_flip"
-            android:layout_marginEnd="@dimen/bottom_tool_margin"
-            android:padding="@dimen/card_content_margin"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/button_flip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_flip"
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_trash"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_trash"
+            android:layout_marginEnd="@dimen/bottom_tool_margin"
+            android:padding="@dimen/card_content_margin"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/button_trash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_trash"
+            app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_flip"
             app:layout_constraintStart_toEndOf="@id/button_edit"
             android:padding="@dimen/card_content_margin"/>
 
@@ -57,7 +57,7 @@
             android:src="@drawable/ic_edit"
             app:layout_constraintTop_toBottomOf="@id/bottom_guideline"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/button_flip"
+            app:layout_constraintEnd_toStartOf="@id/button_trash"
             app:layout_constraintStart_toEndOf="@id/button_share"
             android:layout_marginLeft="10dp"
             android:padding="@dimen/card_content_margin"/>
