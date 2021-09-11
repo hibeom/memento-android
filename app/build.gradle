@@ -87,5 +87,6 @@ dependencies {
     androidTestImplementation("androidx.work:work-testing:$work_version")
 
     // Image Cropper
-    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
+//    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
+    implementation 'com.yashoid:instacropper:1.0.7'
 }

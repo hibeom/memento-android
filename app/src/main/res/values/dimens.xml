@@ -19,7 +19,12 @@
     <!-- text  -->
     <dimen name="title_text">16sp</dimen>
     <dimen name="content_text">16sp</dimen>
-    <dimen name="text_button_padding">10dp</dimen>
+    <dimen name="text_button_padding">15dp</dimen>
     <dimen name="bottom_tool_margin">10dp</dimen>
     <dimen name="text_start_top_margin">25dp</dimen>
+    <dimen name="text_button_radius">84dp</dimen>
+
+    <dimen name="text_button_horizontal_margin">16dp</dimen>
+    <dimen name="text_button_bottom_margin">16dp</dimen>
+    <dimen name="text_button_vertical_interval">4dp</dimen>
 </resources>

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -19,6 +20,7 @@ import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.getRealPath
 import com.pinkcloud.memento.utils.saveEmptyTempImage
 import com.pinkcloud.memento.utils.saveViewImage
+import com.yashoid.instacropper.InstaCropperView
 import timber.log.Timber
 
 class AlbumFragment: Fragment() {
@@ -54,9 +56,15 @@ class AlbumFragment: Fragment() {
             getContent.launch("image/*")
         }
         binding.textContinue.setOnClickListener {
-            saveViewImage(requireContext(), binding.imagePhoto.croppedBitmap.bitmap)
-            findNavController().navigate(R.id.action_albumFragment_to_addFragment)
+            binding.imagePhoto.crop(
+                View.MeasureSpec.makeMeasureSpec(1024, View.MeasureSpec.AT_MOST),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            ) {
+                saveViewImage(requireContext(), it)
+                findNavController().navigate(R.id.action_albumFragment_to_addFragment)
+            }
         }
+
         return binding.root
     }
 
@@ -71,8 +79,9 @@ class AlbumFragment: Fragment() {
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
 //                    .skipMemoryCache(true)
 //                    .into(binding.imagePhoto)
-                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
-                binding.imagePhoto.setImageBitmap(bitmap)
+//                val bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
+//                binding.imagePhoto.setImageBitmap(bitmap)
+                binding.imagePhoto.setImageUri(it)
             }
         }
     }

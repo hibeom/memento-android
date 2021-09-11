@@ -71,13 +71,13 @@
             app:layout_constraintTop_toBottomOf="@id/text_album_unavailable"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <com.fenchtose.nocropper.CropperView
+        <com.yashoid.instacropper.InstaCropperView
             android:id="@+id/image_photo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1"
             app:layout_constraintTop_toBottomOf="@id/guideline_tool_bar"
-            app:layout_constraintBottom_toTopOf="@id/bottom_guideline"/>
+            app:layout_constraintBottom_toTopOf="@id/text_continue"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_guideline"
@@ -86,28 +86,29 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.8"/>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/text_continue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextButton"
+            android:layout_marginBottom="@dimen/text_button_vertical_interval"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_photo"
             app:layout_constraintBottom_toTopOf="@id/text_pick_image"
-            android:text="@string/continue_with_this_photo"
-            app:layout_constraintVertical_chainStyle="packed"
+            android:text="@string/next"
             android:visibility="gone"/>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/text_pick_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextButton"
+            app:strokeColor="?attr/colorOnPrimary"
+            app:strokeWidth="2dp"
+            app:backgroundTint="@color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_continue"
             android:text="@string/pick_another_photo"
             android:visibility="gone"/>
 

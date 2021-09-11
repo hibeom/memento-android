@@ -43,6 +43,7 @@
     <string name="progress_without_photo">사진없이 진행하기</string>
     <string name="ask_progress_without_photo">사진없이 메모를 등록하시겠습니까?</string>
     <string name="continue_with_this_photo">이 사진으로 계속하기</string>
+    <string name="next">다음</string>
     <string name="pick_another_photo">다른 사진 선택하기</string>
     <string name="front_caption_is_full">더 이상 입력할 수 없습니다. 뒷면을 이용하세요.</string>
     <string name="back_caption_is_full">더 이상 입력할 수 없습니다.</string>
