@@ -11,6 +11,7 @@ import androidx.lifecycle.whenResumed
 import com.pinkcloud.memento.MainActivity
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.SharedViewModel
+import com.pinkcloud.memento.common.AlertDialogFragment
 import com.pinkcloud.memento.common.MemoAdapter
 import com.pinkcloud.memento.common.MemoView
 import com.pinkcloud.memento.common.OverlapLayoutManager
@@ -73,9 +74,16 @@ class TrashFragment : Fragment() {
         }
         binding.buttonDelete.setOnClickListener {
             val memo = adapter.getMemo(layoutManager.currentPosition)
-            memo?.let {
-                viewModel.deleteMemo(memo)
-            }
+            val dialog = AlertDialogFragment()
+            dialog.content = getString(R.string.ask_delete_permenantly)
+            dialog.setOkClickListener(object : AlertDialogFragment.OkClickListener {
+                override fun onOkClick() {
+                    memo?.let {
+                        viewModel.deleteMemo(memo)
+                    }
+                }
+            })
+            dialog.show(parentFragmentManager, tag)
         }
         binding.buttonFlip.setOnClickListener {
             val view = layoutManager.getCurrentView()!!

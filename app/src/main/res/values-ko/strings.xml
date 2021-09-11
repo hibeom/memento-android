@@ -50,4 +50,5 @@
     <string name="flip">넘기기</string>
     <string name="add_new_memo">새로운 메모를 추가해보세요</string>
     <string name="recycle_bin_is_empty">휴지통이 비었습니다.</string>
+    <string name="ask_delete_permenantly">이 메모를 완전히 삭제하시겠습니까?</string>
 </resources>
