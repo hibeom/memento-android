@@ -69,8 +69,10 @@ class MemoView @JvmOverloads constructor(
             checkboxAlarmState.isChecked = value
             if (value) {
                 textAlarmTime.paintFlags = 0
+                textAlarmTime.setTextColor(context.getColor(R.color.background_dark))
             } else {
                 textAlarmTime.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                textAlarmTime.setTextColor(context.getColor(R.color.gray_600))
             }
         }
 
