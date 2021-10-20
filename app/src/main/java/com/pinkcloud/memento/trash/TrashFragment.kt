@@ -52,18 +52,20 @@ class TrashFragment : Fragment() {
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
-        sharedViewModel.searchText.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(viewModel.getFilteredMemos(it))
-        })
-        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
-            adapter.notifyDataSetChanged()
-        })
-        sharedViewModel.fontType.observe(viewLifecycleOwner, {
-            adapter.notifyDataSetChanged()
-        })
-        sharedViewModel.orderBy.observe(viewLifecycleOwner, {
-            viewModel.orderBy.value = it
-        })
+        sharedViewModel.run {
+            searchText.observe(viewLifecycleOwner, Observer {
+                adapter.submitList(viewModel.getFilteredMemos(it))
+            })
+            fontSizeLevel.observe(viewLifecycleOwner, {
+                adapter.notifyDataSetChanged()
+            })
+            fontType.observe(viewLifecycleOwner, {
+                adapter.notifyDataSetChanged()
+            })
+            orderBy.observe(viewLifecycleOwner, {
+                viewModel.onOrderChanged(it)
+            })
+        }
 
         val layoutManager = binding.listTrash.layoutManager as OverlapLayoutManager
         binding.buttonRecovery.setOnClickListener {

@@ -1,10 +1,7 @@
 package com.pinkcloud.memento.home
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
 import com.pinkcloud.memento.utils.Constants
@@ -14,9 +11,14 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-class HomeViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
+class HomeViewModel(val database: MemoDatabaseDao, application: Application) :
+    AndroidViewModel(application) {
 
-    val orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+    private val _orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+
+    private val orderBy: LiveData<Int>
+        get() = _orderBy
+
     val memos = Transformations.switchMap(orderBy) {
         when (it) {
             Constants.ORDER_BY_PRIORITY -> database.getOngoingMemos()
@@ -48,5 +50,9 @@ class HomeViewModel(val database: MemoDatabaseDao, application: Application) : A
             val backResultKorean = KoreanTextMatcher.match(it.backCaption, lowerText).success()
             frontResult || backResult || frontResultKorean || backResultKorean
         }
+    }
+
+    fun onOrderChanged(order: Int) {
+        _orderBy.value = order
     }
 }

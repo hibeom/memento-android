@@ -2,6 +2,7 @@ package com.pinkcloud.memento.add
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
@@ -14,7 +15,10 @@ import timber.log.Timber
 class AddViewModel(val database: MemoDatabaseDao, application: Application) :
     AndroidViewModel(application) {
 
-    var isInsertCompleted = MutableLiveData(false)
+    private val _isInsertCompleted = MutableLiveData(false)
+
+    val isInsertCompleted: LiveData<Boolean>
+        get() = _isInsertCompleted
 
     fun insertMemo(
         frontCaption: String?,
@@ -45,7 +49,11 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
                 null
             )
             database.insert(memo)
-            isInsertCompleted.value = true
+            _isInsertCompleted.value = true
         }
+    }
+
+    fun onInsertCompleted() {
+        _isInsertCompleted.value = false
     }
 }

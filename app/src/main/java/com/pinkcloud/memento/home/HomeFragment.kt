@@ -64,18 +64,20 @@ class HomeFragment : Fragment() {
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
-        sharedViewModel.searchText.observe(viewLifecycleOwner, {
-            adapter.submitList(viewModel.getFilteredMemos(it))
-        })
-        sharedViewModel.fontSizeLevel.observe(viewLifecycleOwner, {
-            adapter.notifyDataSetChanged()
-        })
-        sharedViewModel.fontType.observe(viewLifecycleOwner, {
-            adapter.notifyDataSetChanged()
-        })
-        sharedViewModel.orderBy.observe(viewLifecycleOwner, {
-            viewModel.orderBy.value = it
-        })
+        sharedViewModel.run {
+            searchText.observe(viewLifecycleOwner, {
+                adapter.submitList(viewModel.getFilteredMemos(it))
+            })
+            fontSizeLevel.observe(viewLifecycleOwner, {
+                adapter.notifyDataSetChanged()
+            })
+            fontType.observe(viewLifecycleOwner, {
+                adapter.notifyDataSetChanged()
+            })
+            orderBy.observe(viewLifecycleOwner, {
+                viewModel.onOrderChanged(it)
+            })
+        }
 
         binding.buttonTrash.setOnClickListener {
             val memo = adapter.getMemo(layoutManager.currentPosition)!!

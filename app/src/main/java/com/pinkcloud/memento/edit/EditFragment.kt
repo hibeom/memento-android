@@ -59,7 +59,7 @@ class EditFragment : Fragment() {
         viewModel.isEditCompleted.observe(viewLifecycleOwner, { isEditCompleted ->
             if (isEditCompleted) {
                 findNavController().popBackStack()
-                viewModel.isEditCompleted.value = false
+                viewModel.onEditCompleted()
             }
         })
         sharedViewModel.fontType.observe(viewLifecycleOwner, {
