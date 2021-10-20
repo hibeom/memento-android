@@ -42,12 +42,14 @@ class TrashFragment : Fragment() {
 
         viewModel = ViewModelProvider(this, trashViewModelFactory).get(TrashViewModel::class.java)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         val adapter = MemoAdapter()
         binding.listTrash.adapter = adapter
 
         viewModel.memos.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            setToolButtonsVisibility(it.isNotEmpty())
         })
 
         requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -123,20 +125,6 @@ class TrashFragment : Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun setToolButtonsVisibility(visible: Boolean) {
-        if (visible) {
-            binding.buttonRecovery.visibility = View.VISIBLE
-            binding.buttonDelete.visibility = View.VISIBLE
-            binding.buttonFlip.visibility = View.VISIBLE
-            binding.textEmpty.visibility = View.GONE
-        } else {
-            binding.buttonRecovery.visibility = View.GONE
-            binding.buttonDelete.visibility = View.GONE
-            binding.buttonFlip.visibility = View.GONE
-            binding.textEmpty.visibility = View.VISIBLE
         }
     }
 
