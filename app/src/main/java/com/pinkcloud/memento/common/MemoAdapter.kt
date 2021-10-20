@@ -28,15 +28,8 @@ class MemoAdapter: ListAdapter<Memo, MemoAdapter.ViewHolder>(MemoDiffCallback())
     class ViewHolder private constructor(val binding: ListItemMemoBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Memo) {
-            binding.memoView.imagePath = item.imagePath
-            binding.memoView.frontCaption = item.frontCaption
-            binding.memoView.backCaption = item.backCaption
-            binding.memoView.priority = item.priority
-            binding.memoView.isAlarmEnabled = item.isAlarmEnabled
-            binding.memoView.alarmTime = item.alarmTime
-            binding.memoView.setCaptionTextStyle()
+            binding.memo = item
             binding.memoView.resetVisibility()
-
             binding.executePendingBindings()
         }
 

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="memo"
+            type="com.pinkcloud.memento.database.Memo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +21,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:childClickable="false"
-            app:isHintEnable="false"/>
+            app:isHintEnable="false"
+            app:memo="@{memo}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

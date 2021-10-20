@@ -18,10 +18,7 @@ import com.pinkcloud.memento.SharedViewModel
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentEditBinding
-import com.pinkcloud.memento.utils.Constants
-import com.pinkcloud.memento.utils.cancelAlarm
-import com.pinkcloud.memento.utils.hideKeyboard
-import com.pinkcloud.memento.utils.scheduleAlarm
+import com.pinkcloud.memento.utils.*
 import java.io.File
 
 class EditFragment : Fragment() {
@@ -44,13 +41,7 @@ class EditFragment : Fragment() {
         viewModel = ViewModelProvider(this, editViewModelFactory).get(EditViewModel::class.java)
 
         viewModel.memo.observe(viewLifecycleOwner, {
-            binding.memoView.imagePath = it.imagePath
-            binding.memoView.frontCaption = it.frontCaption
-            binding.memoView.backCaption = it.backCaption
-            binding.memoView.priority = it.priority
-            binding.memoView.isAlarmEnabled = it.isAlarmEnabled
-            binding.memoView.alarmTime = it.alarmTime
-            binding.memoView.setCaptionTextStyle()
+            setMemo(binding.memoView, it)
         })
         binding.buttonFlip.setOnClickListener {
             binding.memoView.flip()
