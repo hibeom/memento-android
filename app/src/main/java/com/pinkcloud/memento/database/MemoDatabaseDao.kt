@@ -2,6 +2,9 @@ package com.pinkcloud.memento.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+private const val ONE_WEEK_IN_MILLI = 7*24*60*60*1000
 
 @Dao
 interface MemoDatabaseDao {
@@ -18,6 +21,9 @@ interface MemoDatabaseDao {
     @Query("SELECT * FROM memo_table WHERE memo_id = :memoId")
     fun getMemo(memoId: Long): LiveData<Memo>
 
+    @Query("SELECT * FROM memo_table")
+    fun getAllMemo(): Flow<List<Memo>>
+
     // Query dao with returning LiveData is suspend fun as far as I know.
     @Query("SELECT * FROM memo_table WHERE is_completed = 0 ORDER BY priority DESC")
     fun getOngoingMemos(): LiveData<List<Memo>>
@@ -31,9 +37,9 @@ interface MemoDatabaseDao {
     @Query("SELECT * FROM memo_table WHERE is_completed = 1 ORDER BY CASE WHEN :isAsc = 1 THEN memo_id END ASC, CASE WHEN :isAsc = 0 THEN memo_id END DESC")
     fun getCompletedMemosByDate(isAsc: Boolean): LiveData<List<Memo>>
 
-    @Query("DELETE FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= 7*24*60*60*1000")
+    @Query("DELETE FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= $ONE_WEEK_IN_MILLI")
     fun deleteOldCompletedMemos(currentTimeInMillis: Long)
 
-    @Query("SELECT * FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= 7*24*60*60*1000")
+    @Query("SELECT * FROM memo_table WHERE is_completed = 1 AND :currentTimeInMillis - completed_time >= $ONE_WEEK_IN_MILLI")
     fun getOldCompletedMemos(currentTimeInMillis: Long): List<Memo>
 }

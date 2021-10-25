@@ -19,7 +19,7 @@ class HomeViewModel(val database: MemoDatabaseDao, application: Application) :
     private val orderBy: LiveData<Int>
         get() = _orderBy
 
-    val memos = Transformations.switchMap(orderBy) {
+    val memos = orderBy.switchMap {
         when (it) {
             Constants.ORDER_BY_PRIORITY -> database.getOngoingMemos()
             Constants.ORDER_BY_NEWEST -> database.getOngoingMemosByDate(false)

@@ -18,6 +18,9 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.common.MemoView
+import com.pinkcloud.memento.database.Memo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.time.Instant
@@ -311,7 +314,12 @@ fun shareMemo(context: Context, memoView: MemoView) {
     }
     shareIntent.clipData = ClipData.newRawUri("", uriToImage)
     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    context.startActivity(Intent.createChooser(shareIntent, context.resources.getText(R.string.app_name)))
+    context.startActivity(
+        Intent.createChooser(
+            shareIntent,
+            context.resources.getText(R.string.app_name)
+        )
+    )
 }
 
 fun hideKeyboard(context: Context, v: View) {
@@ -319,3 +327,22 @@ fun hideKeyboard(context: Context, v: View) {
         hideSoftInputFromWindow(v.windowToken, 0)
     }
 }
+
+/**
+ * extension function of List<Memo>
+ */
+suspend fun List<Memo>.applySort(orderBy: Int) =
+    withContext(Dispatchers.Default) {
+        when (orderBy) {
+            Constants.ORDER_BY_PRIORITY -> sortedBy { memo ->
+                memo.priority
+            }
+            Constants.ORDER_BY_NEWEST -> sortedBy { memo ->
+                memo.memoId
+            }
+            Constants.ORDER_BY_OLDEST -> sortedByDescending { memo ->
+                memo.memoId
+            }
+            else -> this
+        }
+    }
