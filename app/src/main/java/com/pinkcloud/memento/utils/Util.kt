@@ -329,20 +329,32 @@ fun hideKeyboard(context: Context, v: View) {
 }
 
 /**
- * extension function of List<Memo>
+ * An extension function of List<Memo>
+ * apply sort by order flag on default thread.
  */
-suspend fun List<Memo>.applySort(orderBy: Int) =
+suspend fun List<Memo>.applySort(orderBy: Int): List<Memo> =
     withContext(Dispatchers.Default) {
         when (orderBy) {
             Constants.ORDER_BY_PRIORITY -> sortedBy { memo ->
                 memo.priority
             }
-            Constants.ORDER_BY_NEWEST -> sortedBy { memo ->
+            Constants.ORDER_BY_OLDEST -> sortedBy { memo ->
                 memo.memoId
             }
-            Constants.ORDER_BY_OLDEST -> sortedByDescending { memo ->
+            Constants.ORDER_BY_NEWEST -> sortedByDescending { memo ->
                 memo.memoId
             }
-            else -> this
+            else -> this@applySort
+        }
+    }
+
+/**
+ * An extension function of List<Memo>
+ * filter completed/uncompleted memos on default thread.
+ */
+suspend fun List<Memo>.applyFilter(completed: Boolean): List<Memo> =
+    withContext(Dispatchers.Default) {
+        this@applyFilter.filter { memo ->
+            memo.isCompleted == completed
         }
     }

@@ -6,8 +6,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
+import timber.log.Timber
 
-class MemosRepository(private val database: MemoDatabaseDao) {
+class MemoRepository(private val database: MemoDatabaseDao) {
 
     val memos: Flow<List<Memo>>
         get() = database.getAllMemo()
