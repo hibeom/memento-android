@@ -6,7 +6,9 @@ import androidx.work.WorkerParameters
 import com.pinkcloud.memento.database.MemoDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class RefreshWorker(val context: Context, workerParams: WorkerParameters) : Worker(context,
     workerParams
@@ -14,15 +16,19 @@ class RefreshWorker(val context: Context, workerParams: WorkerParameters) : Work
     override fun doWork(): Result {
 
         GlobalScope.launch(Dispatchers.IO) {
-            val dataSource = MemoDatabase.getInstance(context).memoDatabaseDao
-            val currentTime = System.currentTimeMillis()
+            try {
+                val dataSource = MemoDatabase.getInstance(context).memoDatabaseDao
+                val currentTime = System.currentTimeMillis()
 
-            val oldCompletedMemos = dataSource.getOldCompletedMemos(currentTime)
-            oldCompletedMemos.forEach {
-                deleteImage(it.imagePath)
+                val oldCompletedMemos = dataSource.getOldCompletedMemos(currentTime)
+                oldCompletedMemos.forEach {
+                    deleteImage(it.imagePath)
+                }
+
+                dataSource.deleteOldCompletedMemos(currentTime)
+            } catch (exception: IOException) {
+                cancel()
             }
-
-            dataSource.deleteOldCompletedMemos(currentTime)
         }
 
         return Result.success()

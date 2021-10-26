@@ -14,6 +14,5 @@ class MemoRepository(private val database: MemoDatabaseDao) {
     val memos: Flow<List<Memo>>
         get() = database.getAllMemo()
             .flowOn(Dispatchers.IO)
-            .conflate()
 
 }

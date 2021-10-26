@@ -4,26 +4,36 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.repository.MemoRepository
 import com.pinkcloud.memento.utils.Constants
+import com.pinkcloud.memento.utils.applyFilter
+import com.pinkcloud.memento.utils.applySort
 import com.pinkcloud.memento.utils.koreanmatcher.KoreanTextMatcher
 import com.pinkcloud.memento.utils.scheduleAlarm
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
 class TrashViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
 
-    private val _orderBy = MutableLiveData(Constants.ORDER_BY_PRIORITY)
+    private val memoRepository = MemoRepository(database)
 
-    private val orderBy: LiveData<Int>
+    private val _orderBy = MutableStateFlow(Constants.ORDER_BY_PRIORITY)
+
+    private val orderBy: StateFlow<Int>
         get() = _orderBy
 
-    val memos = Transformations.switchMap(orderBy) {
-        when (it) {
-            Constants.ORDER_BY_PRIORITY -> database.getCompletedMemos()
-            Constants.ORDER_BY_NEWEST -> database.getCompletedMemosByDate(false)
-            Constants.ORDER_BY_OLDEST -> database.getCompletedMemosByDate(true)
-            else -> database.getCompletedMemos()
-        }
+    private val completedMemos = memoRepository.memos.mapLatest { memos ->
+        memos.applyFilter(completed = true)
     }
+
+    val memos: LiveData<List<Memo>> = orderBy
+        .combine(completedMemos) { orderBy, memos ->
+            memos.applySort(orderBy)
+        }
+        .asLiveData()
 
     fun restoreMemo(memo: Memo) {
         viewModelScope.launch {

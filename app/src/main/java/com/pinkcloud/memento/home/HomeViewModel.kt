@@ -33,9 +33,7 @@ class HomeViewModel(val database: MemoDatabaseDao, application: Application) :
         .combine(unCompletedMemos) { orderBy, memos ->
             memos.applySort(orderBy)
         }
-        .conflate()
         .asLiveData()
-
 
     fun completeMemo(memo: Memo) {
         viewModelScope.launch {
