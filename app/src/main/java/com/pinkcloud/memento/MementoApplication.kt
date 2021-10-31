@@ -12,9 +12,11 @@ import androidx.work.WorkManager
 import com.pinkcloud.memento.utils.Configuration
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.RefreshWorker
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+@HiltAndroidApp
 class MementoApplication : Application() {
     override fun onCreate() {
         super.onCreate()

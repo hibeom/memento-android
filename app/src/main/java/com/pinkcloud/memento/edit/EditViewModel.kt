@@ -1,15 +1,18 @@
 package com.pinkcloud.memento.edit
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
-class EditViewModel(private val memoId: Long, val database: MemoDatabaseDao, application: Application) :
+class EditViewModel @AssistedInject constructor(
+    private val database: MemoDatabaseDao,
+    application: Application,
+    @Assisted memoId: Long,
+) :
     AndroidViewModel(application) {
 
     private val _isEditCompleted = MutableLiveData(false)
@@ -31,5 +34,16 @@ class EditViewModel(private val memoId: Long, val database: MemoDatabaseDao, app
 
     fun onEditCompleted() {
         _isEditCompleted.value = false
+    }
+
+    companion object {
+        fun provideFactory(
+            assistedFactory: EditViewModelFactory,
+            memoId: Long
+        ): ViewModelProvider.Factory = object: ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return assistedFactory.create(memoId) as T
+            }
+        }
     }
 }

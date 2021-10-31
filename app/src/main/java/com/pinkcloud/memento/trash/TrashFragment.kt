@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
@@ -17,16 +18,18 @@ import com.pinkcloud.memento.common.MemoView
 import com.pinkcloud.memento.common.OverlapLayoutManager
 import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentTrashBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TrashFragment : Fragment() {
 
     private var _binding: FragmentTrashBinding? = null
 
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: TrashViewModel
+    private val viewModel: TrashViewModel by viewModels()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
@@ -35,12 +38,6 @@ class TrashFragment : Fragment() {
     ): View? {
         _binding = FragmentTrashBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-
-        val application = requireActivity().application
-        val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
-        val trashViewModelFactory = TrashViewModelFactory(dataSource, application)
-
-        viewModel = ViewModelProvider(this, trashViewModelFactory).get(TrashViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

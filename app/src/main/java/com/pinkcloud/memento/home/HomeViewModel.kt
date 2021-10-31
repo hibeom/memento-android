@@ -10,22 +10,26 @@ import com.pinkcloud.memento.utils.applyFilter
 import com.pinkcloud.memento.utils.applySort
 import com.pinkcloud.memento.utils.cancelAlarm
 import com.pinkcloud.memento.utils.koreanmatcher.KoreanTextMatcher
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class HomeViewModel(val database: MemoDatabaseDao, application: Application) :
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    repository: MemoRepository,
+    private val database: MemoDatabaseDao,
+    application: Application) :
     AndroidViewModel(application) {
-
-    private val memoRepository = MemoRepository(database)
 
     private val _orderBy = MutableStateFlow(Constants.ORDER_BY_PRIORITY)
 
     private val orderBy: StateFlow<Int>
         get() = _orderBy
 
-    private val unCompletedMemos = memoRepository.memos.mapLatest { memos ->
+    private val unCompletedMemos = repository.memos.mapLatest { memos ->
         memos.applyFilter(completed = false)
     }
 

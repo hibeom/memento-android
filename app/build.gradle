@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -13,7 +14,7 @@ android {
         applicationId "com.pinkcloud.memento"
         minSdkVersion 28
         targetSdkVersion 30
-        versionCode 1
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -21,7 +22,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -87,6 +88,9 @@ dependencies {
     androidTestImplementation("androidx.work:work-testing:$work_version")
 
     // Image Cropper
-//    implementation 'com.fenchtose.nocropper:nocropper:0.3.1'
     implementation 'com.yashoid:instacropper:1.0.7'
+
+    // Hilt ( Dependency Injection )
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 }

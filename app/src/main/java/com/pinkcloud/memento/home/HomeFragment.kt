@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.pinkcloud.memento.MainActivity
@@ -16,7 +17,9 @@ import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentHomeBinding
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.shareMemo
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -25,7 +28,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModels()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
@@ -36,12 +39,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        val application = requireActivity().application
-        val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
-        val homeViewModelFactory = HomeViewModelFactory(dataSource, application)
         val memoId = arguments?.getLong(Constants.MEMO_ID)
-
-        viewModel = ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

@@ -12,6 +12,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,13 +23,15 @@ import com.pinkcloud.memento.database.MemoDatabase
 import com.pinkcloud.memento.databinding.FragmentAddBinding
 import com.pinkcloud.memento.utils.Constants
 import com.pinkcloud.memento.utils.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
 
+@AndroidEntryPoint
 class AddFragment : Fragment() {
 
     private lateinit var binding: FragmentAddBinding
-    private lateinit var viewModel: AddViewModel
+    private val viewModel: AddViewModel by viewModels()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
 
     override fun onCreateView(
@@ -38,12 +41,6 @@ class AddFragment : Fragment() {
 
         binding = FragmentAddBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-
-        val application = requireActivity().application
-        val dataSource = MemoDatabase.getInstance(application).memoDatabaseDao
-        val addViewModelFactory = AddViewModelFactory(dataSource, application)
-
-        viewModel = ViewModelProvider(this, addViewModelFactory).get(AddViewModel::class.java)
 
         setKeyboardHideAction()
 

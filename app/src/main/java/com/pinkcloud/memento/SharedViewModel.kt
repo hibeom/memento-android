@@ -7,8 +7,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.pinkcloud.memento.utils.Configuration
 import com.pinkcloud.memento.utils.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SharedViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class SharedViewModel @Inject constructor(application: Application) :
+    AndroidViewModel(application) {
     val searchText = MutableLiveData("")
 
     val fontSizeLevel = MutableLiveData(Configuration.fontSizeLevel)

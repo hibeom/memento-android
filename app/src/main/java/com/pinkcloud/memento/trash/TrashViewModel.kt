@@ -10,22 +10,27 @@ import com.pinkcloud.memento.utils.applyFilter
 import com.pinkcloud.memento.utils.applySort
 import com.pinkcloud.memento.utils.koreanmatcher.KoreanTextMatcher
 import com.pinkcloud.memento.utils.scheduleAlarm
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TrashViewModel(val database: MemoDatabaseDao, application: Application) : AndroidViewModel(application) {
-
-    private val memoRepository = MemoRepository(database)
+@HiltViewModel
+class TrashViewModel @Inject constructor(
+    repository: MemoRepository,
+    private val database: MemoDatabaseDao,
+    application: Application
+) : AndroidViewModel(application) {
 
     private val _orderBy = MutableStateFlow(Constants.ORDER_BY_PRIORITY)
 
     private val orderBy: StateFlow<Int>
         get() = _orderBy
 
-    private val completedMemos = memoRepository.memos.mapLatest { memos ->
+    private val completedMemos = repository.memos.mapLatest { memos ->
         memos.applyFilter(completed = true)
     }
 
@@ -39,7 +44,13 @@ class TrashViewModel(val database: MemoDatabaseDao, application: Application) : 
         viewModelScope.launch {
             memo.isCompleted = false
             if (memo.isAlarmEnabled) {
-                memo.alarmId = scheduleAlarm(getApplication(), memo.memoId, memo.frontCaption, memo.alarmTime, memo.imagePath)
+                memo.alarmId = scheduleAlarm(
+                    getApplication(),
+                    memo.memoId,
+                    memo.frontCaption,
+                    memo.alarmTime,
+                    memo.imagePath
+                )
             }
             database.update(memo)
         }

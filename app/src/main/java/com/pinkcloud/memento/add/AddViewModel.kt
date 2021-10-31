@@ -9,10 +9,16 @@ import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
 import com.pinkcloud.memento.utils.copyTempImage
 import com.pinkcloud.memento.utils.scheduleAlarm
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class AddViewModel(val database: MemoDatabaseDao, application: Application) :
+@HiltViewModel
+class AddViewModel @Inject constructor(
+    private val database: MemoDatabaseDao,
+    application: Application
+) :
     AndroidViewModel(application) {
 
     private val _isInsertCompleted = MutableLiveData(false)
@@ -34,7 +40,8 @@ class AddViewModel(val database: MemoDatabaseDao, application: Application) :
 
             var alarmId: String? = null
             if (isAlarmEnabled) {
-                alarmId = scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime, imagePath)
+                alarmId =
+                    scheduleAlarm(getApplication(), memoId, frontCaption, alarmTime, imagePath)
             }
             val memo = Memo(
                 memoId,

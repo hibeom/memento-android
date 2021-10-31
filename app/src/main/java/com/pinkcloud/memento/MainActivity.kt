@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
@@ -16,12 +17,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.pinkcloud.memento.common.MenuSheetFragment
 import com.pinkcloud.memento.databinding.ActivityMainBinding
 import com.pinkcloud.memento.utils.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var menuSheetFragment: MenuSheetFragment
+    private val sharedViewModel: SharedViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +53,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val viewModelFactory = SharedViewModelFactory(application)
-        val sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
         binding.search.editSearch.doAfterTextChanged {
             sharedViewModel.changeSearchText(it.toString())
         }
