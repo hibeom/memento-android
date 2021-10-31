@@ -335,7 +335,7 @@ fun hideKeyboard(context: Context, v: View) {
 suspend fun List<Memo>.applySort(orderBy: Int): List<Memo> =
     withContext(Dispatchers.Default) {
         when (orderBy) {
-            Constants.ORDER_BY_PRIORITY -> sortedBy { memo ->
+            Constants.ORDER_BY_PRIORITY -> sortedByDescending { memo ->
                 memo.priority
             }
             Constants.ORDER_BY_OLDEST -> sortedBy { memo ->
