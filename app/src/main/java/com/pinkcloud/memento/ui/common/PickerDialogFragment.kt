@@ -1,9 +1,8 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.ui.common
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import com.pinkcloud.memento.R

@@ -9,12 +9,11 @@ import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.pinkcloud.memento.common.MenuSheetFragment
+import com.pinkcloud.memento.ui.common.MenuSheetFragment
 import com.pinkcloud.memento.databinding.ActivityMainBinding
 import com.pinkcloud.memento.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint

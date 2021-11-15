@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.pinkcloud.memento.home.HomeFragment"
+        android:name="com.pinkcloud.memento.ui.home.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
 
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.pinkcloud.memento.add.AddFragment"
+        android:name="com.pinkcloud.memento.ui.add.AddFragment"
         android:label="@string/add_fragment_label"
         tools:layout="@layout/fragment_add">
 
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.pinkcloud.memento.common.CameraFragment"
+        android:name="com.pinkcloud.memento.ui.common.CameraFragment"
         android:label="@string/camera_fragment_label"
         tools:layout="@layout/fragment_camera" >
         <action
@@ -54,11 +54,11 @@
     </fragment>
     <fragment
         android:id="@+id/trashFragment"
-        android:name="com.pinkcloud.memento.trash.TrashFragment"
+        android:name="com.pinkcloud.memento.ui.trash.TrashFragment"
         android:label="TrashFragment" />
     <fragment
         android:id="@+id/albumFragment"
-        android:name="com.pinkcloud.memento.common.AlbumFragment"
+        android:name="com.pinkcloud.memento.ui.common.AlbumFragment"
         android:label="AlbumFragment" >
         <action
             android:id="@+id/action_albumFragment_to_addFragment"
@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/editFragment"
-        android:name="com.pinkcloud.memento.edit.EditFragment"
+        android:name="com.pinkcloud.memento.ui.edit.EditFragment"
         android:label="EditFragment">
         <argument
             android:name="memoId"

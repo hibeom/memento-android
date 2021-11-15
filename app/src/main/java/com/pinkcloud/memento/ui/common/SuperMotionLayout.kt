@@ -1,10 +1,9 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.ui.common
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.constraintlayout.motion.widget.MotionLayout
-import timber.log.Timber
 
 class SuperMotionLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

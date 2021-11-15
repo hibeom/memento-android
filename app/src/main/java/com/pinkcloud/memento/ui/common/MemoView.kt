@@ -1,4 +1,4 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.ui.common
 
 import android.content.Context
 import android.graphics.Paint

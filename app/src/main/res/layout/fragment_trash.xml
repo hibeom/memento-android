@@ -9,19 +9,19 @@
 
         <variable
             name="viewModel"
-            type="com.pinkcloud.memento.trash.TrashViewModel" />
+            type="com.pinkcloud.memento.ui.trash.TrashViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".trash.TrashFragment">
+        tools:context=".ui.trash.TrashFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_trash"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layoutManager=".common.OverlapLayoutManager"
+            app:layoutManager=".ui.common.OverlapLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 

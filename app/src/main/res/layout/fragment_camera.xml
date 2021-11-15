@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_dark"
-        tools:context=".common.CameraFragment">
+        tools:context=".ui.common.CameraFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_tool_bar"

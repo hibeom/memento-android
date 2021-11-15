@@ -17,7 +17,7 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.pinkcloud.memento.R
-import com.pinkcloud.memento.common.MemoView
+import com.pinkcloud.memento.ui.common.MemoView
 import com.pinkcloud.memento.database.Memo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

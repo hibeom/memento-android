@@ -6,15 +6,15 @@
     <data>
         <variable
             name="addViewModel"
-            type="com.pinkcloud.memento.add.AddViewModel" />
+            type="com.pinkcloud.memento.ui.add.AddViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".add.AddFragment">
+        tools:context=".ui.add.AddFragment">
 
-        <com.pinkcloud.memento.common.MemoView
+        <com.pinkcloud.memento.ui.common.MemoView
             android:id="@+id/memoView"
             style="@style/MemoView"
             android:elevation="@dimen/card_elevation"

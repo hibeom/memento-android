@@ -2,7 +2,7 @@ package com.pinkcloud.memento.utils
 
 import android.view.View
 import androidx.databinding.BindingAdapter
-import com.pinkcloud.memento.common.MemoView
+import com.pinkcloud.memento.ui.common.MemoView
 import com.pinkcloud.memento.database.Memo
 
 @BindingAdapter("hideIfEmpty", "memos")

@@ -10,9 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".edit.EditFragment">
+        tools:context=".ui.edit.EditFragment">
 
-        <com.pinkcloud.memento.common.MemoView
+        <com.pinkcloud.memento.ui.common.MemoView
             android:id="@+id/memoView"
             style="@style/MemoView"
             android:elevation="@dimen/card_elevation"

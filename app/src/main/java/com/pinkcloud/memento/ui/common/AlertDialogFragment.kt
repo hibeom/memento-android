@@ -1,4 +1,4 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.ui.common
 
 import android.app.AlertDialog
 import android.app.Dialog

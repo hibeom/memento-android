@@ -75,7 +75,7 @@
                 app:layout_constraintBottom_toTopOf="@id/slider_priority"
                 app:layout_constraintStart_toStartOf="@id/view_tools" />
 
-            <com.pinkcloud.memento.common.PrioritySlider
+            <com.pinkcloud.memento.ui.common.PrioritySlider
                 android:id="@+id/slider_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

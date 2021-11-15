@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.pinkcloud.memento.home.HomeViewModel" />
+            type="com.pinkcloud.memento.ui.home.HomeViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -15,13 +15,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.HomeFragment">
+        tools:context=".ui.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_memo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layoutManager=".common.OverlapLayoutManager"
+            app:layoutManager=".ui.common.OverlapLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/bottom_guideline"
             app:layout_constraintTop_toTopOf="parent" />
 

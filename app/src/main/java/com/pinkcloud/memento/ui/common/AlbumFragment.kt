@@ -1,27 +1,19 @@
-package com.pinkcloud.memento.common
+package com.pinkcloud.memento.ui.common
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.pinkcloud.memento.R
 import com.pinkcloud.memento.databinding.FragmentAlbumBinding
-import com.pinkcloud.memento.utils.GlideApp
-import com.pinkcloud.memento.utils.getRealPath
 import com.pinkcloud.memento.utils.saveEmptyTempImage
 import com.pinkcloud.memento.utils.saveViewImage
-import com.yashoid.instacropper.InstaCropperView
-import timber.log.Timber
 
 class AlbumFragment: Fragment() {
 
