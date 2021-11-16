@@ -13,6 +13,7 @@ import androidx.fragment.app.findFragment
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.pinkcloud.memento.R
+import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.utils.GlideApp
 import com.pinkcloud.memento.utils.formatMillisToDatetime
 import com.pinkcloud.memento.utils.getMeasuredFontSize
@@ -113,10 +114,10 @@ class MemoView @JvmOverloads constructor(
     private var maxFrontLines = 4
     private var maxBackLines = 10
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         maxFrontLines = editFrontCaption.measuredHeight/editFrontCaption.lineHeight
         maxBackLines = editBackCaption.measuredHeight/editBackCaption.lineHeight
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        super.onSizeChanged(w, h, oldw, oldh)
     }
 
     fun setCaptionTextStyle() {

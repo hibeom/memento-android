@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pinkcloud.memento.database.Memo
 import com.pinkcloud.memento.database.MemoDatabaseDao
+import com.pinkcloud.memento.repository.MemoRepository
 import com.pinkcloud.memento.utils.copyTempImage
 import com.pinkcloud.memento.utils.scheduleAlarm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddViewModel @Inject constructor(
-    private val database: MemoDatabaseDao,
-    application: Application
+    application: Application,
+    private val repository: MemoRepository
 ) :
     AndroidViewModel(application) {
 
@@ -54,7 +55,7 @@ class AddViewModel @Inject constructor(
                 false,
                 null
             )
-            database.insert(memo)
+            repository.insertMemo(memo)
             _isInsertCompleted.value = true
         }
     }

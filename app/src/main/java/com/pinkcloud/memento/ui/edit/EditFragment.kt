@@ -75,27 +75,15 @@ class EditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_confirm -> {
-                binding.memoView.apply {
+                binding.memoView.run {
                     val memo = viewModel.memo.value!!
+                    val wasAlarmEnabled = isAlarmEnabled
                     memo.frontCaption = frontCaption
                     memo.backCaption = backCaption
                     memo.priority = priority
-                    if (isAlarmEnabled) {
-                        if (memo.isAlarmEnabled) {
-                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
-                        }
-                        val alarmId = scheduleAlarm(context, memo.memoId, frontCaption, alarmTime, imagePath)
-                        memo.alarmId = alarmId
-                    } else {
-                        if (memo.isAlarmEnabled) {
-                            memo.alarmId?.let { cancelAlarm(context, memo.alarmId!!) }
-                            memo.alarmId = null
-                        }
-                    }
-                    memo.alarmTime = alarmTime
                     memo.isAlarmEnabled = isAlarmEnabled
-
-                    viewModel.updateMemo(memo)
+                    memo.alarmTime = alarmTime
+                    viewModel.editMemo(memo, wasAlarmEnabled)
                 }
                 true
             }

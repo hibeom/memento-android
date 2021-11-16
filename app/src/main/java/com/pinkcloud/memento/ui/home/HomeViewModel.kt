@@ -17,9 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    repository: MemoRepository,
-    private val database: MemoDatabaseDao,
-    application: Application) :
+    private val repository: MemoRepository,
+    application: Application
+) :
     AndroidViewModel(application) {
 
     private val _orderBy = MutableStateFlow(Constants.ORDER_BY_PRIORITY)
@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             memo.completedTime = System.currentTimeMillis()
-            database.update(memo)
+            repository.updateMemo(memo)
         }
     }
 

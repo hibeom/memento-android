@@ -20,8 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrashViewModel @Inject constructor(
-    repository: MemoRepository,
-    private val database: MemoDatabaseDao,
+    private val repository: MemoRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -52,13 +51,13 @@ class TrashViewModel @Inject constructor(
                     memo.imagePath
                 )
             }
-            database.update(memo)
+            repository.updateMemo(memo)
         }
     }
 
     fun deleteMemo(memo: Memo) {
         viewModelScope.launch {
-            database.delete(memo)
+            repository.deleteMemo(memo)
         }
     }
 

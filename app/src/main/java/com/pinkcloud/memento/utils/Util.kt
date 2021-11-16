@@ -115,25 +115,27 @@ fun formatMillisToDatetime(timeMillis: Long): String {
  *
  * @return uuid string generated from Worker
  * */
-fun scheduleAlarm(
+suspend fun scheduleAlarm(
     context: Context,
     memoId: Long,
     frontCaption: String?,
     alarmTime: Long,
     imagePath: String?
 ): String? {
-    val data = Data.Builder()
-    data.putLong(Constants.MEMO_ID, memoId)
-    data.putString(Constants.FRONT_CAPTION, frontCaption)
-    data.putString(Constants.IMAGE_PATH, imagePath)
+    return withContext(Dispatchers.Default) {
+        val data = Data.Builder()
+        data.putLong(Constants.MEMO_ID, memoId)
+        data.putString(Constants.FRONT_CAPTION, frontCaption)
+        data.putString(Constants.IMAGE_PATH, imagePath)
 
-    val delay = alarmTime - System.currentTimeMillis()
-    if (delay <= 0) return null
-    val work = OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(data.build())
-        .setInitialDelay(delay, TimeUnit.MILLISECONDS).build()
+        val delay = alarmTime - System.currentTimeMillis()
+        if (delay <= 0) return@withContext null
+        val work = OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(data.build())
+            .setInitialDelay(delay, TimeUnit.MILLISECONDS).build()
 
-    WorkManager.getInstance(context).enqueue(work)
-    return work.id.toString()
+        WorkManager.getInstance(context).enqueue(work)
+        return@withContext work.id.toString()
+    }
 }
 
 /**
