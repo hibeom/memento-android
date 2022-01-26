@@ -5,6 +5,7 @@ Stack
 - MVVM
 - Coroutine
 - LiveData & Flow
+- Room
 - AAC
 - DataBinding
 - CustomView ( custom recyclerview layoutmanger )
